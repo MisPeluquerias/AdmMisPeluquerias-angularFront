@@ -6,15 +6,15 @@
       <div class="container-fluid px-4">
         <h1 class="mt-1">Panel de control</h1>
         <ol class="breadcrumb mb-4">
-          <li class="breadcrumb-item active">Administración / <b>Negocios</b></li>
+          <li class="breadcrumb-item active">Administración / <b>Servicios</b></li>
         </ol>
 
         <!-- Contenido de la tabla -->
         <div class="card mb-4">
           <div class="card-header">
             <img src="../../../favicon.ico" width="30" class="img-fluid me-2" alt="">
-          <!--  <i class="fas fa-table me-1"></i> -->
-            Lista de Negocios
+           <!-- <i class="fas fa-table me-1"></i> -->
+            Lista de Categorías
           </div>
           <div class="card-body">
             <div class="row mb-4">
@@ -32,24 +32,18 @@
                   <tr>
                     <th><input type="checkbox"></th>
                     <th>Nombre</th>
-                    <th>Email</th>
-                    <th>Creado</th>
-                    <th>Telefono</th>
-                    <th>Activo</th>
-                    <th>Estado</th>
-                    <th class="col-1">Acciones</th>
+                    <th>Subservicios</th>
+                    <th colspan="2" class="col-1">Acciones</th>
+
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let salon of AllSalon">
+                  <tr *ngFor="let service of AllServices">
                     <td><input type="checkbox"></td>
-                    <td>{{ salon.name }}</td>
-                    <td>{{ salon.email }}</td>
-                    <td>{{ salon.created_at | date }}</td>
-                    <td>{{ salon.phone }}</td>
-                    <td>{{ salon.active ? 'Si':'No' }}</td>
-                    <td>{{ salon.state}}</td>
+                    <td>{{ service.service_name}}</td>
+                    <td>{{ service.subservices}}</td>
                     <td><button class="btn btn-dark"><i class="fas fa-edit"></i></button></td>
+                    <td><button class="btn btn-dark">Subservicios</button></td>
                   </tr>
                 </tbody>
               </table>

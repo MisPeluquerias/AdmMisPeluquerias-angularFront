@@ -10,6 +10,8 @@ import { ImportComponent } from './components/import/import.component';
 import { AdministratorsComponent } from './components/administrators/administrators.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { ContactProffesionalComponent } from './components/contact-proffesional/contact-proffesional.component';
+import { ReclamationsComponent } from './components/reclamations/reclamations.component';
+import { ServicesComponent } from './components/services/services.component';
 
 
 const routes: Routes = [
@@ -22,6 +24,8 @@ const routes: Routes = [
   { path: 'categories', component: CategoriesComponent,title:'Adm | Mis Peluquerias'},
   { path: 'contact', component: ContactComponent, title:'Adm | Mis Peluquerias'},
   { path: 'contact-proffesional', component: ContactProffesionalComponent, title:'Adm | Mis Peluquerias'},
+  { path: 'services', component:ServicesComponent, title:'Adm | Mis Peluquerias'},
+  { path: 'reclamations', component: ReclamationsComponent, title:'Adm | Mis Peluquerias'},
   { path: 'export', component: ExportComponent, title:'Adm | Mis Peluquerias'},
   { path: 'import', component: ImportComponent, title:'Adm | Mis Peluquerias'},
   { path: '**', component:LoginComponent }
