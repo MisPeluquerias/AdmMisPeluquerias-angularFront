@@ -15,7 +15,8 @@ export class ExportComponent {
   pageSize: number = 10;
   totalItems: number = 0;
   Math = Math;
-  searchText : string = '';  // Exponer Math al contexto de la plantilla
+  searchText : string = '';
+  isLoading: boolean = false;
 
   constructor(private exportService: ExportService) { }
 
@@ -70,14 +71,15 @@ export class ExportComponent {
     return pages;
   }
   exportToExcel(): void {
+    this.isLoading = true;
     this.exportService.exportSalonsToExcel().subscribe({
       next: (blob: Blob) => {
-        saveAs(blob, 'salons.xlsx');
+        saveAs(blob, 'salones.xlsx');
+        this.isLoading = false;
       },
       error: (err) => {
         console.error('Error exporting to Excel', err);
       }
     });
   }
-
 }

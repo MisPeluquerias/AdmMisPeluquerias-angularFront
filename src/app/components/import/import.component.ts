@@ -15,6 +15,7 @@ export class ImportComponent {
   pageSize: number = 10;
   totalItems: number = 0;
   Math = Math;
+  isLoading: boolean = false;
 
   searchText : string = '';
   constructor(private importService: ImportService) { }
@@ -76,10 +77,12 @@ export class ImportComponent {
   updateWithExcel(event: any): void {
     const file = event.target.files[0];
     if (file) {
+      this.isLoading = true;
       this.importService.importUpdateExcel(file).subscribe(
         (response: Blob) => {
           console.log('File uploaded successfully', response);
           window.location.reload();
+          this.isLoading = false;
         },
         (error) => {
           console.error('Error uploading file', error);
