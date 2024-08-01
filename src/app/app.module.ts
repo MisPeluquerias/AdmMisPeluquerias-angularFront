@@ -23,6 +23,7 @@ import { ReclamationsComponent } from './components/reclamations/reclamations.co
 import { ServicesComponent } from './components/services/services.component';
 import { SpanishDatePipe } from './shared/pipes/spanish-date.pipe';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { EditHomeComponent } from './components/home/edit-home/edit-home.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     ContactProffesionalComponent,
     ReclamationsComponent,
     ServicesComponent,
-    SpanishDatePipe
+    SpanishDatePipe,
+    EditHomeComponent
   ],
   imports: [
     BrowserModule,

@@ -1,43 +1,38 @@
-
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark" style="background-color: #B91622 !important;">
   <!-- Navbar Brand-->
   <a class="navbar-brand ps-3" routerLink="/home">Mis peluquerias &reg;</a>
   <!-- Sidebar Toggle-->
   <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-  <!-- Navbar Search-->
 
-  <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-      <div class="input-group">
-          <input class="form-control" type="text" placeholder="Buscar..." aria-label="Buscar..." aria-describedby="btnNavbarSearch" />
-          <button class="btn btn-light" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-      </div>
-  </form>
-
-  <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-    <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle custom-badge"
-         id="navbarDropdown"
+  <!-- Navbar items aligned to the right -->
+  <ul class="navbar-nav ms-auto">
+    <!-- Campaign notifications with counter -->
+    <li class="nav-item dropdown me-3">
+      <a class="nav-link dropdown-toggle custom-badge position-relative d-flex align-items-center"
+         id="navbarDropdownCampaign"
          href="#"
          role="button"
          data-bs-toggle="dropdown"
          aria-expanded="false">
-          <i class="fas fa-bell"></i>
+          <i class="fas fa-bell fa-xl" style="margin-top: 9px;"></i>
+          <span class="badge bg-danger position-absolute translate-middle" style="top: 20px; left: 75%;">3</span>
       </a>
-      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownCampaign">
           <li><a class="dropdown-item" href="#!">Establecer notificaciones</a></li>
       </ul>
-  </li>
-  </ul>
+    </li>
 
-  <!-- Navbar-->
-  <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-      <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#!">Mi perfil</a></li>
-              <li><hr class="dropdown-divider" /></li>
-              <li><a class="dropdown-item" href="#" (click)="logout()">Salir</a></li>
-          </ul>
-      </li>
+    <!-- User profile with image -->
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle d-flex align-items-center" id="navbarDropdownUser" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <img src="../../../../assets/img/sello.jpg" class="rounded-circle" alt="Foto de perfil" width="40" height="40">
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownUser">
+        <li><a class="dropdown-item" href="#!">Mi perfil</a></li>
+        <li><hr class="dropdown-divider" /></li>
+        <li><a class="dropdown-item" href="#" (click)="logout()">Salir</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
+
