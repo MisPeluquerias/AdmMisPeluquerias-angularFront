@@ -24,6 +24,8 @@ import { ServicesComponent } from './components/services/services.component';
 import { SpanishDatePipe } from './shared/pipes/spanish-date.pipe';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { EditHomeComponent } from './components/home/edit-home/edit-home.component';
+import { FormsModule } from '@angular/forms';
+import { SearchPipe } from './shared/pipes/search.pipe';
 
 @NgModule({
   declarations: [
@@ -44,15 +46,18 @@ import { EditHomeComponent } from './components/home/edit-home/edit-home.compone
     ReclamationsComponent,
     ServicesComponent,
     SpanishDatePipe,
-    EditHomeComponent
+    EditHomeComponent,
+    SearchPipe
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    MatBadgeModule
+    MatBadgeModule,
+    FormsModule
   ],
+  
   providers: [
     provideHttpClient(withFetch()),
     provideAnimationsAsync()

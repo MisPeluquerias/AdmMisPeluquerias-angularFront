@@ -14,6 +14,8 @@ export class ReclamationsComponent {
   pageSize: number = 10;
   totalItems: number = 0;
   Math = Math;  // Exponer Math al contexto de la plantilla
+  allSelected: boolean = false;
+
 
   constructor(private reclamationService: ReclamationService) { }
 
@@ -59,6 +61,24 @@ export class ReclamationsComponent {
     }
 
     return pages;
+  }
+
+  toggleAllSelection() {
+    this.allSelected = !this.allSelected;
+    this.AllReclamations.forEach(reclamation => reclamation.selected = this.allSelected);
+  }
+
+  checkIfAllSelected() {
+    this.allSelected = this.AllReclamations.every(reclamation => reclamation.selected);
+  }
+
+  hasSelected() {
+    return this.AllReclamations.some(reclamation => reclamation.selected);
+  }
+
+  deleteSelected() {
+    this.AllReclamations = this.AllReclamations.filter(reclamation => !reclamation.selected);
+    this.allSelected = false;
   }
 
 }

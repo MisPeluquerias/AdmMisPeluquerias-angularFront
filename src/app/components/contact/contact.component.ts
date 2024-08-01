@@ -14,6 +14,7 @@ export class ContactComponent {
   pageSize: number = 10;
   totalItems: number = 0;
   Math = Math;  // Exponer Math al contexto de la plantilla
+  allSelected: boolean = false;
 
   constructor(private contactService: ContactService) { }
 
@@ -61,5 +62,23 @@ export class ContactComponent {
     }
 
     return pages;
+  }
+
+  toggleAllSelection() {
+    this.allSelected = !this.allSelected;
+    this.AllContactMenssage.forEach(contact => contact.selected = this.allSelected);
+  }
+
+  checkIfAllSelected() {
+    this.allSelected = this.AllContactMenssage.every(contact => contact.selected);
+  }
+
+  hasSelected() {
+    return this.AllContactMenssage.some(contact => contact.selected);
+  }
+
+  deleteSelected() {
+    this.AllContactMenssage = this.AllContactMenssage.filter(contact => !contact.selected);
+    this.allSelected = false;
   }
 }

@@ -15,6 +15,8 @@ export class CategoriesComponent {
   pageSize: number = 10;
   totalItems: number = 0;
   Math = Math;  // Exponer Math al contexto de la plantilla
+  allSelected: boolean = false;
+
 
   constructor(private categoriesService: CategoriesService) { }
 
@@ -60,6 +62,24 @@ export class CategoriesComponent {
     }
 
     return pages;
+  }
+
+  toggleAllSelection() {
+    this.allSelected = !this.allSelected;
+    this.AllCategories.forEach(category => category.selected = this.allSelected);
+  }
+
+  checkIfAllSelected() {
+    this.allSelected = this.AllCategories.every(category => category.selected);
+  }
+
+  hasSelected() {
+    return this.AllCategories.some(category => category.selected);
+  }
+
+  deleteSelected() {
+    this.AllCategories = this.AllCategories.filter(category => !category.selected);
+    this.allSelected = false;
   }
 
 }

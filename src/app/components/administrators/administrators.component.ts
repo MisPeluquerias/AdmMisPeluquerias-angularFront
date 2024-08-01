@@ -13,6 +13,8 @@ export class AdministratorsComponent {
   pageSize: number = 10;
   totalItems: number = 0;
   Math = Math;
+  allSelected: boolean = false;
+  searchText='';
 
   constructor(private administratorsService: AdministratorsService) { }
 
@@ -58,6 +60,23 @@ export class AdministratorsComponent {
     }
 
     return pages;
+  }
+  toggleAllSelection() {
+    this.allSelected = !this.allSelected;
+    this.AllAdministrators.forEach(administrartor => administrartor.selected = this.allSelected);
+  }
+
+  checkIfAllSelected() {
+    this.allSelected = this.AllAdministrators.every(administrator => administrator.selected);
+  }
+
+  hasSelected() {
+    return this.AllAdministrators.some(administrator => administrator.selected);
+  }
+
+  deleteSelected() {
+    this.AllAdministrators = this.AllAdministrators.filter(administrator => !administrator.selected);
+    this.allSelected = false;
   }
 
 }

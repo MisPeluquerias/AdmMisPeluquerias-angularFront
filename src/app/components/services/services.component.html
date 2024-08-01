@@ -36,21 +36,23 @@
                 </div>
                 <button class="btn btn-danger">Nuevo</button>
               </div>
+              <div *ngIf="hasSelected()" class="mt-3 text-end" >
+                <button class="btn btn-danger" (click)="deleteSelected() " style="background-color: darkorange;">Eliminar seleccionados</button>
+              </div>
             </div>
             <div class="table-responsive">
               <table class="table table-hover table-light">
                 <thead class="thead-dark">
                   <tr>
-                    <th><input type="checkbox"></th>
+                    <th><input type="checkbox" (change)="toggleAllSelection()" [checked]="allSelected" /></th>
                     <th>Nombre</th>
                     <th>Subservicios</th>
                     <th colspan="2" class="col-1">Acciones</th>
-
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let service of AllServices">
-                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" [(ngModel)]="service.selected" (change)="checkIfAllSelected()" /></td>
                     <td>{{ service.service_name}}</td>
                     <td>{{ service.subservices}}</td>
                     <td><button class="btn btn-dark"><i class="fas fa-edit"></i></button></td>

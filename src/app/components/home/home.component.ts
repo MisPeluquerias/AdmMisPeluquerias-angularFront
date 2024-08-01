@@ -12,8 +12,13 @@ export class HomeComponent implements OnInit {
   pageSize: number = 10;
   totalItems: number = 0;
   Math = Math;  // Exponer Math al contexto de la plantilla
+  searchText='';
 
+  
   constructor(private homeService: HomeService) { }
+
+
+  allSelected: boolean = false;
 
   ngOnInit(): void {
     this.loadAllSalon(this.currentPage);
@@ -58,4 +63,25 @@ export class HomeComponent implements OnInit {
 
     return pages;
   }
+
+
+  toggleAllSelection() {
+    this.allSelected = !this.allSelected;
+    this.AllSalon.forEach(salon => salon.selected = this.allSelected);
+  }
+
+  checkIfAllSelected() {
+    this.allSelected = this.AllSalon.every(salon => salon.selected);
+  }
+
+  hasSelected() {
+    return this.AllSalon.some(salon => salon.selected);
+  }
+
+  deleteSelected() {
+    this.AllSalon = this.AllSalon.filter(salon => !salon.selected);
+    this.allSelected = false;
+  }
+
+
 }

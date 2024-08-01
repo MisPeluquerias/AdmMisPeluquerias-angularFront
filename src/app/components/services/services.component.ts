@@ -13,7 +13,8 @@ export class ServicesComponent {
   currentPage: number = 1;
   pageSize: number = 10;
   totalItems: number = 0;
-  Math = Math;  // Exponer Math al contexto de la plantilla
+  Math = Math;
+  allSelected: boolean = false;
 
   constructor(private servicesService: ServicesService) { }
 
@@ -61,4 +62,23 @@ export class ServicesComponent {
     }
     return pages;
   }
+
+  toggleAllSelection() {
+    this.allSelected = !this.allSelected;
+    this.AllServices.forEach(service => service.selected = this.allSelected);
+  }
+
+  checkIfAllSelected() {
+    this.allSelected = this.AllServices.every(service => service.selected);
+  }
+
+  hasSelected() {
+    return this.AllServices.some(serivce => serivce.selected);
+  }
+
+  deleteSelected() {
+    this.AllServices = this.AllServices.filter(service => !service.selected);
+    this.allSelected = false;
+  }
+
 }

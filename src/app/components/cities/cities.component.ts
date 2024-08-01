@@ -12,7 +12,7 @@ export class CitiesComponent {
   pageSize: number = 10;
   totalItems: number = 0;
   Math = Math;  // Exponer Math al contexto de la plantilla
-
+  allSelected: boolean = false;
 
   constructor(private citiesService: CitiesService) { }
 
@@ -59,4 +59,24 @@ export class CitiesComponent {
 
     return pages;
   }
+
+  toggleAllSelection() {
+    this.allSelected = !this.allSelected;
+    this.AllCities.forEach(city => city.selected = this.allSelected);
+  }
+
+  checkIfAllSelected() {
+    this.allSelected = this.AllCities.every(city => city.selected);
+  }
+
+  hasSelected() {
+    return this.AllCities.some(city => city.selected);
+  }
+
+  deleteSelected() {
+    this.AllCities = this.AllCities.filter(city => !city.selected);
+    this.allSelected = false;
+  }
+
+
 }

@@ -14,6 +14,8 @@ export class ClientsComponent {
   totalItems: number = 0;
   Math = Math;  // Exponer Math al contexto de la plantilla
 
+  allSelected: boolean = false;
+
   constructor(private clientsService: ClientsService) { }
 
   ngOnInit(): void {
@@ -59,5 +61,27 @@ export class ClientsComponent {
 
     return pages;
   }
+
+  toggleAllSelection() {
+    this.allSelected = !this.allSelected;
+    this.AllClients.forEach(client => client.selected = this.allSelected);
+  }
+
+  checkIfAllSelected() {
+    this.allSelected = this.AllClients.every(client => client.selected);
+  }
+
+  hasSelected() {
+    return this.AllClients.some(client => client.selected);
+  }
+
+  deleteSelected() {
+    this.AllClients = this.AllClients.filter(client => !client.selected);
+    this.allSelected = false;
+  }
+
+
+
+
 
 }
