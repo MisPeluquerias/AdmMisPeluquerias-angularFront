@@ -25,7 +25,7 @@ import { SpanishDatePipe } from './shared/pipes/spanish-date.pipe';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { EditHomeComponent } from './components/home/edit-home/edit-home.component';
 import { FormsModule } from '@angular/forms';
-import { SearchPipe } from './shared/pipes/search.pipe';
+
 
 @NgModule({
   declarations: [
@@ -47,7 +47,6 @@ import { SearchPipe } from './shared/pipes/search.pipe';
     ServicesComponent,
     SpanishDatePipe,
     EditHomeComponent,
-    SearchPipe
   ],
   imports: [
     BrowserModule,
@@ -57,7 +56,7 @@ import { SearchPipe } from './shared/pipes/search.pipe';
     MatBadgeModule,
     FormsModule
   ],
-  
+
   providers: [
     provideHttpClient(withFetch()),
     provideAnimationsAsync()

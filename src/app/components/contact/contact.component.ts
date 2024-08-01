@@ -15,6 +15,7 @@ export class ContactComponent {
   totalItems: number = 0;
   Math = Math;  // Exponer Math al contexto de la plantilla
   allSelected: boolean = false;
+  searchText : string = '';
 
   constructor(private contactService: ContactService) { }
 
@@ -25,7 +26,7 @@ export class ContactComponent {
   loadAllContactMenssage(page: number): void {
 
 
-    this.contactService.loadContactMenssage(page, this.pageSize).subscribe({
+    this.contactService.loadContactMenssage(page, this.pageSize,this.searchText).subscribe({
       next: (response: any) => {
         this.AllContactMenssage = response.data;
         this.totalItems = response.totalItems;
@@ -34,6 +35,13 @@ export class ContactComponent {
         console.error('Error loading salons', err);
       }
     });
+  }
+
+  onSearch(): void {
+    this.loadAllContactMenssage(this.currentPage);
+    if (this.searchText.trim() === '') {
+      this.loadAllContactMenssage(this.currentPage);
+    }
   }
 
   onPageChange(page: number): void {

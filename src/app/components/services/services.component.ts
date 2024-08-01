@@ -15,6 +15,7 @@ export class ServicesComponent {
   totalItems: number = 0;
   Math = Math;
   allSelected: boolean = false;
+  searchText:string = '';
 
   constructor(private servicesService: ServicesService) { }
 
@@ -25,7 +26,7 @@ export class ServicesComponent {
   loadAllServices(page: number): void {
 
 
-    this.servicesService.loadAllServices(page, this.pageSize).subscribe({
+    this.servicesService.loadAllServices(page, this.pageSize,this.searchText).subscribe({
       next: (response: any) => {
         this.AllServices = response.data;
         this.totalItems = response.totalItems;
@@ -36,6 +37,14 @@ export class ServicesComponent {
     });
   }
 
+  onSearch(): void {
+    this.loadAllServices(this.currentPage);
+    if (this.searchText.trim() === '') {
+      this.loadAllServices(this.currentPage);
+    }
+  }
+
+ 
   onPageChange(page: number): void {
     this.currentPage = page;
     this.loadAllServices(page);

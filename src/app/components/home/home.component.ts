@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
   Math = Math;  // Exponer Math al contexto de la plantilla
   searchText='';
 
-  
+
   constructor(private homeService: HomeService) { }
 
 
@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
   }
 
   loadAllSalon(page: number): void {
-    this.homeService.loadAllSalon(page, this.pageSize).subscribe({
+    this.homeService.loadAllSalon(page, this.pageSize, this.searchText).subscribe({
       next: (response: any) => {
         this.AllSalon = response.data;
         this.totalItems = response.totalItems;
@@ -34,6 +34,16 @@ export class HomeComponent implements OnInit {
         console.error('Error loading salons', err);
       }
     });
+  }
+
+  onSearch(): void {
+
+    this.loadAllSalon(this.currentPage);
+
+    if (this.searchText.trim() === '') {
+      this.loadAllSalon(this.currentPage); // Reload with current page if search is cleared
+    }
+    
   }
 
   onPageChange(page: number): void {

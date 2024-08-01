@@ -18,7 +18,7 @@ export class ContactProffesionalComponent {
   totalItems: number = 0;
   Math = Math;  // Exponer Math al contexto de la plantilla
   allSelected: boolean = false;
-  
+  searchText: string = '';
   constructor(private contactService: ContactProffesionalService) { }
 
   ngOnInit(): void {
@@ -27,7 +27,7 @@ export class ContactProffesionalComponent {
 
   loadAllContactProffesionalMenssage(page: number): void {
 
-    this.contactService.loadContacProffesionaltMenssage(page, this.pageSize).subscribe({
+    this.contactService.loadContacProffesionaltMenssage(page, this.pageSize,this.searchText).subscribe({
       next: (response: any) => {
         this.AllContactMenssage = response.data;
         this.totalItems = response.totalItems;
@@ -36,6 +36,13 @@ export class ContactProffesionalComponent {
         console.error('Error loading salons', err);
       }
     });
+  }
+
+  onSearch(): void {
+    this.loadAllContactProffesionalMenssage(this.currentPage);
+    if (this.searchText.trim() === '') {
+      this.loadAllContactProffesionalMenssage(this.currentPage);
+    }
   }
 
   onPageChange(page: number): void {

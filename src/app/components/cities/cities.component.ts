@@ -13,6 +13,7 @@ export class CitiesComponent {
   totalItems: number = 0;
   Math = Math;  // Exponer Math al contexto de la plantilla
   allSelected: boolean = false;
+  searchText: string = '';
 
   constructor(private citiesService: CitiesService) { }
 
@@ -26,7 +27,7 @@ export class CitiesComponent {
   }
 
   loadAllCities(page: number): void {
-    this.citiesService.loadAllCities(page, this.pageSize).subscribe({
+    this.citiesService.loadAllCities(page, this.pageSize,this.searchText).subscribe({
       next: (response: any) => {
         this.AllCities = response.data;
         this.totalItems = response.totalItems;
@@ -35,6 +36,11 @@ export class CitiesComponent {
         console.error('Error loading cities', err);
       }
     });
+  }
+
+  onSearch(): void {
+    this.currentPage = 1; // Reset to first page on new search
+    this.loadAllCities(this.currentPage);
   }
 
   get pageCount(): number {

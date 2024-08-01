@@ -16,16 +16,16 @@ export class CategoriesComponent {
   totalItems: number = 0;
   Math = Math;  // Exponer Math al contexto de la plantilla
   allSelected: boolean = false;
-
+  searchText:string ='';
 
   constructor(private categoriesService: CategoriesService) { }
 
   ngOnInit(): void {
-    this.loadAllClients(this.currentPage);
+    this.loadAllCategories(this.currentPage);
   }
 
-  loadAllClients (page: number): void {
-    this.categoriesService.loadAllCategories(page, this.pageSize).subscribe({
+  loadAllCategories (page: number): void {
+    this.categoriesService.loadAllCategories(page, this.pageSize,this.searchText).subscribe({
       next: (response: any) => {
         this.AllCategories = response.data;
         this.totalItems = response.totalItems;
@@ -36,9 +36,16 @@ export class CategoriesComponent {
     });
   }
 
+  onSearch(): void {
+    this.loadAllCategories(this.currentPage);
+    if (this.searchText.trim() === '') {
+      this.loadAllCategories(this.currentPage); // Reload with current page if search is cleared
+    }
+  }
+
   onPageChange(page: number): void {
     this.currentPage = page;
-    this.loadAllClients(page);
+    this.loadAllCategories(page);
   }
 
   get pageCount(): number {

@@ -19,11 +19,11 @@ export class AdministratorsComponent {
   constructor(private administratorsService: AdministratorsService) { }
 
   ngOnInit(): void {
-    this.loadAllClients(this.currentPage);
+    this.loadAllAministrators(this.currentPage);
   }
 
-  loadAllClients(page: number): void {
-    this.administratorsService.loadAllAdministrators(page, this.pageSize).subscribe({
+  loadAllAministrators(page: number): void {
+    this.administratorsService.loadAllAdministrators(page, this.pageSize,this.searchText).subscribe({
       next: (response: any) => {
         this.AllAdministrators = response.data;
         this.totalItems = response.totalItems;
@@ -33,10 +33,19 @@ export class AdministratorsComponent {
       }
     });
   }
+  onSearch(): void {
+
+    this.loadAllAministrators(this.currentPage);
+
+    if (this.searchText.trim() === '') {
+      this.loadAllAministrators(this.currentPage); // Reload with current page if search is cleared
+    }
+
+  }
 
   onPageChange(page: number): void {
     this.currentPage = page;
-    this.loadAllClients(page);
+    this.loadAllAministrators(page);
   }
 
   get pageCount(): number {

@@ -19,7 +19,7 @@
           <div class="card-body">
             <div class="row mb-4">
               <div class="col-12 col-md-2 mb-2 mb-md-0">
-                <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="searchText">
+                <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="searchText" (input)="onSearch()">
               </div>
               <div class="col-12 col-md-4 d-flex justify-content-md-end ms-auto">
                 <div class="btn-group">
@@ -54,7 +54,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let admin of AllAdministrators | search:searchText">
+                  <tr *ngFor="let admin of AllAdministrators">
                     <td><input type="checkbox" [(ngModel)]="admin.selected" (change)="checkIfAllSelected()" /></td>
                     <td>{{ admin.name }}</td>
                     <td>{{ admin.email }}</td>

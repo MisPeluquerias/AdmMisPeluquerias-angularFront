@@ -13,7 +13,7 @@ export class ClientsComponent {
   pageSize: number = 10;
   totalItems: number = 0;
   Math = Math;  // Exponer Math al contexto de la plantilla
-
+  searchText:string='';
   allSelected: boolean = false;
 
   constructor(private clientsService: ClientsService) { }
@@ -23,7 +23,7 @@ export class ClientsComponent {
   }
 
   loadAllClients(page: number): void {
-    this.clientsService.loadAllClients(page, this.pageSize).subscribe({
+    this.clientsService.loadAllClients(page, this.pageSize,this.searchText).subscribe({
       next: (response: any) => {
         this.AllClients = response.data;
         this.totalItems = response.totalItems;
@@ -33,6 +33,14 @@ export class ClientsComponent {
       }
     });
   }
+
+
+    onSearch(): void {
+      this.loadAllClients(this.currentPage);
+      if (this.searchText.trim() === '') {
+        this.loadAllClients(this.currentPage); // Reload with current page if search is cleared
+      }
+    }
 
   onPageChange(page: number): void {
     this.currentPage = page;

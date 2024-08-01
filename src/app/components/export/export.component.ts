@@ -14,7 +14,8 @@ export class ExportComponent {
   currentPage: number = 1;
   pageSize: number = 10;
   totalItems: number = 0;
-  Math = Math;  // Exponer Math al contexto de la plantilla
+  Math = Math;
+  searchText : string = '';  // Exponer Math al contexto de la plantilla
 
   constructor(private exportService: ExportService) { }
 
@@ -23,7 +24,7 @@ export class ExportComponent {
   }
 
   loadAllSalon(page: number): void {
-    this.exportService.loadAllSalonToExport(page, this.pageSize).subscribe({
+    this.exportService.loadAllSalonToExport(page, this.pageSize,this.searchText).subscribe({
       next: (response: any) => {
         this.AllSalon = response.data;
         this.totalItems = response.totalItems;
@@ -32,6 +33,13 @@ export class ExportComponent {
         console.error('Error loading salons', err);
       }
     });
+  }
+
+  onSearch(): void {
+    this.loadAllSalon(this.currentPage);
+    if (this.searchText.trim() === '') {
+      this.loadAllSalon(this.currentPage);
+    }
   }
 
   onPageChange(page: number): void {

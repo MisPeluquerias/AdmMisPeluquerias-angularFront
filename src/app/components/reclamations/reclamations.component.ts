@@ -15,7 +15,7 @@ export class ReclamationsComponent {
   totalItems: number = 0;
   Math = Math;  // Exponer Math al contexto de la plantilla
   allSelected: boolean = false;
-
+  searchText: string = '';
 
   constructor(private reclamationService: ReclamationService) { }
 
@@ -24,7 +24,7 @@ export class ReclamationsComponent {
   }
 
   loadAllReclamations (page: number): void {
-    this.reclamationService.loadAllReclamation(page, this.pageSize).subscribe({
+    this.reclamationService.loadAllReclamation(page, this.pageSize,this.searchText).subscribe({
       next: (response: any) => {
         this.AllReclamations = response.data;
         this.totalItems = response.totalItems;
@@ -34,6 +34,14 @@ export class ReclamationsComponent {
       }
     });
   }
+
+  onSearch(): void {
+    this.loadAllReclamations(this.currentPage);
+    if (this.searchText.trim() === '') {
+      this.loadAllReclamations(this.currentPage);
+    }
+  }
+
 
   onPageChange(page: number): void {
     this.currentPage = page;

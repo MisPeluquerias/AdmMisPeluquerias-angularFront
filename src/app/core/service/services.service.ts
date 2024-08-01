@@ -14,10 +14,14 @@ export class ServicesService {
 
   constructor(private http:HttpClient) { }
 
-  loadAllServices(page: number, pageSize: number): Observable<any> {
-    const params = new HttpParams()
-      .set('page', page.toString())
-      .set('pageSize', pageSize.toString());
+  loadAllServices(page: number, pageSize: number, searchText:string): Observable<any> {
+    let params = new HttpParams()
+    .set('page', page.toString())
+    .set('pageSize', pageSize.toString());
+
+  if (searchText) {
+    params = params.set('search', searchText);
+  }
 
     return this.http.get<any>(`${this.baseUrl}/services/getAllServices`, { params });
   }

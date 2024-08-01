@@ -16,6 +16,7 @@ export class ImportComponent {
   totalItems: number = 0;
   Math = Math;
 
+  searchText : string = '';
   constructor(private importService: ImportService) { }
 
   ngOnInit(): void {
@@ -23,7 +24,7 @@ export class ImportComponent {
   }
 
   loadAllSalon(page: number): void {
-    this.importService.loadAllSalonToExport(page, this.pageSize).subscribe({
+    this.importService.loadAllSalonToExport(page, this.pageSize,this.searchText).subscribe({
       next: (response: any) => {
         this.AllSalon = response.data;
         this.totalItems = response.totalItems;
@@ -34,6 +35,15 @@ export class ImportComponent {
       }
     });
   }
+
+
+  onSearch(): void {
+    this.loadAllSalon(this.currentPage);
+    if (this.searchText.trim() === '') {
+      this.loadAllSalon(this.currentPage);
+    }
+  }
+
 
   onPageChange(page: number): void {
     this.currentPage = page;
