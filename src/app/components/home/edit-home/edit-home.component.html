@@ -6,585 +6,853 @@
       <div class="container-fluid px-4">
         <h1 class="mt-1">Panel de control</h1>
         <ol class="breadcrumb mb-4">
-          <li class="breadcrumb-item active">Administración / <b>Negocios</b></li>
+          <li class="breadcrumb-item active">
+            Administración / <b>Negocios</b>
+          </li>
         </ol>
 
         <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
           <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="negocio-tab" data-bs-toggle="tab" data-bs-target="#negocio" type="button" role="tab" aria-controls="negocio" aria-selected="true">
-              <i class="fa-solid fa-building me-2"></i>Negocio</button>
+            <button
+              class="nav-link active"
+              id="negocio-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#negocio"
+              type="button"
+              role="tab"
+              aria-controls="negocio"
+              aria-selected="true"
+            >
+              <i class="fa-solid fa-building me-2"></i>Negocio
+            </button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" id="horario-tab" data-bs-toggle="tab" data-bs-target="#horario" type="button" role="tab" aria-controls="horario" aria-selected="false">
-              <i class="fa-solid fa-clock me-2"></i>Horario</button>
+            <button
+              class="nav-link"
+              id="horario-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#horario"
+              type="button"
+              role="tab"
+              aria-controls="horario"
+              aria-selected="false"
+            >
+              <i class="fa-solid fa-clock me-2"></i>Horario
+            </button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" id="imagenes-tab" data-bs-toggle="tab" data-bs-target="#imagenes" type="button" role="tab" aria-controls="imagenes" aria-selected="false">
-              <i class="fa-solid fa-image me-2"></i>Imágenes</button>
+            <button
+              class="nav-link"
+              id="imagenes-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#imagenes"
+              type="button"
+              role="tab"
+              aria-controls="imagenes"
+              aria-selected="false"
+            >
+              <i class="fa-solid fa-image me-2"></i>Imágenes
+            </button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" id="servicios-tab" data-bs-toggle="tab" data-bs-target="#servicios" type="button" role="tab" aria-controls="servicios" aria-selected="false">
-              <i class="fa-solid fa-list me-2"></i>Servicios</button>
+            <button
+              class="nav-link"
+              id="servicios-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#servicios"
+              type="button"
+              role="tab"
+              aria-controls="servicios"
+              aria-selected="false"
+            >
+              <i class="fa-solid fa-list me-2"></i>Servicios
+            </button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" id="permisos-tab" data-bs-toggle="tab" data-bs-target="#permisos" type="button" role="tab" aria-controls="permisos" aria-selected="false">
-              <i class="fa-solid fa-lock me-2"></i>Permisos</button>
+            <button
+              class="nav-link"
+              id="permisos-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#permisos"
+              type="button"
+              role="tab"
+              aria-controls="permisos"
+              aria-selected="false"
+            >
+              <i class="fa-solid fa-lock me-2"></i>Permisos
+            </button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" id="preguntas-tab" data-bs-toggle="tab" data-bs-target="#preguntas" type="button" role="tab" aria-controls="preguntas" aria-selected="false">
-              <i class="fa-solid fa-circle-question me-2"></i>Preguntas</button>
+            <button
+              class="nav-link"
+              id="preguntas-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#preguntas"
+              type="button"
+              role="tab"
+              aria-controls="preguntas"
+              aria-selected="false"
+            >
+              <i class="fa-solid fa-circle-question me-2"></i>Preguntas
+            </button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" id="resenas-tab" data-bs-toggle="tab" data-bs-target="#resenas" type="button" role="tab" aria-controls="resenas" aria-selected="false">
-              <i class="fa-solid fa-star me-2"></i>Reseñas</button>
+            <button
+              class="nav-link"
+              id="resenas-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#resenas"
+              type="button"
+              role="tab"
+              aria-controls="resenas"
+              aria-selected="false"
+            >
+              <i class="fa-solid fa-star me-2"></i>Reseñas
+            </button>
           </li>
         </ul>
 
         <div class="tab-content bg-light" id="myTabContent">
           <!-- Contenido de la pestaña Negocio -->
-          <div class="tab-pane fade show active" id="negocio" role="tabpanel" aria-labelledby="negocio-tab">
-            <!-- Formulario de Negocio -->
-            <form>
-              <div class="row mb-3 align-items-center">
-                <div class="col-md-4">
-                  <label for="estado" class="form-label">Estado</label>
-                  <select class="form-select" id="estado">
-                    <option selected>Validado</option>
-                    <option value="1">Pendiente</option>
-                    <option value="2">Rechazado</option>
+
+
+            <div
+              class="tab-pane fade show active"
+              id="negocio"
+              role="tabpanel"
+              aria-labelledby="negocio-tab"
+            >
+              <!-- Formulario de Negocio -->
+              <form>
+                <div class="row mb-3 align-items-center">
+                  <div class="col-md-4">
+                    <label for="estado" class="form-label">Estado</label>
+                    <select class="form-select" id="estado">
+                      <option selected>Validado</option>
+                      <option value="1">Pendiente</option>
+                      <option value="2">Rechazado</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4 d-flex align-items-center">
+                    <label class="form-check-label me-2" for="activo"
+                      >Activo</label
+                    >
+                    <div class="form-check form-switch me-3">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="activo"
+                      />
+                    </div>
+                    <label class="form-check-label me-2" for="cerradoVacaciones"
+                      >Cerrado por vacaciones</label
+                    >
+                    <div class="form-check form-switch">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="cerradoVacaciones"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="nombre"
+                      name="nombre"
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="email" class="form-label">E-mail</label>
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="email"
+                      value=""
+                    />
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="direccion" class="form-label">Dirección</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="direccion"
+                      value=""
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="telefono" class="form-label"
+                      >Nº de Teléfono</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="telefono"
+                      value=""
+                    />
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="provincia" class="form-label">Provincia</label>
+                    <select class="form-select" id="provincia">
+                      <option selected>Almería</option>
+                      <option value="1">Sevilla</option>
+                      <option value="2">Málaga</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="cppoblacion" class="form-label"
+                      >CP/Población</label
+                    >
+                    <select class="form-select" id="provincia">
+                      <option selected>Almería</option>
+                      <option value="1">Sevilla</option>
+                      <option value="2">Málaga</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="latitud" class="form-label">Latitud</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="latitud"
+                      value=""
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="longitud" class="form-label">Longitud</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="longitud"
+                      value=""
+                    />
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="googlemaps" class="form-label"
+                      >URL de Google Maps</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="googlemaps"
+                      value=""
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="urlnegocio" class="form-label"
+                      >URL del Negocio</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="urlnegocio"
+                      value=""
+                    />
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-12">
+                    <label for="sobrenosotros" class="form-label"
+                      >Sobre Nosotros</label
+                    >
+                    <textarea class="form-control" id="sobrenosotros" rows="3">
+                    </textarea>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-12">
+                    <label for="categoria" class="form-label">Categorías</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="categoria"
+                      value=""
+                    />
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-danger me-2">
+                  Guardar
+                </button>
+                <button type="button" class="btn btn-secondary">
+                  Cancelar
+                </button>
+              </form>
+            </div>
+
+            <!-- Contenido de la pestaña Horario -->
+            <div
+              class="tab-pane fade"
+              id="horario"
+              role="tabpanel"
+              aria-labelledby="horario-tab"
+            >
+              <!-- Filtros de Horario -->
+              <div class="row mb-3">
+                <div class="col-md-3">
+                  <label for="dia" class="form-label">Día</label>
+                  <select class="form-select" id="dia">
+                    <option selected>Todos</option>
+                    <option value="lunes">Lunes</option>
+                    <option value="martes">Martes</option>
+                    <option value="miercoles">Miércoles</option>
+                    <option value="jueves">Jueves</option>
+                    <option value="viernes">Viernes</option>
+                    <option value="sabado">Sábado</option>
+                    <option value="domingo">Domingo</option>
                   </select>
                 </div>
-                <div class="col-md-4 d-flex align-items-center">
-                  <label class="form-check-label me-2" for="activo">Activo</label>
-                  <div class="form-check form-switch me-3">
-                    <input class="form-check-input" type="checkbox" id="activo">
+                <div class="col-md-3">
+                  <label for="desde" class="form-label">Desde</label>
+                  <input type="time" class="form-control" id="desde" />
+                </div>
+                <div class="col-md-3">
+                  <label for="hasta" class="form-label">Hasta</label>
+                  <input type="time" class="form-control" id="hasta" />
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                  <button class="btn btn-secondary me-2">Resetear</button>
+                  <button class="btn btn-danger">Buscar</button>
+                  <button class="btn btn-danger ms-auto">Nuevo</button>
+                </div>
+              </div>
+
+              <!-- Tabla de Horarios -->
+              <div class="card mb-4">
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-hover table-light">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th><input type="checkbox" /></th>
+                          <th>Día</th>
+                          <th>Desde</th>
+                          <th>Hasta</th>
+                          <th>Acciones</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><input type="checkbox" /></td>
+                          <td>Lunes</td>
+                          <td>09:00</td>
+                          <td>13:30</td>
+                          <td>
+                            <button class="btn btn-dark">
+                              <i class="fas fa-edit"></i>
+                            </button>
+                          </td>
+                        </tr>
+                        <!-- Repite para los demás días -->
+                        <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
+                      </tbody>
+                    </table>
                   </div>
-                  <label class="form-check-label me-2" for="cerradoVacaciones">Cerrado por vacaciones</label>
-                  <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="cerradoVacaciones">
+                  <!-- Paginación -->
+                  <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                      <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                        </a>
+                      </li>
+                      <li class="page-item active">
+                        <a class="page-link" href="#">1</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">2</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">3</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+
+            <!-- Contenido de la pestaña Imágenes -->
+            <div
+              class="tab-pane fade"
+              id="imagenes"
+              role="tabpanel"
+              aria-labelledby="imagenes-tab"
+            >
+              <!-- Selección de Imagen -->
+              <div class="mb-3">
+                <label for="imagen" class="form-label"
+                  >Seleccione una imagen</label
+                >
+                <div class="input-group">
+                  <input type="file" class="form-control" id="imagen" />
+                  <button class="btn btn-danger" type="button">Añadir</button>
+                </div>
+              </div>
+
+              <!-- Tabla de Imágenes -->
+              <div class="card mb-4">
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-hover table-light">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th>Nombre</th>
+                          <th>Descripción</th>
+                          <th>Fecha Creación</th>
+                          <th>Archivo</th>
+                          <th>Principal</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Ejemplo</td>
+                          <td>Descripción de la imagen</td>
+                          <td>01/01/2023</td>
+                          <td>archivo.jpg</td>
+                          <td><input type="checkbox" /></td>
+                        </tr>
+                        <!-- Repite para las demás imágenes -->
+                        <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
+            </div>
 
+            <div
+              class="tab-pane fade"
+              id="servicios"
+              role="tabpanel"
+              aria-labelledby="servicios-tab"
+            >
+              <!-- Filtros de Servicios -->
               <div class="row mb-3">
-                <div class="col-md-6">
-                  <label for="nombre" class="form-label">Nombre</label>
-                  <input type="text" class="form-control" id="nombre" value="Barbería de prueba">
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Buscar"
+                  />
                 </div>
-                <div class="col-md-6">
-                  <label for="email" class="form-label">E-mail</label>
-                  <input type="email" class="form-control" id="email" value="alberto@sauco.es">
+                <div class="col-md-4 d-flex justify-content-end">
+                  <button class="btn btn-danger">Nuevo</button>
                 </div>
               </div>
 
-              <div class="row mb-3">
-                <div class="col-md-6">
-                  <label for="direccion" class="form-label">Dirección</label>
-                  <input type="text" class="form-control" id="direccion" value="Calle Hermanos Pinzón, 04001 Almería, Andalucía">
+              <!-- Tabla de Servicios -->
+              <div class="card mb-4">
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-hover table-light">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th><input type="checkbox" /></th>
+                          <th>Servicio</th>
+                          <th>Descripción</th>
+                          <th>Precio</th>
+                          <th>Duración</th>
+                          <th colspan="2">Acciones</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><input type="checkbox" /></td>
+                          <td>Corte de pelo</td>
+                          <td>Corte clásico y moderno</td>
+                          <td>15€</td>
+                          <td>30 min</td>
+                          <td>
+                            <button class="btn btn-dark">
+                              <i class="fas fa-edit"></i>
+                            </button>
+                          </td>
+                          <td>
+                            <button class="btn btn-success">Guardar</button>
+                          </td>
+                        </tr>
+                        <!-- Repite para los demás servicios -->
+                        <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- Paginación -->
+                  <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                      <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                        </a>
+                      </li>
+                      <li class="page-item active">
+                        <a class="page-link" href="#">1</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">2</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">3</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
                 </div>
-                <div class="col-md-6">
-                  <label for="telefono" class="form-label">Nº de Teléfono</label>
-                  <input type="text" class="form-control" id="telefono" value="ES (+34) 123456789">
+              </div>
+            </div>
+            <div
+              class="tab-pane fade"
+              id="permisos"
+              role="tabpanel"
+              aria-labelledby="permisos-tab"
+            >
+              <!-- Filtros de Permisos -->
+              <div class="row mb-3">
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Buscar"
+                  />
+                </div>
+                <div class="col-md-4 d-flex justify-content-end">
+                  <button class="btn btn-danger">Nuevo</button>
                 </div>
               </div>
 
-              <div class="row mb-3">
-                <div class="col-md-6">
-                  <label for="provincia" class="form-label">Provincia</label>
-                  <select class="form-select" id="provincia">
-                    <option selected>Almería</option>
-                    <option value="1">Sevilla</option>
-                    <option value="2">Málaga</option>
-                  </select>
+              <!-- Tabla de Permisos -->
+              <div class="card mb-4">
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-hover table-light">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th><input type="checkbox" /></th>
+                          <th>Usuario</th>
+                          <th>Permiso</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><input type="checkbox" /></td>
+                          <td>Alberto Santorroman</td>
+                          <td>
+                            <select class="form-select">
+                              <option selected>Administrador de negocio</option>
+                              <option value="trabajador">
+                                Trabajador de negocio
+                              </option>
+                              <!-- Agrega más opciones según sea necesario -->
+                            </select>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><input type="checkbox" /></td>
+                          <td>Prueba Sauco</td>
+                          <td>
+                            <select class="form-select">
+                              <option value="administrador">
+                                Administrador de negocio
+                              </option>
+                              <option selected>Trabajador de negocio</option>
+                              <!-- Agrega más opciones según sea necesario -->
+                            </select>
+                          </td>
+                        </tr>
+                        <!-- Repite para los demás permisos -->
+                        <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- Paginación -->
+                  <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                      <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                        </a>
+                      </li>
+                      <li class="page-item active">
+                        <a class="page-link" href="#">1</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">2</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">3</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
                 </div>
-                <div class="col-md-6">
-                  <label for="cppoblacion" class="form-label">CP/Población</label>
-                  <input type="text" class="form-control" id="cppoblacion" value="04001 - Almería">
+              </div>
+            </div>
+
+            <!-- Contenido de la pestaña Preguntas -->
+            <div
+              class="tab-pane fade"
+              id="preguntas"
+              role="tabpanel"
+              aria-labelledby="preguntas-tab"
+            >
+              <!-- Filtros de Preguntas -->
+              <div class="row mb-3">
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Buscar"
+                  />
+                </div>
+                <div class="col-md-4 d-flex justify-content-end">
+                  <button class="btn btn-danger">Nuevo</button>
                 </div>
               </div>
 
-              <div class="row mb-3">
-                <div class="col-md-6">
-                  <label for="latitud" class="form-label">Latitud</label>
-                  <input type="text" class="form-control" id="latitud" value="36.8415914">
+              <!-- Tabla de Preguntas -->
+              <div class="card mb-4">
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-hover table-light">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th><input type="checkbox" /></th>
+                          <th>Pregunta</th>
+                          <th>Respuesta</th>
+                          <th>Convertido en FAQ</th>
+                          <th>Acciones</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><input type="checkbox" /></td>
+                          <td>Hola</td>
+                          <td></td>
+                          <td>No</td>
+                          <td>
+                            <button class="btn btn-dark">
+                              <i class="fas fa-edit"></i>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><input type="checkbox" /></td>
+                          <td>Prueba pregunta</td>
+                          <td></td>
+                          <td>No</td>
+                          <td>
+                            <button class="btn btn-dark">
+                              <i class="fas fa-edit"></i>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><input type="checkbox" /></td>
+                          <td>¿A qué hora estamos abiertos?</td>
+                          <td>
+                            Nuestro horario de atención es de Lunes a Viernes de
+                            10:00 a 14:00 y de 17:00 a 20:00
+                          </td>
+                          <td>Si</td>
+                          <td>
+                            <button class="btn btn-dark">
+                              <i class="fas fa-edit"></i>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><input type="checkbox" /></td>
+                          <td>
+                            ¿Puede ser posible un corte de pelo el domingo?
+                          </td>
+                          <td>Si, puede ser</td>
+                          <td>Si</td>
+                          <td>
+                            <button class="btn btn-dark">
+                              <i class="fas fa-edit"></i>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><input type="checkbox" /></td>
+                          <td>¿Tiñen barbas?</td>
+                          <td>Si, nuestra gama de tintes es muy extensa</td>
+                          <td>No</td>
+                          <td>
+                            <button class="btn btn-dark">
+                              <i class="fas fa-edit"></i>
+                            </button>
+                          </td>
+                        </tr>
+                        <!-- Repite para las demás preguntas -->
+                        <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- Paginación -->
+                  <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                      <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                        </a>
+                      </li>
+                      <li class="page-item active">
+                        <a class="page-link" href="#">1</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">2</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">3</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                  <div class="pagination-summary">
+                    Mostrando 1 de 5 de 5 Entradas
+                  </div>
                 </div>
-                <div class="col-md-6">
-                  <label for="longitud" class="form-label">Longitud</label>
-                  <input type="text" class="form-control" id="longitud" value="-2.4547887">
+              </div>
+            </div>
+            <div
+              class="tab-pane fade"
+              id="resenas"
+              role="tabpanel"
+              aria-labelledby="resenas-tab"
+            >
+              <!-- Calificación promedio -->
+              <div class="text-center my-4">
+                <h2>4.00 <small>/5</small></h2>
+                <div>
+                  <i class="fas fa-star" style="color: gold"></i>
+                  <i class="fas fa-star" style="color: gold"></i>
+                  <i class="fas fa-star" style="color: gold"></i>
+                  <i class="fas fa-star" style="color: gold"></i>
+                  <i class="fas fa-star" style="color: lightgray"></i>
                 </div>
               </div>
 
-              <div class="row mb-3">
-                <div class="col-md-6">
-                  <label for="googlemaps" class="form-label">URL de Google Maps</label>
-                  <input type="text" class="form-control" id="googlemaps" value="https://maps.app.goo.gl/aXoouvr9YwvpqDCZ8">
-                </div>
-                <div class="col-md-6">
-                  <label for="urlnegocio" class="form-label">URL del Negocio</label>
-                  <input type="text" class="form-control" id="urlnegocio" value="https://example.com">
-                </div>
-              </div>
-
+              <!-- Campo de búsqueda -->
               <div class="row mb-3">
                 <div class="col-md-12">
-                  <label for="sobrenosotros" class="form-label">Sobre Nosotros</label>
-                  <textarea class="form-control" id="sobrenosotros" rows="3">Descripción de salón sobre nosotros</textarea>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Buscar"
+                  />
                 </div>
               </div>
 
-              <div class="row mb-3">
-                <div class="col-md-12">
-                  <label for="categoria" class="form-label">Categoría (Max 3)</label>
-                  <input type="text" class="form-control" id="categoria" value="Academia, Asesor de imagen, Centro de depilación láser">
+              <!-- Tabla de Reseñas -->
+              <div class="card mb-4">
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-hover table-light">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th><input type="checkbox" /></th>
+                          <th>Observación</th>
+                          <th>Servicio</th>
+                          <th>Calidad/Precio</th>
+                          <th>Limpieza</th>
+                          <th>Puntualidad</th>
+                          <th>Media</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><input type="checkbox" /></td>
+                          <td>Muy buen servicio</td>
+                          <td>5</td>
+                          <td>4</td>
+                          <td>5</td>
+                          <td>5</td>
+                          <td>4.8</td>
+                        </tr>
+                        <tr>
+                          <td><input type="checkbox" /></td>
+                          <td>Atención excelente</td>
+                          <td>4</td>
+                          <td>4</td>
+                          <td>4</td>
+                          <td>4</td>
+                          <td>4.0</td>
+                        </tr>
+                        <!-- Repite para las demás reseñas -->
+                        <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- Paginación -->
+                  <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                      <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                        </a>
+                      </li>
+                      <li class="page-item active">
+                        <a class="page-link" href="#">1</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">2</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">3</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                  <div class="pagination-summary">
+                    Mostrando 1 de 5 de 5 Entradas
+                  </div>
                 </div>
               </div>
+            </div>
 
-              <button type="submit" class="btn btn-danger me-2">Guardar</button>
-              <button type="button" class="btn btn-secondary">Cancelar</button>
-            </form>
+            <!-- Aquí se agregarían los demás paneles de contenido para Servicios, Permisos, etc. -->
           </div>
-
-          <!-- Contenido de la pestaña Horario -->
-          <div class="tab-pane fade" id="horario" role="tabpanel" aria-labelledby="horario-tab">
-            <!-- Filtros de Horario -->
-            <div class="row mb-3">
-              <div class="col-md-3">
-                <label for="dia" class="form-label">Día</label>
-                <select class="form-select" id="dia">
-                  <option selected>Todos</option>
-                  <option value="lunes">Lunes</option>
-                  <option value="martes">Martes</option>
-                  <option value="miercoles">Miércoles</option>
-                  <option value="jueves">Jueves</option>
-                  <option value="viernes">Viernes</option>
-                  <option value="sabado">Sábado</option>
-                  <option value="domingo">Domingo</option>
-                </select>
-              </div>
-              <div class="col-md-3">
-                <label for="desde" class="form-label">Desde</label>
-                <input type="time" class="form-control" id="desde">
-              </div>
-              <div class="col-md-3">
-                <label for="hasta" class="form-label">Hasta</label>
-                <input type="time" class="form-control" id="hasta">
-              </div>
-              <div class="col-md-3 d-flex align-items-end">
-                <button class="btn btn-secondary me-2">Resetear</button>
-                <button class="btn btn-danger">Buscar</button>
-                <button class="btn btn-danger ms-auto">Nuevo</button>
-              </div>
-            </div>
-
-            <!-- Tabla de Horarios -->
-            <div class="card mb-4">
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table table-hover table-light">
-                    <thead class="thead-dark">
-                      <tr>
-                        <th><input type="checkbox"></th>
-                        <th>Día</th>
-                        <th>Desde</th>
-                        <th>Hasta</th>
-                        <th>Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><input type="checkbox"></td>
-                        <td>Lunes</td>
-                        <td>09:00</td>
-                        <td>13:30</td>
-                        <td><button class="btn btn-dark"><i class="fas fa-edit"></i></button></td>
-                      </tr>
-                      <!-- Repite para los demás días -->
-                      <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
-                    </tbody>
-                  </table>
-                </div>
-                <!-- Paginación -->
-                <nav aria-label="Page navigation example">
-                  <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                      <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                      </a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                      <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-            </div>
-          </div>
-
-          <!-- Contenido de la pestaña Imágenes -->
-          <div class="tab-pane fade" id="imagenes" role="tabpanel" aria-labelledby="imagenes-tab">
-            <!-- Selección de Imagen -->
-            <div class="mb-3">
-              <label for="imagen" class="form-label">Seleccione una imagen</label>
-              <div class="input-group">
-                <input type="file" class="form-control" id="imagen">
-                <button class="btn btn-danger" type="button">Añadir</button>
-              </div>
-            </div>
-
-            <!-- Tabla de Imágenes -->
-            <div class="card mb-4">
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table table-hover table-light">
-                    <thead class="thead-dark">
-                      <tr>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th>Fecha Creación</th>
-                        <th>Archivo</th>
-                        <th>Principal</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Ejemplo</td>
-                        <td>Descripción de la imagen</td>
-                        <td>01/01/2023</td>
-                        <td>archivo.jpg</td>
-                        <td><input type="checkbox"></td>
-                      </tr>
-                      <!-- Repite para las demás imágenes -->
-                      <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="tab-pane fade" id="servicios" role="tabpanel" aria-labelledby="servicios-tab">
-            <!-- Filtros de Servicios -->
-            <div class="row mb-3">
-              <div class="col-md-8">
-                <input type="text" class="form-control" placeholder="Buscar">
-              </div>
-              <div class="col-md-4 d-flex justify-content-end">
-                <button class="btn btn-danger">Nuevo</button>
-              </div>
-            </div>
-
-            <!-- Tabla de Servicios -->
-            <div class="card mb-4">
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table table-hover table-light">
-                    <thead class="thead-dark">
-                      <tr>
-                        <th><input type="checkbox"></th>
-                        <th>Servicio</th>
-                        <th>Descripción</th>
-                        <th>Precio</th>
-                        <th>Duración</th>
-                        <th colspan="2">Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><input type="checkbox"></td>
-                        <td>Corte de pelo</td>
-                        <td>Corte clásico y moderno</td>
-                        <td>15€</td>
-                        <td>30 min</td>
-                        <td><button class="btn btn-dark"><i class="fas fa-edit"></i></button></td>
-                        <td><button class="btn btn-success">Guardar</button></td>
-                      </tr>
-                      <!-- Repite para los demás servicios -->
-                      <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
-                    </tbody>
-                  </table>
-                </div>
-                <!-- Paginación -->
-                <nav aria-label="Page navigation example">
-                  <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                      <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                      </a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                      <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-            </div>
-          </div>
-          <div class="tab-pane fade" id="permisos" role="tabpanel" aria-labelledby="permisos-tab">
-            <!-- Filtros de Permisos -->
-            <div class="row mb-3">
-              <div class="col-md-8">
-                <input type="text" class="form-control" placeholder="Buscar">
-              </div>
-              <div class="col-md-4 d-flex justify-content-end">
-                <button class="btn btn-danger">Nuevo</button>
-              </div>
-            </div>
-
-            <!-- Tabla de Permisos -->
-            <div class="card mb-4">
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table table-hover table-light">
-                    <thead class="thead-dark">
-                      <tr>
-                        <th><input type="checkbox"></th>
-                        <th>Usuario</th>
-                        <th>Permiso</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><input type="checkbox"></td>
-                        <td>Alberto Santorroman</td>
-                        <td>
-                          <select class="form-select">
-                            <option selected>Administrador de negocio</option>
-                            <option value="trabajador">Trabajador de negocio</option>
-                            <!-- Agrega más opciones según sea necesario -->
-                          </select>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><input type="checkbox"></td>
-                        <td>Prueba Sauco</td>
-                        <td>
-                          <select class="form-select">
-                            <option value="administrador">Administrador de negocio</option>
-                            <option selected>Trabajador de negocio</option>
-                            <!-- Agrega más opciones según sea necesario -->
-                          </select>
-                        </td>
-                      </tr>
-                      <!-- Repite para los demás permisos -->
-                      <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
-                    </tbody>
-                  </table>
-                </div>
-                <!-- Paginación -->
-                <nav aria-label="Page navigation example">
-                  <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                      <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                      </a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                      <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-            </div>
-          </div>
-
-          <!-- Contenido de la pestaña Preguntas -->
-<div class="tab-pane fade" id="preguntas" role="tabpanel" aria-labelledby="preguntas-tab">
-  <!-- Filtros de Preguntas -->
-  <div class="row mb-3">
-    <div class="col-md-8">
-      <input type="text" class="form-control" placeholder="Buscar">
-    </div>
-    <div class="col-md-4 d-flex justify-content-end">
-      <button class="btn btn-danger">Nuevo</button>
-    </div>
-  </div>
-
-  <!-- Tabla de Preguntas -->
-  <div class="card mb-4">
-    <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-hover table-light">
-          <thead class="thead-dark">
-            <tr>
-              <th><input type="checkbox"></th>
-              <th>Pregunta</th>
-              <th>Respuesta</th>
-              <th>Convertido en FAQ</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><input type="checkbox"></td>
-              <td>Hola</td>
-              <td></td>
-              <td>No</td>
-              <td><button class="btn btn-dark"><i class="fas fa-edit"></i></button></td>
-            </tr>
-            <tr>
-              <td><input type="checkbox"></td>
-              <td>Prueba pregunta</td>
-              <td></td>
-              <td>No</td>
-              <td><button class="btn btn-dark"><i class="fas fa-edit"></i></button></td>
-            </tr>
-            <tr>
-              <td><input type="checkbox"></td>
-              <td>¿A qué hora estamos abiertos?</td>
-              <td>Nuestro horario de atención es de Lunes a Viernes de 10:00 a 14:00 y de 17:00 a 20:00</td>
-              <td>Si</td>
-              <td><button class="btn btn-dark"><i class="fas fa-edit"></i></button></td>
-            </tr>
-            <tr>
-              <td><input type="checkbox"></td>
-              <td>¿Puede ser posible un corte de pelo el domingo?</td>
-              <td>Si, puede ser</td>
-              <td>Si</td>
-              <td><button class="btn btn-dark"><i class="fas fa-edit"></i></button></td>
-            </tr>
-            <tr>
-              <td><input type="checkbox"></td>
-              <td>¿Tiñen barbas?</td>
-              <td>Si, nuestra gama de tintes es muy extensa</td>
-              <td>No</td>
-              <td><button class="btn btn-dark"><i class="fas fa-edit"></i></button></td>
-            </tr>
-            <!-- Repite para las demás preguntas -->
-            <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
-          </tbody>
-        </table>
-      </div>
-      <!-- Paginación -->
-      <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-          <li class="page-item disabled">
-            <a class="page-link" href="#" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-          <li class="page-item active"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <div class="pagination-summary">
-        Mostrando 1 de 5 de 5 Entradas
-      </div>
-    </div>
-  </div>
-</div>
-<div class="tab-pane fade" id="resenas" role="tabpanel" aria-labelledby="resenas-tab">
-  <!-- Calificación promedio -->
-  <div class="text-center my-4">
-    <h2>4.00 <small>/5</small></h2>
-    <div>
-      <i class="fas fa-star" style="color: gold;"></i>
-      <i class="fas fa-star" style="color: gold;"></i>
-      <i class="fas fa-star" style="color: gold;"></i>
-      <i class="fas fa-star" style="color: gold;"></i>
-      <i class="fas fa-star" style="color: lightgray;"></i>
-    </div>
-  </div>
-
-  <!-- Campo de búsqueda -->
-  <div class="row mb-3">
-    <div class="col-md-12">
-      <input type="text" class="form-control" placeholder="Buscar">
-    </div>
-  </div>
-
-  <!-- Tabla de Reseñas -->
-  <div class="card mb-4">
-    <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-hover table-light">
-          <thead class="thead-dark">
-            <tr>
-              <th><input type="checkbox"></th>
-              <th>Observación</th>
-              <th>Servicio</th>
-              <th>Calidad/Precio</th>
-              <th>Limpieza</th>
-              <th>Puntualidad</th>
-              <th>Media</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><input type="checkbox"></td>
-              <td>Muy buen servicio</td>
-              <td>5</td>
-              <td>4</td>
-              <td>5</td>
-              <td>5</td>
-              <td>4.8</td>
-            </tr>
-            <tr>
-              <td><input type="checkbox"></td>
-              <td>Atención excelente</td>
-              <td>4</td>
-              <td>4</td>
-              <td>4</td>
-              <td>4</td>
-              <td>4.0</td>
-            </tr>
-            <!-- Repite para las demás reseñas -->
-            <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
-          </tbody>
-        </table>
-      </div>
-      <!-- Paginación -->
-      <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-          <li class="page-item disabled">
-            <a class="page-link" href="#" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-          <li class="page-item active"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <div class="pagination-summary">
-        Mostrando 1 de 5 de 5 Entradas
-      </div>
-    </div>
-  </div>
-</div>
-
-
-          <!-- Aquí se agregarían los demás paneles de contenido para Servicios, Permisos, etc. -->
-
-
         </div>
-
-      </div>
     </main>
     <app-footer></app-footer>
   </div>

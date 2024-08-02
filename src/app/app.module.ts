@@ -25,6 +25,7 @@ import { SpanishDatePipe } from './shared/pipes/spanish-date.pipe';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { EditHomeComponent } from './components/home/edit-home/edit-home.component';
 import { FormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
@@ -54,7 +55,13 @@ import { FormsModule } from '@angular/forms';
     ReactiveFormsModule,
     HttpClientModule,
     MatBadgeModule,
-    FormsModule
+    FormsModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-center-center',
+      enableHtml: true,
+      preventDuplicates: true,
+      timeOut: 5000
+    }),
   ],
 
   providers: [

@@ -70,11 +70,14 @@ export class ExportComponent {
 
     return pages;
   }
+
+
+
   exportToExcel(): void {
     this.isLoading = true;
     this.exportService.exportSalonsToExcel().subscribe({
       next: (blob: Blob) => {
-        saveAs(blob, 'salones.xlsx');
+        saveAs(blob, 'actulizar_salones.xlsx');
         this.isLoading = false;
       },
       error: (err) => {

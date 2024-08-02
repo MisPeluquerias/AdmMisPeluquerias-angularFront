@@ -33,4 +33,15 @@ export class ImportService {
     return this.http.post<Blob>(`${this.baseUrl}/import/updateExcel`, formData, { responseType: 'blob' as 'json' });
   }
 
+
+  uploadNewSalons(file: File): Observable<any> { // Cambié el tipo de retorno a `any` para manejar el JSON
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+
+    return this.http.post<any>(`${this.baseUrl}/import/addExcel`, formData);
+  }
+
+  downloadTemplateExcel(): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}/import/downloadExcel`, { responseType: 'blob' });
+  }
 }

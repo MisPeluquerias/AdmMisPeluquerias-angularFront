@@ -22,7 +22,6 @@ export class AdministratorsService {
       params = params.set('search', searchText);
     }
 
-
     return this.http.get<any>(`${this.baseUrl}/Administrators/getAllAdministrators`, { params });
   }
 }

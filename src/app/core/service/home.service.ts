@@ -11,7 +11,7 @@ export class HomeService {
   baseUrl: string = environment.baseUrl;
 
   constructor(private http:HttpClient) { }
-  
+
 
   loadAllSalon(page: number, pageSize: number, searchText: string): Observable<any> {
     let params = new HttpParams()

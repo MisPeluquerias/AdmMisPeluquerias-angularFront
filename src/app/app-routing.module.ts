@@ -20,7 +20,7 @@ const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent,title:'Adm | Mis Peluquerias' },
-  { path: 'home/edit', component: EditHomeComponent,title:'Adm | Mis Peluquerias' },
+  { path: 'home/edit/:id', component: EditHomeComponent,title:'Adm | Mis Peluquerias' },
   { path: 'clients', component: ClientsComponent,title:'Adm | Mis Peluquerias' },
   { path: 'administrators', component: AdministratorsComponent,title:'Adm | Mis Peluquerias' },
   { path: 'cities', component: CitiesComponent,title:'Adm | Mis Peluquerias' },

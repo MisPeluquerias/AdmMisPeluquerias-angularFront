@@ -1,0 +1,24 @@
+import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment.development';
+import { Observable } from 'rxjs';
+import { HttpClient,HttpParams } from '@angular/common/http';
+
+@Injectable({
+  providedIn: 'root'
+})
+
+
+export class EditHomeService {
+
+  baseUrl: string = environment.baseUrl;
+
+  constructor(private http:HttpClient) { }
+
+  getSalonById(id_salon: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/edithome/getSalonById`, {
+      params: {
+        id_salon
+      },
+    });;
+  }
+}

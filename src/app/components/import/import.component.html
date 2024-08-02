@@ -20,14 +20,20 @@
             <div class="row mb-4">
               <div class="col-12 col-md-2 mb-2 mb-md-0">
                 <div *ngIf="isLoading" class="loading-indicator">
-                  <p>Actualizando, por favor espera...</p>
+                  <p>Precesando, por favor espera...</p>
                 </div>
                 <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="searchText" (input)="onSearch()">
               </div>
               <div class="col-12 col-md-4 d-flex justify-content-md-end ms-auto">
-                <button class="btn btn-success me-2">Añadir</button>
                 <input type="file" #fileInput style="display: none;" (change)="updateWithExcel($event)">
-                <button class="btn btn-secondary" (click)="fileInput.click()">Actualizar</button>
+                <button class="btn btn-primary me-2" style="color: white;" (click)="downloadTemplateExcel()">Plantilla Nuevos</button>
+
+                <input type="file" #fileNewSalons style="display: none;" (change)="uploadNewSalons($event)">
+                <button class="btn btn-secondary me-2" (click)="fileNewSalons.click()">Subir Nuevos</button>
+
+
+                <input type="file" #fileInput style="display: none;" (change)="updateWithExcel($event)">
+                <button class="btn btn-danger" (click)="fileInput.click()">Actualizar Existentes</button>
               </div>
             </div>
             <div class="table-responsive">
@@ -60,16 +66,31 @@
             <nav aria-label="Page navigation example">
               <ul class="pagination justify-content-center">
                 <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a class="page-link" (click)="onPageChange(1)" aria-label="First">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                  </a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === 1">
                   <a class="page-link" (click)="onPageChange(currentPage - 1)" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                   </a>
                 </li>
-                <li class="page-item " *ngFor="let page of pages" [class.active]="page === currentPage">
-                  <a class="page-link" (click)="onPageChange(page)">{{ page }}</a>
+                <li class="page-item" *ngFor="let page of pages" [class.active]="page === currentPage" [class.disabled]="page === -1">
+                  <ng-container *ngIf="page === -1">
+                    <span class="page-link">...</span>
+                  </ng-container>
+                  <ng-container *ngIf="page !== -1">
+                    <a class="page-link" (click)="onPageChange(page)">{{ page }}</a>
+                  </ng-container>
                 </li>
                 <li class="page-item" [class.disabled]="currentPage === pageCount">
                   <a class="page-link" (click)="onPageChange(currentPage + 1)" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === pageCount">
+                  <a class="page-link" (click)="onPageChange(pageCount)" aria-label="Last">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
                   </a>
                 </li>
               </ul>

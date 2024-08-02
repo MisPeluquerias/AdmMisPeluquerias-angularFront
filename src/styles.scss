@@ -11295,7 +11295,7 @@ body {
 }
 
 .pagination .page-item.active .page-link {
-  background-color: #000;
+  background-color: #B91622;
   border-color: #000;
   color: #FFF;
 }
@@ -11316,4 +11316,52 @@ body {
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+
+.toast-center-center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Asegúrate de que esté por encima de otros elementos */
+  max-width: 400px; /* Ajusta según tus necesidades */
+  text-align: center; /* Centra el texto dentro del toastr */
+  color: #fff; /* Color del texto */
+  border-radius: 8px; /* Bordes redondeados */
+  padding: 16px; /* Relleno interno */
+   /* Sombra */
+}
+
+.toast-center-center .toast-message {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #B91622;;
+  padding: 20px;
+  border-radius: 20px;
+
+}
+.toast-center-center .toast-message i{
+  font-size: 1.2rem;
+
+}
+
+.btn {
+  color: white; /* White text */
+  transition: all 0.3s ease; /* Smooth transition for all properties */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow */
+}
+
+.btn:hover {
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+  transform: translateY(-2px); /* Slightly move the button up */
+}
+
+.btn:active {
+  background-color: #3e8e41; /* Even darker green when clicked */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Reset shadow to normal */
+  transform: translateY(2px); /* Slightly move the button down */
+}
 

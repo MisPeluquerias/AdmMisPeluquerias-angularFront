@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../../core/service/home.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +16,7 @@ export class HomeComponent implements OnInit {
   searchText='';
 
 
-  constructor(private homeService: HomeService) { }
+  constructor(private homeService: HomeService, private router:Router) { }
 
 
   allSelected: boolean = false;
@@ -43,7 +44,7 @@ export class HomeComponent implements OnInit {
     if (this.searchText.trim() === '') {
       this.loadAllSalon(this.currentPage); // Reload with current page if search is cleared
     }
-    
+
   }
 
   onPageChange(page: number): void {
@@ -91,6 +92,10 @@ export class HomeComponent implements OnInit {
   deleteSelected() {
     this.AllSalon = this.AllSalon.filter(salon => !salon.selected);
     this.allSelected = false;
+  }
+
+  editSalon(id: number) {
+    this.router.navigate(['home/edit', id]);
   }
 
 
