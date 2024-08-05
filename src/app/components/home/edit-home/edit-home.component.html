@@ -115,744 +115,745 @@
         <div class="tab-content bg-light" id="myTabContent">
           <!-- Contenido de la pestaña Negocio -->
 
+          <div
+            class="tab-pane fade show active"
+            id="negocio"
+            role="tabpanel"
+            aria-labelledby="negocio-tab"
+          >
+            <!-- Formulario de Negocio -->
 
-            <div
-              class="tab-pane fade show active"
-              id="negocio"
-              role="tabpanel"
-              aria-labelledby="negocio-tab"
-            >
-              <!-- Formulario de Negocio -->
-              <form>
-                <div class="row mb-3 align-items-center">
-                  <div class="col-md-4">
-                    <label for="estado" class="form-label">Estado</label>
-                    <select class="form-select" id="estado">
-                      <option selected>Validado</option>
-                      <option value="1">Pendiente</option>
-                      <option value="2">Rechazado</option>
-                    </select>
-                  </div>
-                  <div class="col-md-4 d-flex align-items-center">
-                    <label class="form-check-label me-2" for="activo"
-                      >Activo</label
-                    >
-                    <div class="form-check form-switch me-3">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        id="activo"
-                      />
-                    </div>
-                    <label class="form-check-label me-2" for="cerradoVacaciones"
-                      >Cerrado por vacaciones</label
-                    >
-                    <div class="form-check form-switch">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        id="cerradoVacaciones"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <div class="col-md-6">
-                    <label for="nombre" class="form-label">Nombre</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="nombre"
-                      name="nombre"
-                    />
-                  </div>
-                  <div class="col-md-6">
-                    <label for="email" class="form-label">E-mail</label>
-                    <input
-                      type="email"
-                      class="form-control"
-                      id="email"
-                      value=""
-                    />
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <div class="col-md-6">
-                    <label for="direccion" class="form-label">Dirección</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="direccion"
-                      value=""
-                    />
-                  </div>
-                  <div class="col-md-6">
-                    <label for="telefono" class="form-label"
-                      >Nº de Teléfono</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="telefono"
-                      value=""
-                    />
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <div class="col-md-6">
-                    <label for="provincia" class="form-label">Provincia</label>
-                    <select class="form-select" id="provincia">
-                      <option selected>Almería</option>
-                      <option value="1">Sevilla</option>
-                      <option value="2">Málaga</option>
-                    </select>
-                  </div>
-                  <div class="col-md-6">
-                    <label for="cppoblacion" class="form-label"
-                      >CP/Población</label
-                    >
-                    <select class="form-select" id="provincia">
-                      <option selected>Almería</option>
-                      <option value="1">Sevilla</option>
-                      <option value="2">Málaga</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <div class="col-md-6">
-                    <label for="latitud" class="form-label">Latitud</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="latitud"
-                      value=""
-                    />
-                  </div>
-                  <div class="col-md-6">
-                    <label for="longitud" class="form-label">Longitud</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="longitud"
-                      value=""
-                    />
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <div class="col-md-6">
-                    <label for="googlemaps" class="form-label"
-                      >URL de Google Maps</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="googlemaps"
-                      value=""
-                    />
-                  </div>
-                  <div class="col-md-6">
-                    <label for="urlnegocio" class="form-label"
-                      >URL del Negocio</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="urlnegocio"
-                      value=""
-                    />
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <div class="col-md-12">
-                    <label for="sobrenosotros" class="form-label"
-                      >Sobre Nosotros</label
-                    >
-                    <textarea class="form-control" id="sobrenosotros" rows="3">
-                    </textarea>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <div class="col-md-12">
-                    <label for="categoria" class="form-label">Categorías</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="categoria"
-                      value=""
-                    />
-                  </div>
-                </div>
-
-                <button type="submit" class="btn btn-danger me-2">
-                  Guardar
-                </button>
-                <button type="button" class="btn btn-secondary">
-                  Cancelar
-                </button>
-              </form>
-            </div>
-
-            <!-- Contenido de la pestaña Horario -->
-            <div
-              class="tab-pane fade"
-              id="horario"
-              role="tabpanel"
-              aria-labelledby="horario-tab"
-            >
-              <!-- Filtros de Horario -->
-              <div class="row mb-3">
-                <div class="col-md-3">
-                  <label for="dia" class="form-label">Día</label>
-                  <select class="form-select" id="dia">
-                    <option selected>Todos</option>
-                    <option value="lunes">Lunes</option>
-                    <option value="martes">Martes</option>
-                    <option value="miercoles">Miércoles</option>
-                    <option value="jueves">Jueves</option>
-                    <option value="viernes">Viernes</option>
-                    <option value="sabado">Sábado</option>
-                    <option value="domingo">Domingo</option>
+            <form>
+              <div class="row mb-3 align-items-center">
+                <div class="col-md-4">
+                  <label for="estado" class="form-label">Estado</label>
+                  <select class="form-select" id="state" [(ngModel)]="salonData.state" name="state">
+                    <option value="Reclamado">Reclamado</option>
+                    <option value="Validado">Validado</option>
+                    <option value="No reclamado">No reclamado</option>
                   </select>
                 </div>
-                <div class="col-md-3">
-                  <label for="desde" class="form-label">Desde</label>
-                  <input type="time" class="form-control" id="desde" />
-                </div>
-                <div class="col-md-3">
-                  <label for="hasta" class="form-label">Hasta</label>
-                  <input type="time" class="form-control" id="hasta" />
-                </div>
-                <div class="col-md-3 d-flex align-items-end">
-                  <button class="btn btn-secondary me-2">Resetear</button>
-                  <button class="btn btn-danger">Buscar</button>
-                  <button class="btn btn-danger ms-auto">Nuevo</button>
-                </div>
-              </div>
-
-              <!-- Tabla de Horarios -->
-              <div class="card mb-4">
-                <div class="card-body">
-                  <div class="table-responsive">
-                    <table class="table table-hover table-light">
-                      <thead class="thead-dark">
-                        <tr>
-                          <th><input type="checkbox" /></th>
-                          <th>Día</th>
-                          <th>Desde</th>
-                          <th>Hasta</th>
-                          <th>Acciones</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td>Lunes</td>
-                          <td>09:00</td>
-                          <td>13:30</td>
-                          <td>
-                            <button class="btn btn-dark">
-                              <i class="fas fa-edit"></i>
-                            </button>
-                          </td>
-                        </tr>
-                        <!-- Repite para los demás días -->
-                        <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
-                      </tbody>
-                    </table>
+                <div class="col-md-4 d-flex align-items-center">
+                  <label class="form-check-label me-2" for="active"
+                    >Activo</label
+                  >
+                  <div class="form-check form-switch me-3">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="active"
+                      name="active"
+                      [(ngModel)]="salonData.active"
+                    />
                   </div>
-                  <!-- Paginación -->
-                  <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center">
-                      <li class="page-item disabled">
-                        <a class="page-link" href="#" aria-label="Previous">
-                          <span aria-hidden="true">&laquo;</span>
-                        </a>
-                      </li>
-                      <li class="page-item active">
-                        <a class="page-link" href="#">1</a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link" href="#">2</a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link" href="#">3</a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                          <span aria-hidden="true">&raquo;</span>
-                        </a>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
-              </div>
-            </div>
-
-            <!-- Contenido de la pestaña Imágenes -->
-            <div
-              class="tab-pane fade"
-              id="imagenes"
-              role="tabpanel"
-              aria-labelledby="imagenes-tab"
-            >
-              <!-- Selección de Imagen -->
-              <div class="mb-3">
-                <label for="imagen" class="form-label"
-                  >Seleccione una imagen</label
-                >
-                <div class="input-group">
-                  <input type="file" class="form-control" id="imagen" />
-                  <button class="btn btn-danger" type="button">Añadir</button>
-                </div>
-              </div>
-
-              <!-- Tabla de Imágenes -->
-              <div class="card mb-4">
-                <div class="card-body">
-                  <div class="table-responsive">
-                    <table class="table table-hover table-light">
-                      <thead class="thead-dark">
-                        <tr>
-                          <th>Nombre</th>
-                          <th>Descripción</th>
-                          <th>Fecha Creación</th>
-                          <th>Archivo</th>
-                          <th>Principal</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>Ejemplo</td>
-                          <td>Descripción de la imagen</td>
-                          <td>01/01/2023</td>
-                          <td>archivo.jpg</td>
-                          <td><input type="checkbox" /></td>
-                        </tr>
-                        <!-- Repite para las demás imágenes -->
-                        <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
-                      </tbody>
-                    </table>
+                  <label class="form-check-label me-2" for="in_vacation"
+                    >Cerrado por vacaciones</label
+                  >
+                  <div class="form-check form-switch">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="in_vacation"
+                      name="in_vacation"
+                      [(ngModel)]="salonData.in_vacation"
+                    />
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div
-              class="tab-pane fade"
-              id="servicios"
-              role="tabpanel"
-              aria-labelledby="servicios-tab"
-            >
-              <!-- Filtros de Servicios -->
               <div class="row mb-3">
-                <div class="col-md-8">
+                <div class="col-md-6">
+                  <label for="nombre" class="form-label">Nombre</label>
                   <input
                     type="text"
                     class="form-control"
-                    placeholder="Buscar"
+                    id="name"
+                    name="name"
+                    [(ngModel)]="salonData.name"
                   />
                 </div>
-                <div class="col-md-4 d-flex justify-content-end">
-                  <button class="btn btn-danger">Nuevo</button>
+                <div class="col-md-6">
+                  <label for="email" class="form-label">E-mail</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    name="email"
+                    [(ngModel)]="salonData.email"
+                  />
                 </div>
               </div>
 
-              <!-- Tabla de Servicios -->
-              <div class="card mb-4">
-                <div class="card-body">
-                  <div class="table-responsive">
-                    <table class="table table-hover table-light">
-                      <thead class="thead-dark">
-                        <tr>
-                          <th><input type="checkbox" /></th>
-                          <th>Servicio</th>
-                          <th>Descripción</th>
-                          <th>Precio</th>
-                          <th>Duración</th>
-                          <th colspan="2">Acciones</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td>Corte de pelo</td>
-                          <td>Corte clásico y moderno</td>
-                          <td>15€</td>
-                          <td>30 min</td>
-                          <td>
-                            <button class="btn btn-dark">
-                              <i class="fas fa-edit"></i>
-                            </button>
-                          </td>
-                          <td>
-                            <button class="btn btn-success">Guardar</button>
-                          </td>
-                        </tr>
-                        <!-- Repite para los demás servicios -->
-                        <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
-                      </tbody>
-                    </table>
-                  </div>
-                  <!-- Paginación -->
-                  <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center">
-                      <li class="page-item disabled">
-                        <a class="page-link" href="#" aria-label="Previous">
-                          <span aria-hidden="true">&laquo;</span>
-                        </a>
-                      </li>
-                      <li class="page-item active">
-                        <a class="page-link" href="#">1</a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link" href="#">2</a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link" href="#">3</a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                          <span aria-hidden="true">&raquo;</span>
-                        </a>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
-              </div>
-            </div>
-            <div
-              class="tab-pane fade"
-              id="permisos"
-              role="tabpanel"
-              aria-labelledby="permisos-tab"
-            >
-              <!-- Filtros de Permisos -->
               <div class="row mb-3">
-                <div class="col-md-8">
+                <div class="col-md-6">
+                  <label for="direccion" class="form-label">Dirección</label>
                   <input
                     type="text"
                     class="form-control"
-                    placeholder="Buscar"
+                    id="address"
+                    name="address"
+                    [(ngModel)]="salonData.address"
                   />
                 </div>
-                <div class="col-md-4 d-flex justify-content-end">
-                  <button class="btn btn-danger">Nuevo</button>
-                </div>
-              </div>
-
-              <!-- Tabla de Permisos -->
-              <div class="card mb-4">
-                <div class="card-body">
-                  <div class="table-responsive">
-                    <table class="table table-hover table-light">
-                      <thead class="thead-dark">
-                        <tr>
-                          <th><input type="checkbox" /></th>
-                          <th>Usuario</th>
-                          <th>Permiso</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td>Alberto Santorroman</td>
-                          <td>
-                            <select class="form-select">
-                              <option selected>Administrador de negocio</option>
-                              <option value="trabajador">
-                                Trabajador de negocio
-                              </option>
-                              <!-- Agrega más opciones según sea necesario -->
-                            </select>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td>Prueba Sauco</td>
-                          <td>
-                            <select class="form-select">
-                              <option value="administrador">
-                                Administrador de negocio
-                              </option>
-                              <option selected>Trabajador de negocio</option>
-                              <!-- Agrega más opciones según sea necesario -->
-                            </select>
-                          </td>
-                        </tr>
-                        <!-- Repite para los demás permisos -->
-                        <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
-                      </tbody>
-                    </table>
-                  </div>
-                  <!-- Paginación -->
-                  <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center">
-                      <li class="page-item disabled">
-                        <a class="page-link" href="#" aria-label="Previous">
-                          <span aria-hidden="true">&laquo;</span>
-                        </a>
-                      </li>
-                      <li class="page-item active">
-                        <a class="page-link" href="#">1</a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link" href="#">2</a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link" href="#">3</a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                          <span aria-hidden="true">&raquo;</span>
-                        </a>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
-              </div>
-            </div>
-
-            <!-- Contenido de la pestaña Preguntas -->
-            <div
-              class="tab-pane fade"
-              id="preguntas"
-              role="tabpanel"
-              aria-labelledby="preguntas-tab"
-            >
-              <!-- Filtros de Preguntas -->
-              <div class="row mb-3">
-                <div class="col-md-8">
+                <div class="col-md-6">
+                  <label for="telefono" class="form-label"
+                    >Nº de Teléfono</label
+                  >
                   <input
                     type="text"
                     class="form-control"
-                    placeholder="Buscar"
+                    id="phone"
+                    name="phone"
+                    [(ngModel)]="salonData.phone"
                   />
                 </div>
-                <div class="col-md-4 d-flex justify-content-end">
-                  <button class="btn btn-danger">Nuevo</button>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="id_city"  class="form-label">CP/Población</label>
+                  <input class="form-control" [(ngModel)]="salonData.city_name" [(ngModel)]="salonData.city_zip_code" id="id_city" name="id_city"/>
+                </div>
+                <div class="col-md-6">
+                  <label for="cppoblacion" class="form-label"
+                    >Provincia</label
+                  >
+                  <select class="form-select" id="provincia">
+                    <option selected>Almería</option>
+                    <option value="1">Sevilla</option>
+                    <option value="2">Málaga</option>
+                  </select>
                 </div>
               </div>
 
-              <!-- Tabla de Preguntas -->
-              <div class="card mb-4">
-                <div class="card-body">
-                  <div class="table-responsive">
-                    <table class="table table-hover table-light">
-                      <thead class="thead-dark">
-                        <tr>
-                          <th><input type="checkbox" /></th>
-                          <th>Pregunta</th>
-                          <th>Respuesta</th>
-                          <th>Convertido en FAQ</th>
-                          <th>Acciones</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td>Hola</td>
-                          <td></td>
-                          <td>No</td>
-                          <td>
-                            <button class="btn btn-dark">
-                              <i class="fas fa-edit"></i>
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td>Prueba pregunta</td>
-                          <td></td>
-                          <td>No</td>
-                          <td>
-                            <button class="btn btn-dark">
-                              <i class="fas fa-edit"></i>
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td>¿A qué hora estamos abiertos?</td>
-                          <td>
-                            Nuestro horario de atención es de Lunes a Viernes de
-                            10:00 a 14:00 y de 17:00 a 20:00
-                          </td>
-                          <td>Si</td>
-                          <td>
-                            <button class="btn btn-dark">
-                              <i class="fas fa-edit"></i>
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td>
-                            ¿Puede ser posible un corte de pelo el domingo?
-                          </td>
-                          <td>Si, puede ser</td>
-                          <td>Si</td>
-                          <td>
-                            <button class="btn btn-dark">
-                              <i class="fas fa-edit"></i>
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td>¿Tiñen barbas?</td>
-                          <td>Si, nuestra gama de tintes es muy extensa</td>
-                          <td>No</td>
-                          <td>
-                            <button class="btn btn-dark">
-                              <i class="fas fa-edit"></i>
-                            </button>
-                          </td>
-                        </tr>
-                        <!-- Repite para las demás preguntas -->
-                        <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
-                      </tbody>
-                    </table>
-                  </div>
-                  <!-- Paginación -->
-                  <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center">
-                      <li class="page-item disabled">
-                        <a class="page-link" href="#" aria-label="Previous">
-                          <span aria-hidden="true">&laquo;</span>
-                        </a>
-                      </li>
-                      <li class="page-item active">
-                        <a class="page-link" href="#">1</a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link" href="#">2</a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link" href="#">3</a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                          <span aria-hidden="true">&raquo;</span>
-                        </a>
-                      </li>
-                    </ul>
-                  </nav>
-                  <div class="pagination-summary">
-                    Mostrando 1 de 5 de 5 Entradas
-                  </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="latitud" class="form-label">Latitud</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="latitud"
+                    name="latitud"
+                    [(ngModel)]="salonData.latitud"
+                  />
                 </div>
-              </div>
-            </div>
-            <div
-              class="tab-pane fade"
-              id="resenas"
-              role="tabpanel"
-              aria-labelledby="resenas-tab"
-            >
-              <!-- Calificación promedio -->
-              <div class="text-center my-4">
-                <h2>4.00 <small>/5</small></h2>
-                <div>
-                  <i class="fas fa-star" style="color: gold"></i>
-                  <i class="fas fa-star" style="color: gold"></i>
-                  <i class="fas fa-star" style="color: gold"></i>
-                  <i class="fas fa-star" style="color: gold"></i>
-                  <i class="fas fa-star" style="color: lightgray"></i>
+                <div class="col-md-6">
+                  <label for="longitud" class="form-label">Longitud</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="longitud"
+                    name="longitud"
+                    [(ngModel)]="salonData.longitud"
+                  />
                 </div>
               </div>
 
-              <!-- Campo de búsqueda -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="googlemaps" class="form-label"
+                    >URL de Google Maps</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="map"
+                    name="map"
+                    [(ngModel)]="salonData.map"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="urlnegocio" class="form-label"
+                    >URL del Negocio</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="url"
+                    name="url"
+                    value=""
+                    [(ngModel)]="salonData.url"
+                  />
+                </div>
+              </div>
+
               <div class="row mb-3">
                 <div class="col-md-12">
+                  <label for="sobrenosotros" class="form-label"
+                    >Sobre Nosotros</label
+                  >
+                  <textarea
+                    class="form-control"
+                    id="about_us"
+                    name="about_us"
+                    rows="3"
+                    [(ngModel)]="salonData.about_us"
+                    placeholder="Establecezca la descripción de su negocio...."
+                  >
+                  </textarea>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-12">
+                  <label for="categoria" class="form-label">Categorías</label>
                   <input
                     type="text"
                     class="form-control"
-                    placeholder="Buscar"
+                    id="categories"
+                    name="categories"
+                    [(ngModel)]="salonData.categories"
                   />
                 </div>
               </div>
 
-              <!-- Tabla de Reseñas -->
-              <div class="card mb-4">
-                <div class="card-body">
-                  <div class="table-responsive">
-                    <table class="table table-hover table-light">
-                      <thead class="thead-dark">
-                        <tr>
-                          <th><input type="checkbox" /></th>
-                          <th>Observación</th>
-                          <th>Servicio</th>
-                          <th>Calidad/Precio</th>
-                          <th>Limpieza</th>
-                          <th>Puntualidad</th>
-                          <th>Media</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td>Muy buen servicio</td>
-                          <td>5</td>
-                          <td>4</td>
-                          <td>5</td>
-                          <td>5</td>
-                          <td>4.8</td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td>Atención excelente</td>
-                          <td>4</td>
-                          <td>4</td>
-                          <td>4</td>
-                          <td>4</td>
-                          <td>4.0</td>
-                        </tr>
-                        <!-- Repite para las demás reseñas -->
-                        <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
-                      </tbody>
-                    </table>
-                  </div>
-                  <!-- Paginación -->
-                  <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center">
-                      <li class="page-item disabled">
-                        <a class="page-link" href="#" aria-label="Previous">
-                          <span aria-hidden="true">&laquo;</span>
-                        </a>
-                      </li>
-                      <li class="page-item active">
-                        <a class="page-link" href="#">1</a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link" href="#">2</a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link" href="#">3</a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                          <span aria-hidden="true">&raquo;</span>
-                        </a>
-                      </li>
-                    </ul>
-                  </nav>
-                  <div class="pagination-summary">
-                    Mostrando 1 de 5 de 5 Entradas
-                  </div>
-                </div>
+              <button
+                type="submit"
+                class="btn btn-danger me-2"
+                (click)="updateSalon()"
+              >
+                Guardar
+              </button>
+              <button type="button" class="btn btn-secondary">Cancelar</button>
+            </form>
+          </div>
+
+          <!-- Contenido de la pestaña Horario -->
+          <div
+            class="tab-pane fade"
+            id="horario"
+            role="tabpanel"
+            aria-labelledby="horario-tab"
+          >
+            <!-- Filtros de Horario -->
+            <div class="row mb-3">
+              <div class="col-md-3">
+                <label for="dia" class="form-label">Día</label>
+                <select class="form-select" id="dia">
+                  <option selected>Todos</option>
+                  <option value="lunes">Lunes</option>
+                  <option value="martes">Martes</option>
+                  <option value="miercoles">Miércoles</option>
+                  <option value="jueves">Jueves</option>
+                  <option value="viernes">Viernes</option>
+                  <option value="sabado">Sábado</option>
+                  <option value="domingo">Domingo</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label for="desde" class="form-label">Desde</label>
+                <input type="time" class="form-control" id="desde" />
+              </div>
+              <div class="col-md-3">
+                <label for="hasta" class="form-label">Hasta</label>
+                <input type="time" class="form-control" id="hasta" />
+              </div>
+              <div class="col-md-3 d-flex align-items-end">
+                <button class="btn btn-secondary me-2">Resetear</button>
+                <button class="btn btn-danger">Buscar</button>
+                <button class="btn btn-danger ms-auto">Nuevo</button>
               </div>
             </div>
 
-            <!-- Aquí se agregarían los demás paneles de contenido para Servicios, Permisos, etc. -->
+            <!-- Tabla de Horarios -->
+            <div class="card mb-4">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover table-light">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th><input type="checkbox" /></th>
+                        <th>Día</th>
+                        <th>Desde</th>
+                        <th>Hasta</th>
+                        <th>Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><input type="checkbox" /></td>
+                        <td>Lunes</td>
+                        <td>09:00</td>
+                        <td>13:30</td>
+                        <td>
+                          <button class="btn btn-dark">
+                            <i class="fas fa-edit"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      <!-- Repite para los demás días -->
+                      <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
+                    </tbody>
+                  </table>
+                </div>
+                <!-- Paginación -->
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                      <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                      </a>
+                    </li>
+                    <li class="page-item active">
+                      <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
           </div>
+
+          <!-- Contenido de la pestaña Imágenes -->
+          <div
+            class="tab-pane fade"
+            id="imagenes"
+            role="tabpanel"
+            aria-labelledby="imagenes-tab"
+          >
+            <!-- Selección de Imagen -->
+            <div class="mb-3">
+              <label for="imagen" class="form-label"
+                >Seleccione una imagen</label
+              >
+              <div class="input-group">
+                <input type="file" class="form-control" id="imagen" />
+                <button class="btn btn-danger" type="button">Añadir</button>
+              </div>
+            </div>
+
+            <!-- Tabla de Imágenes -->
+            <div class="card mb-4">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover table-light">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Fecha Creación</th>
+                        <th>Archivo</th>
+                        <th>Principal</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Ejemplo</td>
+                        <td>Descripción de la imagen</td>
+                        <td>01/01/2023</td>
+                        <td>archivo.jpg</td>
+                        <td><input type="checkbox" /></td>
+                      </tr>
+                      <!-- Repite para las demás imágenes -->
+                      <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="tab-pane fade"
+            id="servicios"
+            role="tabpanel"
+            aria-labelledby="servicios-tab"
+          >
+            <!-- Filtros de Servicios -->
+            <div class="row mb-3">
+              <div class="col-md-8">
+                <input type="text" class="form-control" placeholder="Buscar" />
+              </div>
+              <div class="col-md-4 d-flex justify-content-end">
+                <button class="btn btn-danger">Nuevo</button>
+              </div>
+            </div>
+
+            <!-- Tabla de Servicios -->
+            <div class="card mb-4">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover table-light">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th><input type="checkbox" /></th>
+                        <th>Servicio</th>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                        <th>Duración</th>
+                        <th colspan="2">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><input type="checkbox" /></td>
+                        <td>Corte de pelo</td>
+                        <td>Corte clásico y moderno</td>
+                        <td>15€</td>
+                        <td>30 min</td>
+                        <td>
+                          <button class="btn btn-dark">
+                            <i class="fas fa-edit"></i>
+                          </button>
+                        </td>
+                        <td>
+                          <button class="btn btn-success">Guardar</button>
+                        </td>
+                      </tr>
+                      <!-- Repite para los demás servicios -->
+                      <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
+                    </tbody>
+                  </table>
+                </div>
+                <!-- Paginación -->
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                      <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                      </a>
+                    </li>
+                    <li class="page-item active">
+                      <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+          <div
+            class="tab-pane fade"
+            id="permisos"
+            role="tabpanel"
+            aria-labelledby="permisos-tab"
+          >
+            <!-- Filtros de Permisos -->
+            <div class="row mb-3">
+              <div class="col-md-8">
+                <input type="text" class="form-control" placeholder="Buscar" />
+              </div>
+              <div class="col-md-4 d-flex justify-content-end">
+                <button class="btn btn-danger">Nuevo</button>
+              </div>
+            </div>
+
+            <!-- Tabla de Permisos -->
+            <div class="card mb-4">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover table-light">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th><input type="checkbox" /></th>
+                        <th>Usuario</th>
+                        <th>Permiso</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><input type="checkbox" /></td>
+                        <td>Alberto Santorroman</td>
+                        <td>
+                          <select class="form-select">
+                            <option selected>Administrador de negocio</option>
+                            <option value="trabajador">
+                              Trabajador de negocio
+                            </option>
+                            <!-- Agrega más opciones según sea necesario -->
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><input type="checkbox" /></td>
+                        <td>Prueba Sauco</td>
+                        <td>
+                          <select class="form-select">
+                            <option value="administrador">
+                              Administrador de negocio
+                            </option>
+                            <option selected>Trabajador de negocio</option>
+                            <!-- Agrega más opciones según sea necesario -->
+                          </select>
+                        </td>
+                      </tr>
+                      <!-- Repite para los demás permisos -->
+                      <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
+                    </tbody>
+                  </table>
+                </div>
+                <!-- Paginación -->
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                      <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                      </a>
+                    </li>
+                    <li class="page-item active">
+                      <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contenido de la pestaña Preguntas -->
+          <div
+            class="tab-pane fade"
+            id="preguntas"
+            role="tabpanel"
+            aria-labelledby="preguntas-tab"
+          >
+            <!-- Filtros de Preguntas -->
+            <div class="row mb-3">
+              <div class="col-md-8">
+                <input type="text" class="form-control" placeholder="Buscar" />
+              </div>
+              <div class="col-md-4 d-flex justify-content-end">
+                <button class="btn btn-danger">Nuevo</button>
+              </div>
+            </div>
+
+            <!-- Tabla de Preguntas -->
+            <div class="card mb-4">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover table-light">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th><input type="checkbox" /></th>
+                        <th>Pregunta</th>
+                        <th>Respuesta</th>
+                        <th>Convertido en FAQ</th>
+                        <th>Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><input type="checkbox" /></td>
+                        <td>Hola</td>
+                        <td></td>
+                        <td>No</td>
+                        <td>
+                          <button class="btn btn-dark">
+                            <i class="fas fa-edit"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><input type="checkbox" /></td>
+                        <td>Prueba pregunta</td>
+                        <td></td>
+                        <td>No</td>
+                        <td>
+                          <button class="btn btn-dark">
+                            <i class="fas fa-edit"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><input type="checkbox" /></td>
+                        <td>¿A qué hora estamos abiertos?</td>
+                        <td>
+                          Nuestro horario de atención es de Lunes a Viernes de
+                          10:00 a 14:00 y de 17:00 a 20:00
+                        </td>
+                        <td>Si</td>
+                        <td>
+                          <button class="btn btn-dark">
+                            <i class="fas fa-edit"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><input type="checkbox" /></td>
+                        <td>¿Puede ser posible un corte de pelo el domingo?</td>
+                        <td>Si, puede ser</td>
+                        <td>Si</td>
+                        <td>
+                          <button class="btn btn-dark">
+                            <i class="fas fa-edit"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><input type="checkbox" /></td>
+                        <td>¿Tiñen barbas?</td>
+                        <td>Si, nuestra gama de tintes es muy extensa</td>
+                        <td>No</td>
+                        <td>
+                          <button class="btn btn-dark">
+                            <i class="fas fa-edit"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      <!-- Repite para las demás preguntas -->
+                      <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
+                    </tbody>
+                  </table>
+                </div>
+                <!-- Paginación -->
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                      <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                      </a>
+                    </li>
+                    <li class="page-item active">
+                      <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+                <div class="pagination-summary">
+                  Mostrando 1 de 5 de 5 Entradas
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="tab-pane fade"
+            id="resenas"
+            role="tabpanel"
+            aria-labelledby="resenas-tab"
+          >
+            <!-- Calificación promedio -->
+            <div class="text-center my-4">
+              <h2>4.00 <small>/5</small></h2>
+              <div>
+                <i class="fas fa-star" style="color: gold"></i>
+                <i class="fas fa-star" style="color: gold"></i>
+                <i class="fas fa-star" style="color: gold"></i>
+                <i class="fas fa-star" style="color: gold"></i>
+                <i class="fas fa-star" style="color: lightgray"></i>
+              </div>
+            </div>
+
+            <!-- Campo de búsqueda -->
+            <div class="row mb-3">
+              <div class="col-md-12">
+                <input type="text" class="form-control" placeholder="Buscar" />
+              </div>
+            </div>
+
+            <!-- Tabla de Reseñas -->
+            <div class="card mb-4">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover table-light">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th><input type="checkbox" /></th>
+                        <th>Observación</th>
+                        <th>Servicio</th>
+                        <th>Calidad/Precio</th>
+                        <th>Limpieza</th>
+                        <th>Puntualidad</th>
+                        <th>Media</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><input type="checkbox" /></td>
+                        <td>Muy buen servicio</td>
+                        <td>5</td>
+                        <td>4</td>
+                        <td>5</td>
+                        <td>5</td>
+                        <td>4.8</td>
+                      </tr>
+                      <tr>
+                        <td><input type="checkbox" /></td>
+                        <td>Atención excelente</td>
+                        <td>4</td>
+                        <td>4</td>
+                        <td>4</td>
+                        <td>4</td>
+                        <td>4.0</td>
+                      </tr>
+                      <!-- Repite para las demás reseñas -->
+                      <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
+                    </tbody>
+                  </table>
+                </div>
+                <!-- Paginación -->
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                      <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                      </a>
+                    </li>
+                    <li class="page-item active">
+                      <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+                <div class="pagination-summary">
+                  Mostrando 1 de 5 de 5 Entradas
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Aquí se agregarían los demás paneles de contenido para Servicios, Permisos, etc. -->
         </div>
+      </div>
     </main>
     <app-footer></app-footer>
   </div>

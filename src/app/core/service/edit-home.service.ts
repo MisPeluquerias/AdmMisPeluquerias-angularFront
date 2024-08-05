@@ -21,4 +21,7 @@ export class EditHomeService {
       },
     });;
   }
+  updateSalon(salonData: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/edithome/updateSalon`, salonData);
+  }
 }
