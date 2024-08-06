@@ -24,4 +24,15 @@ export class EditHomeService {
   updateSalon(salonData: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/edithome/updateSalon`, salonData);
   }
+
+  getCitiesByProvince(id_province: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/edithome/getCitiesByProvince`, {
+      params: { id_province: id_province.toString() }
+    });
+  }
+
+  getProvinces(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/edithome/getProvinces`);
+  }
+
 }

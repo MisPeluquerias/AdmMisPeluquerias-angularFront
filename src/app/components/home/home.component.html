@@ -69,7 +69,7 @@
                     <td><input type="checkbox" [(ngModel)]="salon.selected" (change)="checkIfAllSelected()" /></td>
                     <td>{{ salon.name }}</td>
                     <td>{{ salon.email }}</td>
-                    <td>{{ salon.created_at | spanishDate }}</td>
+                    <td>{{ salon.created_at |date:'dd-MM-yyyy'}}</td>
                     <td>{{ salon.phone }}</td>
                     <td>{{ salon.active ? "Si" : "No" }}</td>
                     <td>{{ salon.state }}</td>
