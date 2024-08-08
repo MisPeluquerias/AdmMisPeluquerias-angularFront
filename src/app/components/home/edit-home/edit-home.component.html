@@ -442,19 +442,8 @@
                 >Seleccione una imagen</label
               >
               <div class="input-group">
-                <input
-                  type="file"
-                  class="form-control"
-                  id="imagen"
-                  (change)="onFileSelected($event)"
-                />
-                <button
-                  class="btn btn-danger"
-                  type="button"
-                  (click)="uploadImg()"
-                >
-                  Añadir
-                </button>
+                <input type="file" class="form-control" id="imagen" />
+                <button class="btn btn-danger" type="button">Añadir</button>
               </div>
             </div>
 
@@ -473,38 +462,12 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let image of images">
-                        <td>{{ image.file_name }}</td>
-                        <td>{{ image.file_fecha | date : "dd/MM/yyyy" }}</td>
-                        <td>
-                          <div class="image-container">
-                          <img
-                            [src]="image.file_url"
-                            [alt]="image.file_name"
-                            (click)="openImage(image.file_url, image.file_name)"
-                          />
-                        </div>
-                        </td>
-                        <td>
-                          <div class="form-check form-switch me-3">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              id="imgPrincipal "
-                              name="imgPrincipal"
-                              [(ngModel)]="image.file_principal"
-                              (change)="checkboxPrincipalImg(image)"
-                            />
-                          </div>
-                        </td>
-                        <td>
-                          <button
-                          (click)="deleteImage(image.file_id)"
-                            class="btn btn-danger btn-sm"
-                          >
-                            <i class="fas fa-trash"></i> Eliminar
-                          </button>
-                        </td>
+                      <tr>
+                        <td>Ejemplo</td>
+                        <td>Descripción de la imagen</td>
+                        <td>01/01/2023</td>
+                        <td>archivo.jpg</td>
+                        <td><input type="checkbox" /></td>
                       </tr>
                     </tbody>
                   </table>
@@ -525,13 +488,6 @@
             role="tabpanel"
             aria-labelledby="servicios-tab"
           >
-            <!-- Imagen ampliada -->
-            <div class="fullsize" *ngIf="isImageOpen" (click)="closeImage()">
-              <img [src]="currentImageUrl" [alt]="currentImageAlt" />
-            </div>
-
-
-
             <!-- Filtros de Servicios -->
             <div class="row mb-3">
               <div class="col-md-8">
