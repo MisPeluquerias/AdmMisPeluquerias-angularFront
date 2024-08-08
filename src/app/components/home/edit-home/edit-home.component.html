@@ -7,7 +7,7 @@
         <h1 class="mt-1">Panel de control</h1>
         <ol class="breadcrumb mb-4">
           <li class="breadcrumb-item active">
-            Administración / <b>Negocios</b>
+            Administración / <b>Negocios / </b> <b>{{ salonData.name }}</b>
           </li>
         </ol>
 
@@ -127,7 +127,12 @@
               <div class="row mb-3 align-items-center">
                 <div class="col-md-4">
                   <label for="estado" class="form-label">Estado</label>
-                  <select class="form-select" id="state" [(ngModel)]="salonData.state" name="state">
+                  <select
+                    class="form-select"
+                    id="state"
+                    [(ngModel)]="salonData.state"
+                    name="state"
+                  >
                     <option value="Reclamado">Reclamado</option>
                     <option value="Validado">Validado</option>
                     <option value="No reclamado">No reclamado</option>
@@ -211,17 +216,34 @@
 
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="id_city"  class="form-label">CP/Población</label>
-                  <input class="form-control" [(ngModel)]="salonData.city_name" [(ngModel)]="salonData.city_zip_code" id="id_city" name="id_city"/>
+                  <label for="provincia" class="form-label">Provincia</label>
+                  <select
+                    class="form-select"
+                    id="provincia"
+                    [(ngModel)]="salonData.id_province"
+                    name="id_province"
+                    (change)="onProvinceChange(salonData.id_province)"
+                  >
+                    <option
+                      *ngFor="let province of provinces"
+                      [value]="province.id_province"
+                    >
+                      {{ province.name }}
+                    </option>
+                  </select>
                 </div>
                 <div class="col-md-6">
-                  <label for="cppoblacion" class="form-label"
-                    >Provincia</label
+                  <label for="ciudad" class="form-label">Ciudad</label>
+                  <select
+                    class="form-select"
+                    id="ciudad"
+                    [(ngModel)]="salonData.id_city"
+                    name="id_city"
+                    (change)="onCityChange(salonData.id_city)"
                   >
-                  <select class="form-select" id="provincia">
-                    <option selected>Almería</option>
-                    <option value="1">Sevilla</option>
-                    <option value="2">Málaga</option>
+                    <option *ngFor="let city of cities" [value]="city.id_city">
+                      {{ city.city_name }} - {{ city.zip_code }}
+                    </option>
                   </select>
                 </div>
               </div>
@@ -314,7 +336,13 @@
               >
                 Guardar
               </button>
-              <button type="button" class="btn btn-secondary">Cancelar</button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                routerLink="/home"
+              >
+                Cancelar
+              </button>
             </form>
           </div>
 
@@ -326,94 +354,79 @@
             aria-labelledby="horario-tab"
           >
             <!-- Filtros de Horario -->
-            <div class="row mb-3">
-              <div class="col-md-3">
-                <label for="dia" class="form-label">Día</label>
-                <select class="form-select" id="dia">
-                  <option selected>Todos</option>
-                  <option value="lunes">Lunes</option>
-                  <option value="martes">Martes</option>
-                  <option value="miercoles">Miércoles</option>
-                  <option value="jueves">Jueves</option>
-                  <option value="viernes">Viernes</option>
-                  <option value="sabado">Sábado</option>
-                  <option value="domingo">Domingo</option>
-                </select>
-              </div>
-              <div class="col-md-3">
-                <label for="desde" class="form-label">Desde</label>
-                <input type="time" class="form-control" id="desde" />
-              </div>
-              <div class="col-md-3">
-                <label for="hasta" class="form-label">Hasta</label>
-                <input type="time" class="form-control" id="hasta" />
-              </div>
-              <div class="col-md-3 d-flex align-items-end">
-                <button class="btn btn-secondary me-2">Resetear</button>
-                <button class="btn btn-danger">Buscar</button>
-                <button class="btn btn-danger ms-auto">Nuevo</button>
-              </div>
-            </div>
-
-            <!-- Tabla de Horarios -->
-            <div class="card mb-4">
-              <div class="card-body">
+            <div class="d-flex justify-content-center">
+              <div class="w-75">
+                <!-- Tabla de Horarios con Responsive Wrapper -->
                 <div class="table-responsive">
-                  <table class="table table-hover table-light">
+                  <table class="table">
                     <thead class="thead-dark">
                       <tr>
-                        <th><input type="checkbox" /></th>
                         <th>Día</th>
-                        <th>Desde</th>
-                        <th>Hasta</th>
-                        <th>Acciones</th>
+                        <th class="text-start">Horario de Mañana</th>
+                        <th class="text-start">Cerrado</th>
+                        <th class="text-start">Horario de Tarde</th>
+                        <th class="text-start">Cerrado</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td><input type="checkbox" /></td>
-                        <td>Lunes</td>
-                        <td>09:00</td>
-                        <td>13:30</td>
+                      <tr *ngFor="let dia of dias">
+                        <td>{{ dia.nombre }}</td>
                         <td>
-                          <button class="btn btn-dark">
-                            <i class="fas fa-edit"></i>
-                          </button>
+                          <div class="d-flex align-items-center">
+                            <input
+                              type="time"
+                              class="form-control"
+                              [(ngModel)]="dia.mananaInicio"
+                              [readonly]="dia.cerradoManana"
+                            />
+                            <input
+                              type="time"
+                              class="form-control ml-2"
+                              [(ngModel)]="dia.mananaFin"
+                              [readonly]="dia.cerradoManana"
+                            />
+                          </div>
+                        </td>
+                        <td class="text-start">
+                          <input
+                            type="checkbox"
+                            [(ngModel)]="dia.cerradoManana"
+                            (change)="toggleManana(dia)"
+                          />
+                        </td>
+                        <td>
+                          <div class="d-flex align-items-center">
+                            <input
+                              type="time"
+                              class="form-control"
+                              [(ngModel)]="dia.tardeInicio"
+                              [readonly]="dia.cerradoTarde"
+                            />
+                            <input
+                              type="time"
+                              class="form-control ml-2"
+                              [(ngModel)]="dia.tardeFin"
+                              [readonly]="dia.cerradoTarde"
+                            />
+                          </div>
+                        </td>
+                        <td class="text-start">
+                          <input
+                            type="checkbox"
+                            [(ngModel)]="dia.cerradoTarde"
+                            (change)="toggleManana(dia)"
+                          />
                         </td>
                       </tr>
-                      <!-- Repite para los demás días -->
-                      <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
                     </tbody>
                   </table>
                 </div>
-                <!-- Paginación -->
-                <nav aria-label="Page navigation example">
-                  <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                      <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                      </a>
-                    </li>
-                    <li class="page-item active">
-                      <a class="page-link" href="#">1</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">3</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
+                <button class="btn btn-danger mt-3" (click)="saveHours()">
+                  Guardar
+                </button>
               </div>
             </div>
           </div>
-
           <!-- Contenido de la pestaña Imágenes -->
           <div
             class="tab-pane fade"
@@ -422,13 +435,26 @@
             aria-labelledby="imagenes-tab"
           >
             <!-- Selección de Imagen -->
-            <div class="mb-3">
+
+            <!-- Tabla de Imágenes -->
+            <div class="mb-3 col-md-4">
               <label for="imagen" class="form-label"
                 >Seleccione una imagen</label
               >
               <div class="input-group">
-                <input type="file" class="form-control" id="imagen" />
-                <button class="btn btn-danger" type="button">Añadir</button>
+                <input
+                  type="file"
+                  class="form-control"
+                  id="imagen"
+                  (change)="onFileSelected($event)"
+                />
+                <button
+                  class="btn btn-danger"
+                  type="button"
+                  (click)="onUpload()"
+                >
+                  Añadir
+                </button>
               </div>
             </div>
 
@@ -440,35 +466,68 @@
                     <thead class="thead-dark">
                       <tr>
                         <th>Nombre</th>
-                        <th>Descripción</th>
                         <th>Fecha Creación</th>
-                        <th>Archivo</th>
+                        <th>Imagen</th>
                         <th>Principal</th>
+                        <th>Acciones</th> <!-- Nueva columna para las acciones -->
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Ejemplo</td>
-                        <td>Descripción de la imagen</td>
-                        <td>01/01/2023</td>
-                        <td>archivo.jpg</td>
-                        <td><input type="checkbox" /></td>
+                      <tr *ngFor="let image of images">
+                        <td>{{ image.file_name }}</td>
+                        <td>{{ image.file_fecha | date : "dd/MM/yyyy" }}</td>
+                        <td>
+                          <div class="image-container">
+                          <img
+                            [src]="image.file_url"
+                            [alt]="image.file_name"
+                            (click)="openImage(image.file_url, image.file_name)"
+                          />
+                        </div>
+                        </td>
+                        <td>
+                          <div class="form-check form-switch me-3">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              id="imgPrincipal "
+                              name="imgPrincipal"
+                              [(ngModel)]="image.file_principal"
+                            />
+                          </div>
+                        </td>
+                        <td>
+                          <button
+                          (click)="deleteImage(image.file_id)"
+                            class="btn btn-danger btn-sm"
+                          >
+                            <i class="fas fa-trash"></i> Eliminar
+                          </button>
+                        </td>
                       </tr>
-                      <!-- Repite para las demás imágenes -->
-                      <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
                     </tbody>
                   </table>
+                  <div
+                    class="fullsize"
+                    *ngIf="isImageOpen"
+                    (click)="closeImage()"
+                  >
+                    <img [src]="currentImageUrl" [alt]="currentImageAlt" />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-
           <div
             class="tab-pane fade"
             id="servicios"
             role="tabpanel"
             aria-labelledby="servicios-tab"
           >
+            <!-- Imagen ampliada -->
+            <div class="fullsize" *ngIf="isImageOpen" (click)="closeImage()">
+              <img [src]="currentImageUrl" [alt]="currentImageAlt" />
+            </div>
             <!-- Filtros de Servicios -->
             <div class="row mb-3">
               <div class="col-md-8">
