@@ -26,6 +26,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { EditHomeComponent } from './components/home/edit-home/edit-home.component';
 import { FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
+import { SearchTablePipe } from './shared/pipes/search-table.pipe';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import { ToastrModule } from 'ngx-toastr';
     ServicesComponent,
     SpanishDatePipe,
     EditHomeComponent,
+    SearchTablePipe,
   ],
   imports: [
     BrowserModule,

@@ -65,7 +65,6 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let salon of AllSalon">
-
                     <td><input type="checkbox" [(ngModel)]="salon.selected" (change)="checkIfAllSelected()" /></td>
                     <td>{{ salon.name }}</td>
                     <td>{{ salon.email }}</td>

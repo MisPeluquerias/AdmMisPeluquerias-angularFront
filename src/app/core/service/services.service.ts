@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
-import { HttpClient,HttpParams } from '@angular/common/http';
+import { HttpClient,HttpParams} from '@angular/common/http';
 
 
 @Injectable({
@@ -25,4 +25,6 @@ export class ServicesService {
 
     return this.http.get<any>(`${this.baseUrl}/services/getAllServices`, { params });
   }
+
+
 }
