@@ -47,7 +47,8 @@ export class EditHomeComponent implements OnInit {
   cities: any[] = [];
   dias: any[] = [];
 
-
+  currentPage: number = 1;
+  pageSize: number = 10;
   selectedFile: File | null = null;
   images: any[] = [];
   fileDescription = '';
