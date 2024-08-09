@@ -1,0 +1,252 @@
+
+<app-header></app-header>
+<div id="layoutSidenav">
+  <app-aside></app-aside>
+  <div id="layoutSidenav_content">
+    <main>
+      <div class="container-fluid px-4">
+        <h1 class="mt-1">Panel de control</h1>
+        <ol class="breadcrumb mb-4">
+          <li class="breadcrumb-item active">
+            Administración / <b>Negocios / </b> <b>Nuevo</b>
+          </li>
+        </ol>
+
+        <div class="tab-content bg-light" id="myTabContent">
+          <!-- Contenido de la pestaña Negocio -->
+
+          <div
+            class="tab-pane fade show active"
+            id="negocio"
+            role="tabpanel"
+            aria-labelledby="negocio-tab"
+          >
+            <!-- Formulario de Negocio -->
+
+            <form>
+              <div class="row mb-3 align-items-center">
+                <div class="col-md-4">
+                  <label for="estado" class="form-label">Estado</label>
+                  <select
+                    class="form-select"
+                    id="state"
+                    [(ngModel)]="salonData.state"
+                    name="state"
+                  >
+                  <option value="No reclamado" selected>No reclamado</option>
+                    <option value="Reclamado" >Reclamado</option>
+                    <option value="Validado">Validado</option>
+                  </select>
+                </div>
+                <div class="col-md-4 d-flex align-items-center">
+                  <label class="form-check-label me-2" for="active"
+                    >Activo</label
+                  >
+                  <div class="form-check form-switch me-3">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="active"
+                      name="active"
+                      [(ngModel)]="salonData.active"
+                    />
+                  </div>
+                  <label class="form-check-label me-2" for="in_vacation"
+                    >Cerrado por vacaciones</label
+                  >
+                  <div class="form-check form-switch">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="in_vacation"
+                      name="in_vacation"
+                      [(ngModel)]="salonData.in_vacation"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="nombre" class="form-label">Nombre</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    name="name"
+                    [(ngModel)]="salonData.name"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="email" class="form-label">E-mail</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    name="email"
+                    [(ngModel)]="salonData.email"
+                  />
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="direccion" class="form-label">Dirección</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="address"
+                    name="address"
+                    [(ngModel)]="salonData.address"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="telefono" class="form-label"
+                    >Nº de Teléfono</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="phone"
+                    name="phone"
+                    [(ngModel)]="salonData.phone"
+                  />
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="provincia" class="form-label">Provincia</label>
+                  <select
+                    class="form-select"
+                    id="provincia"
+                    [(ngModel)]="salonData.id_province"
+                    name="id_province"
+                    (change)="onProvinceChange(salonData.id_province)"
+                  >
+                    <option
+                      *ngFor="let province of provinces"
+                      [value]="province.id_province"
+                    >
+                      {{ province.name }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="ciudad" class="form-label">Ciudad</label>
+                  <select
+                    class="form-select"
+                    id="ciudad"
+                    [(ngModel)]="salonData.id_city"
+                    name="id_city"
+                    (change)="onCityChange(salonData.id_city)"
+                  >
+                    <option *ngFor="let city of cities" [value]="city.id_city">
+                      {{ city.city_name }} - {{ city.zip_code }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="latitud" class="form-label">Latitud</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="latitud"
+                    name="latitud"
+                    [(ngModel)]="salonData.latitud"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="longitud" class="form-label">Longitud</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="longitud"
+                    name="longitud"
+                    [(ngModel)]="salonData.longitud"
+                  />
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="googlemaps" class="form-label"
+                    >URL de Google Maps</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="map"
+                    name="map"
+                    [(ngModel)]="salonData.map"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="urlnegocio" class="form-label"
+                    >URL del Negocio</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="url"
+                    name="url"
+                    value=""
+                    [(ngModel)]="salonData.url"
+                  />
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-12">
+                  <label for="sobrenosotros" class="form-label"
+                    >Sobre Nosotros</label
+                  >
+                  <textarea
+                    class="form-control"
+                    id="about_us"
+                    name="about_us"
+                    rows="3"
+                    [(ngModel)]="salonData.about_us"
+                    placeholder="Establecezca la descripción de su negocio...."
+                  >
+                  </textarea>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-12">
+                  <label for="categoria" class="form-label">Categorías</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="categories"
+                    name="categories"
+                    [(ngModel)]="salonData.categories"
+                  />
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                class="btn btn-danger me-2"
+              >
+                Guardar
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                routerLink="/home"
+              >
+                Cancelar
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+    <app-footer></app-footer>
+  </div>
+</div>

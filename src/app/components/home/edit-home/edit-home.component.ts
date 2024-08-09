@@ -332,7 +332,7 @@ export class EditHomeComponent implements OnInit {
       },
       error: (error) => {
         console.error('Failed to update image status', error);
-        // Aquí puedes manejar el error, por ejemplo, mostrar un mensaje de error
+        // Aquí puedes manejar el error, por ejem[(ngModel)]="salonData.state"plo, mostrar un mensaje de error
       }
     });
   }
