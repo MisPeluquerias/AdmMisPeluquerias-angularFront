@@ -125,7 +125,7 @@
 
             <form>
               <div class="row mb-3 align-items-center">
-                <div class="col-md-4">
+                <div class="col-md-2">
                   <label for="estado" class="form-label">Estado</label>
                   <select
                     class="form-select"
@@ -205,7 +205,7 @@
                     >Nº de Teléfono</label
                   >
                   <input
-                    type="text"
+                    type="telf"
                     class="form-control"
                     id="phone"
                     name="phone"
@@ -233,7 +233,7 @@
                   </select>
                 </div>
                 <div class="col-md-6">
-                  <label for="ciudad" class="form-label">Ciudad</label>
+                  <label for="ciudad" class="form-label">Ciudad-CP</label>
                   <select
                     class="form-select"
                     id="ciudad"
@@ -469,36 +469,40 @@
                         <th>Fecha Creación</th>
                         <th>Imagen</th>
                         <th>Principal</th>
-                        <th>Acciones</th> <!-- Nueva columna para las acciones -->
+                        <th>Acciones</th>
+                        <!-- Nueva columna para las acciones -->
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let image of images">
+                      <tr *ngFor="let image of images; let i = index">
                         <td>{{ image.file_name }}</td>
                         <td>{{ image.file_fecha | date : "dd/MM/yyyy" }}</td>
                         <td>
                           <div class="image-container">
-                          <img
-                            [src]="image.file_url"
-                            [alt]="image.file_name"
-                            (click)="openImage(image.file_url, image.file_name)"
-                          />
-                        </div>
+                            <img
+                              [src]="image.file_url"
+                              [alt]="image.file_name"
+                              (click)="
+                                openImage(image.file_url, image.file_name)
+                              "
+                            />
+                          </div>
                         </td>
                         <td>
                           <div class="form-check form-switch me-3">
                             <input
                               class="form-check-input"
                               type="checkbox"
-                              id="imgPrincipal "
+                              [id]="'imgPrincipal' + i"
                               name="imgPrincipal"
+                              (change)="uniqueCheckboxSelectImge(i)"
                               [(ngModel)]="image.file_principal"
                             />
                           </div>
                         </td>
                         <td>
                           <button
-                          (click)="deleteImage(image.file_id)"
+                            (click)="deleteImage(image.file_id)"
                             class="btn btn-danger btn-sm"
                           >
                             <i class="fas fa-trash"></i> Eliminar
@@ -534,7 +538,13 @@
                 <input type="text" class="form-control" placeholder="Buscar" />
               </div>
               <div class="col-md-4 d-flex justify-content-end">
-                <button class="btn btn-danger">Nuevo</button>
+                <button
+                  class="btn btn-danger"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modalNuevoServicio"
+                >
+                  Nuevo
+                </button>
               </div>
             </div>
 
@@ -545,30 +555,119 @@
                   <table class="table table-hover table-light">
                     <thead class="thead-dark">
                       <tr>
-                        <th><input type="checkbox" /></th>
                         <th>Servicio</th>
-                        <th>Descripción</th>
-                        <th>Precio</th>
-                        <th>Duración</th>
-                        <th colspan="2">Acciones</th>
+                        <th>Subservicio</th>
+                        <th>Tiempo</th>
+                        <th>Activo</th>
+                        <th colspan="2">Editar</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td><input type="checkbox" /></td>
-                        <td>Corte de pelo</td>
-                        <td>Corte clásico y moderno</td>
-                        <td>15€</td>
-                        <td>30 min</td>
+                        <td>Corte</td>
+                        <td>Mujer, Hombre</td>
+                        <td>10 min</td>
+                        <td></td>
                         <td>
                           <button class="btn btn-dark">
                             <i class="fas fa-edit"></i>
                           </button>
                         </td>
-                        <td>
-                          <button class="btn btn-success">Guardar</button>
-                        </td>
                       </tr>
+                      <!-- Modal  para anadir servicio y subservicio -->
+                      <div
+                        class="modal fade"
+                        id="modalNuevoServicio"
+                        tabindex="-1"
+                        aria-labelledby="exampleModalLabel"
+                        aria-hidden="true"
+                      >
+                        <div
+                          class="modal-dialog modal-dialog-centered modal-xl"
+                        >
+                          <div class="modal-content">
+                            <div class="modal-header bg-danger text-white">
+                              <h5 class="modal-title" id="exampleModalLabel">
+                                Añadir servicios
+                              </h5>
+                              <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                              ></button>
+                            </div>
+                            <div class="modal-body">
+                              <p class="text-muted mb-4">
+                                Complete los detalles del nuevo servicio
+                              </p>
+                              <form>
+                                <div class="mb-3">
+                                  <label
+                                    for="serviceSelect"
+                                    class="form-label fw-bold"
+                                    >Servicio</label
+                                  >
+                                  <select
+                                    id="serviceSelect"
+                                    class="form-select"
+                                    aria-label="Selecciona una opción"
+                                  >
+                                    <option selected>
+                                      Selecciona una opción
+                                    </option>
+                                    <option value="1">Corte de pelo</option>
+                                    <option value="2">Coloración</option>
+                                    <option value="3">Peinado</option>
+                                    <!-- Añadir más opciones según sea necesario -->
+                                  </select>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-6 mb-3">
+                                    <label
+                                      for="timeInput"
+                                      class="form-label fw-bold"
+                                      >Tiempo Actividad (Minutos)</label
+                                    >
+                                    <input
+                                      type="number"
+                                      class="form-control"
+                                      id="timeInput"
+                                      placeholder="10"
+                                    />
+                                  </div>
+                                  <div class="col-md-6 mb-3">
+                                    <label
+                                      for="subserviceInput"
+                                      class="form-label fw-bold"
+                                      >Subservicio</label
+                                    >
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      id="subserviceInput"
+                                      placeholder="Ingrese el subservicio"
+                                    />
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                            <div class="modal-footer">
+                              <button
+                                type="button"
+                                class="btn btn-secondary"
+                                data-bs-dismiss="modal"
+                              >
+                                Cancelar
+                              </button>
+                              <button type="button" class="btn btn-danger">
+                                Guardar
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                       <!-- Repite para los demás servicios -->
                       <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
                     </tbody>

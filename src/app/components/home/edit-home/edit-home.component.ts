@@ -47,7 +47,8 @@ export class EditHomeComponent implements OnInit {
   cities: any[] = [];
   dias: any[] = [];
 
-
+  currentPage: number = 1;
+  pageSize: number = 10;
   selectedFile: File | null = null;
   images: any[] = [];
   fileDescription = '';
@@ -66,7 +67,7 @@ export class EditHomeComponent implements OnInit {
     private modalService: NgbModal
   ) {}
 
-  
+
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
@@ -307,7 +308,35 @@ export class EditHomeComponent implements OnInit {
         console.error('Error deleting image', error);
       });
   }
-  imgPrefer(){
+  uniqueCheckboxSelectImge(index: number): void {
+    const selectedImage = this.images[index];
+    if (selectedImage.file_principal) {
+      // Si el checkbox se ha marcado, desmarcar todos los demás y actualizar el backend
+      this.images.forEach((image, i) => {
+        if (i !== index) {
+          image.file_principal = false;
+          this.updatePrincipalmage(image.file_id, false); // Desmarcar en el backend
+        }
+      });
+    }
 
+    // Actualizar el estado de la imagen seleccionada en el backend
+    this.updatePrincipalmage(selectedImage.file_id, selectedImage.file_principal);
   }
+
+  updatePrincipalmage(fileId: number, filePrincipal: boolean): void {
+    this.editHomeService.updatePrincipalImage(fileId, filePrincipal).subscribe({
+      next: (response) => {
+       // console.log('Image status updated successfully', response);
+        // Aquí puedes manejar el éxito, por ejemplo, mostrar un mensaje al usuario
+      },
+      error: (error) => {
+        console.error('Failed to update image status', error);
+        // Aquí puedes manejar el error, por ejem[(ngModel)]="salonData.state"plo, mostrar un mensaje de error
+      }
+    });
+  }
+
+
+
 }

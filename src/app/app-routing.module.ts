@@ -13,7 +13,7 @@ import { ContactProffesionalComponent } from './components/contact-proffesional/
 import { ReclamationsComponent } from './components/reclamations/reclamations.component';
 import { ServicesComponent } from './components/services/services.component';
 import { EditHomeComponent } from './components/home/edit-home/edit-home.component';
-
+import { NewHomeComponent } from './components/home/new-home/new-home.component';
 
 
 const routes: Routes = [
@@ -31,6 +31,8 @@ const routes: Routes = [
   { path: 'reclamations', component: ReclamationsComponent, title:'Adm | Mis Peluquerias'},
   { path: 'export', component: ExportComponent, title:'Adm | Mis Peluquerias'},
   { path: 'import', component: ImportComponent, title:'Adm | Mis Peluquerias'},
+  { path: 'new-home', component: NewHomeComponent, title:'Adm | Mis Peluquerias'},
+
   { path: '**', component:LoginComponent }
 
 ];

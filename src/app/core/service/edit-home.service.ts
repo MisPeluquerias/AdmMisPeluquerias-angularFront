@@ -81,4 +81,13 @@ export class EditHomeService {
   deleteImage(imageId: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/edithomeimages/deleteImage/${imageId}`);
   }
+
+  updatePrincipalImage(fileId: number, filePrincipal: boolean): Observable<any> {
+    const body = {
+      file_id: fileId,
+      file_principal: filePrincipal
+    };
+
+    return this.http.put<any>(`${this.baseUrl}/edithomeimages/updatePrincipalImage`, body);
+  }
 }
