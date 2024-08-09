@@ -125,7 +125,7 @@
 
             <form>
               <div class="row mb-3 align-items-center">
-                <div class="col-md-4">
+                <div class="col-md-2">
                   <label for="estado" class="form-label">Estado</label>
                   <select
                     class="form-select"
@@ -205,7 +205,7 @@
                     >Nº de Teléfono</label
                   >
                   <input
-                    type="text"
+                    type="telf"
                     class="form-control"
                     id="phone"
                     name="phone"
@@ -233,7 +233,7 @@
                   </select>
                 </div>
                 <div class="col-md-6">
-                  <label for="ciudad" class="form-label">Ciudad</label>
+                  <label for="ciudad" class="form-label">Ciudad-CP</label>
                   <select
                     class="form-select"
                     id="ciudad"
@@ -538,7 +538,13 @@
                 <input type="text" class="form-control" placeholder="Buscar" />
               </div>
               <div class="col-md-4 d-flex justify-content-end">
-                <button class="btn btn-danger"  data-bs-toggle="modal" data-bs-target="#modalNuevoServicio">Nuevo</button>
+                <button
+                  class="btn btn-danger"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modalNuevoServicio"
+                >
+                  Nuevo
+                </button>
               </div>
             </div>
 
@@ -558,9 +564,9 @@
                     </thead>
                     <tbody>
                       <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>Corte</td>
+                        <td>Mujer, Hombre</td>
+                        <td>10 min</td>
                         <td></td>
                         <td>
                           <button class="btn btn-dark">
@@ -576,9 +582,11 @@
                         aria-labelledby="exampleModalLabel"
                         aria-hidden="true"
                       >
-                        <div class="modal-dialog modal-dialog-centered">
+                        <div
+                          class="modal-dialog modal-dialog-centered modal-xl"
+                        >
                           <div class="modal-content">
-                            <div class="modal-header">
+                            <div class="modal-header bg-danger text-white">
                               <h5 class="modal-title" id="exampleModalLabel">
                                 Añadir servicios
                               </h5>
@@ -590,15 +598,20 @@
                               ></button>
                             </div>
                             <div class="modal-body">
-                              <p>Crea un nuevo registro</p>
+                              <p class="text-muted mb-4">
+                                Complete los detalles del nuevo servicio
+                              </p>
                               <form>
                                 <div class="mb-3">
-                                  <label for="serviceSelect" class="form-label"
+                                  <label
+                                    for="serviceSelect"
+                                    class="form-label fw-bold"
                                     >Servicio</label
                                   >
                                   <select
                                     id="serviceSelect"
                                     class="form-select"
+                                    aria-label="Selecciona una opción"
                                   >
                                     <option selected>
                                       Selecciona una opción
@@ -609,29 +622,33 @@
                                     <!-- Añadir más opciones según sea necesario -->
                                   </select>
                                 </div>
-                                <div class="mb-3">
-                                  <label for="timeInput" class="form-label"
-                                    >Tiempo Actividad (Minutos)</label
-                                  >
-                                  <input
-                                    type="number"
-                                    class="form-control"
-                                    id="timeInput"
-                                    placeholder="10"
-                                  />
-                                </div>
-                                <div class="mb-3">
-                                  <label
-                                    for="subserviceInput"
-                                    class="form-label"
-                                    >Subservicio</label
-                                  >
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    id="subserviceInput"
-                                    placeholder="Subservicio"
-                                  />
+                                <div class="row">
+                                  <div class="col-md-6 mb-3">
+                                    <label
+                                      for="timeInput"
+                                      class="form-label fw-bold"
+                                      >Tiempo Actividad (Minutos)</label
+                                    >
+                                    <input
+                                      type="number"
+                                      class="form-control"
+                                      id="timeInput"
+                                      placeholder="10"
+                                    />
+                                  </div>
+                                  <div class="col-md-6 mb-3">
+                                    <label
+                                      for="subserviceInput"
+                                      class="form-label fw-bold"
+                                      >Subservicio</label
+                                    >
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      id="subserviceInput"
+                                      placeholder="Ingrese el subservicio"
+                                    />
+                                  </div>
                                 </div>
                               </form>
                             </div>
@@ -650,6 +667,7 @@
                           </div>
                         </div>
                       </div>
+
                       <!-- Repite para los demás servicios -->
                       <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
                     </tbody>

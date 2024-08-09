@@ -1,8 +1,10 @@
 import { Component} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EditHomeService } from '../../../core/service/edit-home.service';
+import { NewHomeService } from '../../../core/service/new-home.service';
 import { ToastrService } from 'ngx-toastr';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgForm } from '@angular/forms';
+
+
 @Component({
   selector: 'app-new-home',
   templateUrl: './new-home.component.html',
@@ -12,13 +14,14 @@ export class NewHomeComponent {
 
 
   salonId: number = 0;
+
   salonData: any = {
     id_salon: '',
     id_city: '',
     id_province: '',
     plus_code: '',
     active: '1',
-    state: '',
+    state: 'No reclamado',
     in_vacation: '',
     name: '',
     address: '',
@@ -43,6 +46,8 @@ export class NewHomeComponent {
     city_zip_code: '',
   };
 
+  in_vacation=0;
+
   provinces: any[] = [];
   cities: any[] = [];
   dias: any[] = [];
@@ -62,9 +67,8 @@ export class NewHomeComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private editHomeService: EditHomeService,
+    private newHomeService: NewHomeService,
     private toastr: ToastrService,
-    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -72,21 +76,18 @@ export class NewHomeComponent {
       const id = params.get('id');
       this.salonId = id ? +id : 0; // Convierte el ID a número, asegurándote de que es un valor válido
       this.loadProvinces();
+      if (sessionStorage.getItem('salonCreated') === 'true') {
+        // Mostrar el toast de éxito
+        this.toastr.success('<i class="las la-info-circle">Salón creado con éxito.</i>');
+
+        // Eliminar el indicador para que no se muestre nuevamente
+        sessionStorage.removeItem('salonCreated');
+    }
     });
   }
 
-  openImage(url: string, alt: string): void {
-    this.currentImageUrl = url;
-    this.currentImageAlt = alt;
-    this.isImageOpen = true;
-  }
-
-  closeImage(): void {
-    this.isImageOpen = false;
-  }
-
   loadProvinces(): void {
-    this.editHomeService.getProvinces().subscribe(
+    this.newHomeService.getProvinces().subscribe(
       (response: any) => {
         this.provinces = response.data;
         if (this.salonId) {
@@ -98,17 +99,13 @@ export class NewHomeComponent {
     );
   }
 
-
-
-
-
   onProvinceChange(provinceId: number, initialLoad: boolean = false): void {
     if (!initialLoad) {
       this.salonData.id_city = '';
       this.salonData.city_name = '';
     }
 
-    this.editHomeService.getCitiesByProvince(provinceId).subscribe(
+    this.newHomeService.getCitiesByProvince(provinceId).subscribe(
       (response: any) => {
         this.cities = response.data;
         if (initialLoad && this.salonData.id_city) {
@@ -138,9 +135,31 @@ export class NewHomeComponent {
     this.selectedFile = event.target.files[0];
   }
 
+  createSalon(form: NgForm) {
+    this.salonData.in_vacation = '0'; // Valor inicial por defecto
+    if (form.invalid) {
+        form.control.markAllAsTouched();
+        this.salonData.in_vacation = ''; // Si la validación falla, puedes manejar el estado como desees
+        return;
+    }
 
+    this.newHomeService.createSalon(this.salonData).subscribe(
+        response => {
+            console.log('Salon created successfully', response);
 
+            // Guardar indicador en sessionStorage
+            sessionStorage.setItem('salonCreated', 'true');
 
+            // Recargar la página
+            window.location.reload();
+        },
+        error => {
+            console.error('Error creating salon', error);
+            this.toastr.error('<i class="las la-info-circle">Error: Revise los campos del formulario.</i>');
+            this.salonData.in_vacation = ''; // Manejo de errores si es necesario
+        }
+    );
+}
 
 
 }
