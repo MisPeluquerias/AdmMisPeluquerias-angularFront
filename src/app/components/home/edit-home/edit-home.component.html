@@ -558,140 +558,44 @@
                         <th>Servicio</th>
                         <th>Subservicio</th>
                         <th>Tiempo</th>
-                        <th>Activo</th>
-                        <th colspan="2">Editar</th>
+                        <th colspan="2">Editar/Eliminar</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Corte</td>
-                        <td>Mujer, Hombre</td>
-                        <td>10 min</td>
-                        <td></td>
+                      <tr *ngFor="let service of getSalonServices">
+                        <td>{{ service.service_name }}</td>
+                        <td>{{ service.subservices}}</td>
+                        <td>{{ service.time }} minutos</td>
                         <td>
-                          <button class="btn btn-dark">
+                          <button class="btn btn-dark"
+                          data-bs-toggle="modal"
+                          data-bs-target="#modalEditService"
+                          (click)="openEditModal(service)">
                             <i class="fas fa-edit"></i>
+                          </button>
+                          <button class="btn btn-danger ms-2" (click)="deleteServiceWithSubservice(service.id_service)" >
+                            <i class="fas fa-trash-alt"></i>
                           </button>
                         </td>
                       </tr>
-                      <!-- Modal  para anadir servicio y subservicio -->
-                      <div
-                        class="modal fade"
-                        id="modalNuevoServicio"
-                        tabindex="-1"
-                        aria-labelledby="exampleModalLabel"
-                        aria-hidden="true"
-                      >
-                        <div
-                          class="modal-dialog modal-dialog-centered modal-xl"
-                        >
-                          <div class="modal-content">
-                            <div class="modal-header bg-danger text-white">
-                              <h5 class="modal-title" id="exampleModalLabel">
-                                Añadir servicios
-                              </h5>
-                              <button
-                                type="button"
-                                class="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"
-                              ></button>
-                            </div>
-                            <div class="modal-body">
-                              <p class="text-muted mb-4">
-                                Complete los detalles del nuevo servicio
-                              </p>
-                              <form>
-                                <div class="mb-3">
-                                  <label
-                                    for="serviceSelect"
-                                    class="form-label fw-bold"
-                                    >Servicio</label
-                                  >
-                                  <select
-                                    id="serviceSelect"
-                                    class="form-select"
-                                    aria-label="Selecciona una opción"
-                                  >
-                                    <option selected>
-                                      Selecciona una opción
-                                    </option>
-                                    <option value="1">Corte de pelo</option>
-                                    <option value="2">Coloración</option>
-                                    <option value="3">Peinado</option>
-                                    <!-- Añadir más opciones según sea necesario -->
-                                  </select>
-                                </div>
-                                <div class="row">
-                                  <div class="col-md-6 mb-3">
-                                    <label
-                                      for="timeInput"
-                                      class="form-label fw-bold"
-                                      >Tiempo Actividad (Minutos)</label
-                                    >
-                                    <input
-                                      type="number"
-                                      class="form-control"
-                                      id="timeInput"
-                                      placeholder="10"
-                                    />
-                                  </div>
-                                  <div class="col-md-6 mb-3">
-                                    <label
-                                      for="subserviceInput"
-                                      class="form-label fw-bold"
-                                      >Subservicio</label
-                                    >
-                                    <input
-                                      type="text"
-                                      class="form-control"
-                                      id="subserviceInput"
-                                      placeholder="Ingrese el subservicio"
-                                    />
-                                  </div>
-                                </div>
-                              </form>
-                            </div>
-                            <div class="modal-footer">
-                              <button
-                                type="button"
-                                class="btn btn-secondary"
-                                data-bs-dismiss="modal"
-                              >
-                                Cancelar
-                              </button>
-                              <button type="button" class="btn btn-danger">
-                                Guardar
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- Repite para los demás servicios -->
-                      <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
                     </tbody>
                   </table>
                 </div>
                 <!-- Paginación -->
                 <nav aria-label="Page navigation example">
                   <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                      <a class="page-link" href="#" aria-label="Previous">
+                    <li class="page-item" [class.disabled]="currentPage === 1">
+                      <a class="page-link" href="#" aria-label="Previous" (click)="changePage(currentPage - 1)">
                         <span aria-hidden="true">&laquo;</span>
                       </a>
                     </li>
-                    <li class="page-item active">
-                      <a class="page-link" href="#">1</a>
+
+                    <li class="page-item" *ngFor="let page of getPagesArray()" [class.active]="page === currentPage">
+                      <a class="page-link" href="#" (click)="changePage(page)">{{ page }}</a>
                     </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">3</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#" aria-label="Next">
+
+                    <li class="page-item" [class.disabled]="currentPage === totalPages">
+                      <a class="page-link" href="#" aria-label="Next" (click)="changePage(currentPage + 1)">
                         <span aria-hidden="true">&raquo;</span>
                       </a>
                     </li>
@@ -800,9 +704,6 @@
               <div class="col-md-8">
                 <input type="text" class="form-control" placeholder="Buscar" />
               </div>
-              <div class="col-md-4 d-flex justify-content-end">
-                <button class="btn btn-danger">Nuevo</button>
-              </div>
             </div>
 
             <!-- Tabla de Preguntas -->
@@ -812,104 +713,55 @@
                   <table class="table table-hover table-light">
                     <thead class="thead-dark">
                       <tr>
-                        <th><input type="checkbox" /></th>
                         <th>Pregunta</th>
                         <th>Respuesta</th>
-                        <th>Convertido en FAQ</th>
-                        <th>Acciones</th>
+                        <th>Responder/ Eliminar</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td><input type="checkbox" /></td>
-                        <td>Hola</td>
-                        <td></td>
-                        <td>No</td>
+                      <tr *ngFor="let faq of faqByIdSalon">
+                        <td>{{ faq.question }}</td>
+                        <td>{{ faq.answer }}</td>
                         <td>
-                          <button class="btn btn-dark">
+                          <button class="btn btn-dark me-3"
+                          data-bs-toggle="modal"
+                          data-bs-target="#editQuestionModal"
+                         (click)="editQuestion(faq)">
                             <i class="fas fa-edit"></i>
+                          </button>
+                          <button class="btn btn-danger"
+                          (click)="deleteQuestion(faq.id_faq)">
+                            <i class="fas fa-trash"></i>
                           </button>
                         </td>
                       </tr>
-                      <tr>
-                        <td><input type="checkbox" /></td>
-                        <td>Prueba pregunta</td>
-                        <td></td>
-                        <td>No</td>
-                        <td>
-                          <button class="btn btn-dark">
-                            <i class="fas fa-edit"></i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><input type="checkbox" /></td>
-                        <td>¿A qué hora estamos abiertos?</td>
-                        <td>
-                          Nuestro horario de atención es de Lunes a Viernes de
-                          10:00 a 14:00 y de 17:00 a 20:00
-                        </td>
-                        <td>Si</td>
-                        <td>
-                          <button class="btn btn-dark">
-                            <i class="fas fa-edit"></i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><input type="checkbox" /></td>
-                        <td>¿Puede ser posible un corte de pelo el domingo?</td>
-                        <td>Si, puede ser</td>
-                        <td>Si</td>
-                        <td>
-                          <button class="btn btn-dark">
-                            <i class="fas fa-edit"></i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><input type="checkbox" /></td>
-                        <td>¿Tiñen barbas?</td>
-                        <td>Si, nuestra gama de tintes es muy extensa</td>
-                        <td>No</td>
-                        <td>
-                          <button class="btn btn-dark">
-                            <i class="fas fa-edit"></i>
-                          </button>
-                        </td>
-                      </tr>
-                      <!-- Repite para las demás preguntas -->
-                      <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
                     </tbody>
                   </table>
+
                 </div>
                 <!-- Paginación -->
                 <nav aria-label="Page navigation example">
                   <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                      <a class="page-link" href="#" aria-label="Previous">
+                    <!-- Botón de "Anterior" -->
+                    <li class="page-item" [class.disabled]="currentPage === 1">
+                      <a class="page-link" href="#" aria-label="Previous" (click)="changePage(currentPage - 1)">
                         <span aria-hidden="true">&laquo;</span>
                       </a>
                     </li>
-                    <li class="page-item active">
-                      <a class="page-link" href="#">1</a>
+
+                    <!-- Números de página -->
+                    <li *ngFor="let page of getPagesArray()" class="page-item" [class.active]="page === currentPage">
+                      <a class="page-link" href="#" (click)="changePage(page)">{{ page }}</a>
                     </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">3</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#" aria-label="Next">
+
+                    <!-- Botón de "Siguiente" -->
+                    <li class="page-item" [class.disabled]="currentPage === totalPages">
+                      <a class="page-link" href="#" aria-label="Next" (click)="changePage(currentPage + 1)">
                         <span aria-hidden="true">&raquo;</span>
                       </a>
                     </li>
                   </ul>
                 </nav>
-                <div class="pagination-summary">
-                  Mostrando 1 de 5 de 5 Entradas
-                </div>
               </div>
             </div>
           </div>
@@ -921,13 +773,19 @@
           >
             <!-- Calificación promedio -->
             <div class="text-center my-4">
-              <h2>4.00 <small>/5</small></h2>
+              <h2>{{ averageRating.toFixed(2) }} <small>/5</small></h2>
               <div>
-                <i class="fas fa-star" style="color: gold"></i>
-                <i class="fas fa-star" style="color: gold"></i>
-                <i class="fas fa-star" style="color: gold"></i>
-                <i class="fas fa-star" style="color: gold"></i>
-                <i class="fas fa-star" style="color: lightgray"></i>
+                <ng-container *ngFor="let star of generateStarRatingArray(averageRating)">
+                  <i
+                    class="fas"
+                    [ngClass]="{
+                      'fa-star': star === 1,
+                      'fa-star-half-alt': star === 0.5,
+                      'fa-star-empty': star === 0
+                    }"
+                    [style.color]="star === 1 || star === 0.5 ? 'gold' : 'lightgray'"
+                  ></i>
+                </ng-container>
               </div>
             </div>
 
@@ -945,36 +803,43 @@
                   <table class="table table-hover table-light">
                     <thead class="thead-dark">
                       <tr>
-                        <th><input type="checkbox" /></th>
-                        <th>Observación</th>
-                        <th>Servicio</th>
-                        <th>Calidad/Precio</th>
-                        <th>Limpieza</th>
-                        <th>Puntualidad</th>
-                        <th>Media</th>
+                        <th>Reseña</th>
+                        <th>Usuario</th>
+                        <th>Calificación</th>
+                      <th>Editar/Eliminar</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td><input type="checkbox" /></td>
-                        <td>Muy buen servicio</td>
-                        <td>5</td>
-                        <td>4</td>
-                        <td>5</td>
-                        <td>5</td>
-                        <td>4.8</td>
+                      <!-- Itera sobre el array de reseñas -->
+                      <tr *ngFor="let review of reviews">
+                        <td>{{ review.observacion }}</td>
+                        <td>{{ review.name }}</td>
+                        <td>
+        <div class="star-rating">
+          <!-- Generar estrellas llenas -->
+          <ng-container *ngFor="let star of getFilledStars(review.qualification); let i = index">
+            <span class="star" [ngClass]="{'filled': i < review.qualification}">&#9733;</span>
+          </ng-container>
+          <!-- Generar estrellas vacías si la calificación es menor a 5 -->
+          <ng-container *ngFor="let star of getEmptyStars(review.qualification); let j = index">
+            <span class="star">&#9734;</span> <!-- Estrella vacía -->
+          </ng-container>
+        </div>
+      </td>
+                        <td>
+                          <button class="btn btn-dark me-3"
+                          data-bs-toggle="modal"
+                          (click)="editReview(review)"
+                          data-bs-target="#editReviewModal">
+                            <i class="fas fa-edit"></i>
+                          </button>
+                          <button class="btn btn-danger"
+                          (click)="deleteReview(review.id_review)">
+
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </td>
                       </tr>
-                      <tr>
-                        <td><input type="checkbox" /></td>
-                        <td>Atención excelente</td>
-                        <td>4</td>
-                        <td>4</td>
-                        <td>4</td>
-                        <td>4</td>
-                        <td>4.0</td>
-                      </tr>
-                      <!-- Repite para las demás reseñas -->
-                      <!-- Aquí iría el loop para generar las filas dinámicamente con Angular -->
                     </tbody>
                   </table>
                 </div>
@@ -1002,13 +867,9 @@
                     </li>
                   </ul>
                 </nav>
-                <div class="pagination-summary">
-                  Mostrando 1 de 5 de 5 Entradas
-                </div>
               </div>
             </div>
           </div>
-
           <!-- Aquí se agregarían los demás paneles de contenido para Servicios, Permisos, etc. -->
         </div>
       </div>
@@ -1016,3 +877,302 @@
     <app-footer></app-footer>
   </div>
 </div>
+<!-- Modal  para anadir servicio y subservicio -->
+<div
+  class="modal fade"
+  id="modalNuevoServicio"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="exampleModalLabel">Añadir servicios</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted mb-4">Complete los detalles del nuevo servicio</p>
+        <form>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="serviceSelect" class="form-label fw-bold">Servicio</label>
+              <select
+                id="serviceSelect"
+                class="form-select"
+                aria-label="Selecciona una opción"
+                [(ngModel)]="newServiceName"
+                name="newServiceName"
+              >
+                <option value="" selected>Selecciona una opción</option>
+                <option *ngFor="let service of getSalonDataSelect" [value]="service.name">
+                  {{ service.name }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="timeInput" class="form-label fw-bold"
+                >Tiempo Actividad (Minutos)</label
+              >
+              <input
+                type="number"
+                class="form-control"
+                id="timeInput"
+                placeholder="10"
+                [(ngModel)]="newServiceTime"
+                name="newServiceTime"
+              />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12 mb-3 row">
+              <label for="subserviceInput" class="form-label fw-bold"
+                >Subservicio</label
+              >
+              <textarea
+              [(ngModel)]="newSubservices"
+              name="newSubservices"
+                class="form-control"
+                id="subserviceInput"
+                placeholder="Ingrese el subservicio separado por ';' y un espacio."
+              ></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-danger" (click)="addService()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal  para editar servicio y subservicio -->
+
+<div
+  class="modal fade"
+  id="modalEditService"
+  tabindex="-1"
+  aria-labelledby="modalEditService"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="modalEditService">Editar servicios</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted mb-4">Complete los detalles para editar servicio</p>
+        <form>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="serviceSelect" class="form-label fw-bold">Servicio</label>
+              <select
+                id="serviceSelect"
+                class="form-select"
+                aria-label="Selecciona una opción"
+                [(ngModel)]="newServiceName"
+                name="newServiceName"
+              >
+                <option value="" selected>Selecciona una opción</option>
+                <option *ngFor="let service of getSalonDataSelect" [value]="service.name">
+                  {{ service.name }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="timeInput" class="form-label fw-bold"
+                >Tiempo Actividad (Minutos)</label
+              >
+              <input
+                type="number"
+                class="form-control"
+                id="timeInput"
+                placeholder="10"
+                [(ngModel)]="newServiceTime"
+                name="newServiceTime"
+              />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12 mb-3 row">
+              <label for="subserviceInput" class="form-label fw-bold"
+                >Subservicio</label
+              >
+              <textarea
+              [(ngModel)]="newSubservices"
+              name="newSubservices"
+                class="form-control"
+                id="subserviceInput"
+                placeholder="Ingrese el subservicio separado por ';' y un espacio."
+              ></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        <button type="button  editReviewText: string = '';" class="btn btn-danger" (click)="updateServiceWithSubservice()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="editQuestionModal"
+  tabindex="-1"
+  aria-labelledby="editQuestionModalLabel"
+  aria-hidden="true"
+>
+<div class="modal-dialog modal-dialog-centered">
+  <div class="modal-content shadow-lg">
+    <div class="modal-header bg-danger text-white">
+      <h5 class="modal-title" id="editQuestionModalLabel">
+        Responder Pregunta
+      </h5>
+      <button
+        type="button"
+        class="btn-close btn-close-white"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <form (ngSubmit)="updateQuestion()">
+        <div class="mb-3">
+          <label for="editQuestionText" class="form-label fw-bold">Pregunta</label>
+          <textarea
+            class="form-control border-0 bg-light"
+            id="editQuestionText"
+            rows="2"
+            [(ngModel)]="editQuestionText"
+            name="editQuestionText"
+            readonly
+          ></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="editAnswerText" class="form-label fw-bold">Respuesta</label>
+          <textarea
+            class="form-control"
+            id="editAnswerText"
+            rows="4"
+            [(ngModel)]="editAnswerText"
+            name="editAnswerText"
+            required
+          ></textarea>
+        </div>
+        <div class="d-flex justify-content-end">
+          <button type="submit" class="btn btn-danger">
+            Guardar Respuesta
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<div
+  class="modal fade"
+  id="editReviewModal"
+  tabindex="-1"
+  aria-labelledby="editReviewModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h5 class="modal-title" id="editReviewModalLabel">Modificar Reseña</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="updateReview()">
+          <div class="mb-3">
+            <label for="editReviewText" class="form-label">Tu Reseña</label>
+            <textarea
+              class="form-control"
+              id="editReviewText"
+              rows="4"
+              [(ngModel)]="editReviewText"
+              name="editReviewText"
+              required
+            ></textarea>
+          </div>
+          <div class="mb-3 d-flex flex-column align-items-end">
+            <label class="form-label">Puntuación</label>
+            <div class="d-flex justify-content-end">
+              <div class="star-rating">
+                <input
+                  type="radio"
+                  name="editRating"
+                  id="editStar1"
+                  value="5"
+                  [(ngModel)]="editRating"
+                /><label for="editStar1" class="star">&#9733;</label>
+                <input
+                  type="radio"
+                  name="editRating"
+                  id="editStar2"
+                  value="4"
+                  [(ngModel)]="editRating"
+                /><label for="editStar2" class="star">&#9733;</label>
+                <input
+                  type="radio"
+                  name="editRating"
+                  id="editStar3"
+                  value="3"
+                  [(ngModel)]="editRating"
+                /><label for="editStar3" class="star">&#9733;</label>
+                <input
+                  type="radio"
+                  name="editRating"
+                  id="editStar4"
+                  value="2"r
+                  [(ngModel)]="editRating"
+                /><label for="editStar4" class="star">&#9733;</label>
+                <input
+                  type="radio"
+                  name="editRating"
+                  id="editStar5"
+                  value="1"
+                  [(ngModel)]="editRating"
+                /><label for="editStar5" class="star">&#9733;</label>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-danger">
+              Guardar Cambios
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
