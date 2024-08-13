@@ -46,7 +46,8 @@ export class EditHomeComponent implements OnInit {
   provinces: any[] = [];
   cities: any[] = [];
   dias: any[] = [];
-
+  getSalonServices:any[]=[]
+  totalItems: number = 0;
   currentPage: number = 1;
   pageSize: number = 10;
   selectedFile: File | null = null;
@@ -58,6 +59,22 @@ export class EditHomeComponent implements OnInit {
   currentImageUrl: string = '';
   currentImageAlt: string = '';
   isImageOpen =false;
+  services: any[]=[];
+  newServiceName: string = '';
+  newSubservices: string = '';
+  newServiceTime:number=0;
+  selectedService: any = {};
+  totalPages: number = 1;
+  getSalonDataSelect:any[]=[];
+  faqByIdSalon:any[]=[];
+  faqToEdit: any;
+  editAnswerText: string = '';
+  editQuestionText: string = ''
+  reviews:any[]=[];
+  reviewToEdit: any;
+  editRating: string = '';
+  editReviewText: string = '';
+  averageRating: number = 0;
 
 
   constructor(
@@ -74,6 +91,10 @@ export class EditHomeComponent implements OnInit {
       this.salonId = id ? +id : 0; // Convierte el ID a número, asegurándote de que es un valor válido
       this.loadProvinces();
       this.loadImages();
+      this.getUniqueServices();
+      this.getServicesWithSubservices();
+      this.getFaqByIdSalon();
+      this.getReviewsById();
     });
   }
 
@@ -265,6 +286,8 @@ export class EditHomeComponent implements OnInit {
       return;
     }
 
+
+
     const formData = new FormData();
     formData.append('image', this.selectedFile);
     formData.append('file_name', this.selectedFile.name);
@@ -300,14 +323,16 @@ export class EditHomeComponent implements OnInit {
   }
 
   deleteImage(imageId: number): void {
-
+    if (confirm('¿Estás seguro de que quieres eliminar esta imagen?')) {
       this.editHomeService.deleteImage(imageId).subscribe(response => {
-        console.log('Image deleted successfully', response);
+        //console.log('Image deleted successfully', response);
         this.loadImages(); // Recargar la lista de imágenes
       }, error => {
         console.error('Error deleting image', error);
       });
+    }
   }
+
   uniqueCheckboxSelectImge(index: number): void {
     const selectedImage = this.images[index];
     if (selectedImage.file_principal) {
@@ -317,6 +342,7 @@ export class EditHomeComponent implements OnInit {
           image.file_principal = false;
           this.updatePrincipalmage(image.file_id, false); // Desmarcar en el backend
         }
+
       });
     }
 
@@ -337,6 +363,257 @@ export class EditHomeComponent implements OnInit {
     });
   }
 
+  getUniqueServices(){
+    this.editHomeService.getServices().subscribe(
+      (response) => {
+        if (response.success) {
+          this.getSalonDataSelect = response.data;
+          console.log('Servicios cargados',this.getSalonServices); // Usa este valor para gestionar la paginación en el frontend
+        } else {
+          console.error('Error fetching services', response);
+
+        }
+      },
+      (error) => {
+        console.error('Error fetching services ', error);
+      }
+    );
+  }
+
+  addService(): void {
+
+    const subservicesArray = this.newSubservices.split(';').map(subservice => subservice.trim());
+
+    this.editHomeService.addService(this.salonId, this.newServiceName, subservicesArray, this.newServiceTime).subscribe(
+      (response) => {
+        if (response.success) {
+          this.toastr.success('Servicio agregado con éxito');
+          this.getServicesWithSubservices(); // Recargar la lista de servicios
+        } else {
+          this.toastr.error('Error al agregar el servicio');
+        }
+      },
+      (error) => {
+        console.error('Error adding service:', error);
+        this.toastr.error('Error al agregar el servicio');
+      }
+    );
+  }
+
+  getServicesWithSubservices() {
+    this.editHomeService.getServicesWithSubservices(this.salonId).subscribe(
+      (response) => {
+        if (response.data && response.data.length > 0) {
+          this.getSalonServices = response.data;
+          console.log(this.getSalonServices); // Asegúrate de que los datos se asignen correctamente
+        } else {
+          console.error('No data found or response format incorrect', response);
+        }
+      },
+      (error) => {
+        console.error('Error fetching services with subservices', error);
+      }
+    );
+  }
+
+  openEditModal(service: any): void {
+    this.selectedService = { ...service }; // Clona el objeto del servicio seleccionado
+    this.newServiceName = this.selectedService.service_name;
+    this.newServiceTime = this.selectedService.time;
+    this.newSubservices = this.selectedService.subservices;
+  }
+
+  updateServiceWithSubservice(): void {
+    const subservicesArray = this.newSubservices.split(';').map(subservice => subservice.trim());
+
+    this.editHomeService.updateServiceWithSubservice(
+      this.selectedService.id_service,
+      this.salonId,
+      this.newServiceName,
+      subservicesArray,
+      this.newServiceTime
+    ).subscribe(
+      (response) => {
+        if (response.success) {
+          this.toastr.success('Servicio actualizado con éxito');
+          this.getServicesWithSubservices(); // Recargar la lista de servicios
+          this.modalService.dismissAll(); // Cerrar el modal
+        } else {
+          this.toastr.error('Error al actualizar el servicio');
+        }
+      },
+      (error) => {
+        console.error('Error updating service:', error);
+        this.toastr.error('Error al actualizar el servicio');
+      }
+    );
+  }
+  changePage(page: number): void {
+    if (page > 0 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.getServicesWithSubservices();
+    }
+  }
+
+  getPagesArray(): number[] {
+    return Array(this.totalPages).fill(0).map((x, i) => i + 1);
+  }
 
 
+  deleteServiceWithSubservice(serviceId: number): void {
+    if (confirm('¿Estás seguro de que quieres eliminar este servicio?')) {
+      this.editHomeService.deleteServiceWithSubservice(serviceId).subscribe(
+        (response) => {
+          if (response.success) {
+            this.toastr.success('Servicio eliminado con éxito');
+            this.getServicesWithSubservices(); // Refresca la lista de servicios
+          } else {
+            this.toastr.error('Error al eliminar el servicio');
+          }
+        },
+        (error) => {
+          console.error('Error deleting service:', error);
+          this.toastr.error('Error al eliminar el servicio');
+        }
+      );
+    }
+  }
+
+  updateQuestion(): void {
+    const updatedQuestion = {
+      id_faq: this.faqToEdit.id_faq,
+      answer: this.editAnswerText
+    };
+
+    this.editHomeService.updateFaq(updatedQuestion.id_faq, updatedQuestion.answer).subscribe(
+      response => {
+        this.toastr.success('Pregunta respondida con éxito');
+        this.getFaqByIdSalon();
+      },
+      error => console.error('Error actualizando la pregunta', error)
+    );
+  }
+
+
+  getFaqByIdSalon() {
+    this.editHomeService.getFaqByIdSalon(this.salonId, this.currentPage, this.pageSize).subscribe(
+      (response) => {
+        if (response.success) {
+          this.faqByIdSalon = response.data;
+          this.totalItems = response.total;
+          this.totalPages = Math.ceil(this.totalItems / this.pageSize);
+          console.log('FAQs loaded successfully', this.faqByIdSalon);
+        } else {
+          console.error('Error fetching FAQs', response);
+        }
+      },
+      (error) => {
+        console.error('Error fetching FAQs', error);
+      }
+    );
+  }
+
+  editQuestion(faq: any): void {
+    this.faqToEdit = faq;
+    this.editQuestionText = faq.question;
+    this.editAnswerText = faq.answer;
+  }
+
+  deleteQuestion(id_faq: string): void {
+    if (confirm('¿Estás seguro de que quieres eliminar esta pregunta?')) {
+    if (this.salonId) {
+      this.editHomeService.deleteFaq(id_faq).subscribe(
+        response => {
+          this.toastr.success('Pregunta eliminada con éxito');
+          this.getFaqByIdSalon();
+        },
+        error => console.error('Error eliminando la pregunta', error)
+      );
+    } else {
+      console.error('No se encontró el ID del salón.');
+    }
+  }
+  }
+
+  getReviewsById(){
+    this.editHomeService.loadReview(this.salonId).subscribe(
+      reviews => {
+        this.reviews = reviews;
+        this.calculateAverageRating();
+        console.log('Reseñas cargadas:', reviews);
+      },
+      error => console.error('Error loading reviews', error)
+
+    );
+    console.log('id_salon reviews: ',this.salonId);
+  }
+
+  updateReview(): void {
+    const updatedReview = {
+      ...this.reviewToEdit,
+      observacion: this.editReviewText,
+      qualification: this.editRating
+    };
+
+    this.editHomeService.updateReview(updatedReview).subscribe(
+      response => {
+        this.toastr.success('Reseña acutalizada con éxito')
+        console.log('Reseña actualizada:', response);
+        this.getReviewsById();
+      },
+      error => console.error('Error actualizando la reseña', error)
+    );
+
+  }
+  editReview(review: any): void {
+    this.reviewToEdit = review;
+    this.editReviewText = review.observacion;
+    this.editRating = review.qualification;
+  }
+
+  deleteReview(reviewId: string): void {
+    if (confirm('¿Estás seguro de que quieres eliminar esta reseña?')) {
+    if (this.salonId) {
+      this.editHomeService.deleteReview(reviewId).subscribe(
+        response => {
+          console.log('Reseña eliminada:', response);
+          this.getReviewsById();
+        },
+        error => console.error('Error eliminando la reseña', error)
+      );
+    } else {
+      console.error('No se encontró el ID del salón.');
+    }
+  }
+  }
+  getFilledStars(qualification: number): number[] {
+    return Array(qualification).fill(0).map((x, i) => i + 1);
+  }
+
+  getEmptyStars(qualification: number): number[] {
+    const totalStars = 5;
+    return Array(totalStars - qualification).fill(0).map((x, i) => i + 1);
+  }
+  calculateAverageRating(): void {
+    if (this.reviews.length > 0) {
+      const total = this.reviews.reduce((sum, review) => sum + review.qualification, 0);
+      this.averageRating = total / this.reviews.length;
+    } else {
+      this.averageRating = 0;  // Si no hay reseñas, la media es 0
+    }
+  }
+
+  generateStarRatingArray(rating: number): number[] {
+    const totalStars = 5;
+    const fullStars = Math.floor(rating);  // Número de estrellas completas
+    const halfStar = rating % 1 >= 0.5 ? 1 : 0;  // Determina si hay media estrella
+    const emptyStars = totalStars - fullStars - halfStar;  // Estrellas vacías
+
+    // Genera un array que representa las estrellas: llenas, medias y vacías
+    return [
+      ...Array(fullStars).fill(1),  // Estrellas completas
+      ...Array(halfStar).fill(0.5),  // Media estrella, si corresponde
+      ...Array(emptyStars).fill(0),  // Estrellas vacías
+    ];
+  }
 }

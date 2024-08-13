@@ -14,24 +14,41 @@ import { ReclamationsComponent } from './components/reclamations/reclamations.co
 import { ServicesComponent } from './components/services/services.component';
 import { EditHomeComponent } from './components/home/edit-home/edit-home.component';
 import { NewHomeComponent } from './components/home/new-home/new-home.component';
-
+import { AuthGuard } from './core/guards/auth.guard';
+import { ProfileComponent } from './components/profile/profile.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'home', component: HomeComponent,title:'Adm | Mis Peluquerias' },
-  { path: 'home/edit/:id', component: EditHomeComponent,title:'Adm | Mis Peluquerias' },
-  { path: 'clients', component: ClientsComponent,title:'Adm | Mis Peluquerias' },
-  { path: 'administrators', component: AdministratorsComponent,title:'Adm | Mis Peluquerias' },
-  { path: 'cities', component: CitiesComponent,title:'Adm | Mis Peluquerias' },
-  { path: 'categories', component: CategoriesComponent,title:'Adm | Mis Peluquerias'},
-  { path: 'contact', component: ContactComponent, title:'Adm | Mis Peluquerias'},
-  { path: 'contact-proffesional', component: ContactProffesionalComponent, title:'Adm | Mis Peluquerias'},
-  { path: 'services', component:ServicesComponent, title:'Adm | Mis Peluquerias'},
-  { path: 'reclamations', component: ReclamationsComponent, title:'Adm | Mis Peluquerias'},
-  { path: 'export', component: ExportComponent, title:'Adm | Mis Peluquerias'},
-  { path: 'import', component: ImportComponent, title:'Adm | Mis Peluquerias'},
-  { path: 'new-home', component: NewHomeComponent, title:'Adm | Mis Peluquerias'},
+  { path: 'home', component: HomeComponent,
+    canActivate:[AuthGuard],title:'Adm | Mis Peluquerias' },
+  { path: 'home/edit/:id', component: EditHomeComponent,
+    canActivate:[AuthGuard],title:'Adm | Mis Peluquerias' },
+  { path: 'clients', component: ClientsComponent,
+    canActivate:[AuthGuard],title:'Adm | Mis Peluquerias' },
+  { path: 'administrators', component: AdministratorsComponent,
+    canActivate:[AuthGuard],title:'Adm | Mis Peluquerias' },
+  { path: 'cities', component: CitiesComponent,
+    canActivate:[AuthGuard],title:'Adm | Mis Peluquerias' },
+  { path: 'categories', component: CategoriesComponent,
+    canActivate:[AuthGuard],title:'Adm | Mis Peluquerias'},
+  { path: 'contact', component: ContactComponent,
+    canActivate:[AuthGuard], title:'Adm | Mis Peluquerias'},
+  { path: 'contact-proffesional', component: ContactProffesionalComponent,
+    canActivate:[AuthGuard], title:'Adm | Mis Peluquerias'},
+  { path: 'services', component:ServicesComponent,
+    canActivate:[AuthGuard],title:'Adm | Mis Peluquerias'},
+  { path: 'reclamations', component: ReclamationsComponent,
+    canActivate:[AuthGuard], title:'Adm | Mis Peluquerias'},
+  { path: 'export', component: ExportComponent,
+    canActivate:[AuthGuard], title:'Adm | Mis Peluquerias'},
+  { path: 'import', component: ImportComponent,
+    canActivate:[AuthGuard],title:'Adm | Mis Peluquerias'},
+  { path: 'new-home', component: NewHomeComponent,
+    canActivate:[AuthGuard], title:'Adm | Mis Peluquerias'},
+    { path: 'profile', component:ProfileComponent,
+      canActivate:[AuthGuard], title:'Adm | Mis Peluquerias'},
+
 
   { path: '**', component:LoginComponent }
 
