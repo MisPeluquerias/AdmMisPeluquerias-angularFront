@@ -15,6 +15,7 @@ import { ServicesComponent } from './components/services/services.component';
 import { EditHomeComponent } from './components/home/edit-home/edit-home.component';
 import { NewHomeComponent } from './components/home/new-home/new-home.component';
 import { AuthGuard } from './core/guards/auth.guard';
+import { ProfileComponent } from './components/profile/profile.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -45,6 +46,9 @@ const routes: Routes = [
     canActivate:[AuthGuard],title:'Adm | Mis Peluquerias'},
   { path: 'new-home', component: NewHomeComponent,
     canActivate:[AuthGuard], title:'Adm | Mis Peluquerias'},
+    { path: 'profile', component:ProfileComponent,
+      canActivate:[AuthGuard], title:'Adm | Mis Peluquerias'},
+
 
   { path: '**', component:LoginComponent }
 

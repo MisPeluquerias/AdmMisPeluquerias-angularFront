@@ -16,12 +16,13 @@ export class NewHomeService {
   getProvinces(): Observable<any> {
     return this.http.get(`${this.baseUrl}/edithome/getProvinces`);
   }
+
   getCitiesByProvince(id_province: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/edithome/getCitiesByProvince`, {
       params: { id_province: id_province.toString() }
     });
   }
-  
+
   createSalon(salonData: any): Observable<any> {
     const url = `${this.baseUrl}/edithome/createSalon`;
     const headers = new HttpHeaders({

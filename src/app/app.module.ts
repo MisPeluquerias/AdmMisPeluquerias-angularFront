@@ -28,6 +28,9 @@ import { FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { SearchTablePipe } from './shared/pipes/search-table.pipe';
 import { NewHomeComponent } from './components/home/new-home/new-home.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 
 @NgModule({
@@ -52,6 +55,7 @@ import { NewHomeComponent } from './components/home/new-home/new-home.component'
     EditHomeComponent,
     SearchTablePipe,
     NewHomeComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,7 +74,8 @@ import { NewHomeComponent } from './components/home/new-home/new-home.component'
 
   providers: [
     provideHttpClient(withFetch()),
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

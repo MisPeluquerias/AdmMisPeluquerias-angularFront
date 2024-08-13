@@ -27,6 +27,7 @@ import { EditHomeComponent } from './components/home/edit-home/edit-home.compone
 import { FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { SearchTablePipe } from './shared/pipes/search-table.pipe';
+import { ProfileComponent } from './components/profile/profile.component';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import { SearchTablePipe } from './shared/pipes/search-table.pipe';
     SpanishDatePipe,
     EditHomeComponent,
     SearchTablePipe,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
