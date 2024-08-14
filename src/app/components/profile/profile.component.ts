@@ -7,22 +7,21 @@ import { ProfileService } from '../../core/service/profile.service';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent {
-  userData: any = {
-  };
-  id_user: string = '';
-  errorMessage: string = '';
-  cities: any[] = [];
-  provinces: any[] = [];
-
+  userData: any = {};  // Contendrá los datos del usuario
+  id_user: string = '';  // ID del usuario
+  errorMessage: string = '';  // Mensaje de error
+  cities: any[] = [];  // Lista de ciudades
+  provinces: any[] = [];  // Lista de provincias
 
   constructor(private profileService: ProfileService) {}
 
   ngOnInit(): void {
-    const userId = localStorage.getItem('usuarioId');
+    const userId = localStorage.getItem('usuarioId');  // Obtener el ID del usuario desde el local storage
     if (userId) {
       this.id_user = userId;
-      this.getDataUser();
-      this.loadProvinces();
+      this.userData.id_city = '';  // Inicializar id_city a "" para mostrar "Seleccione una ciudad..."
+      this.getDataUser();  // Cargar los datos del usuario
+      this.loadProvinces();  // Cargar las provincias
     }
   }
 
@@ -31,8 +30,12 @@ export class ProfileComponent {
       (data) => {
         if (Array.isArray(data.data) && data.data.length > 0) {
           this.userData = data.data[0];
-          if (this.userData.id_city) {
-            this.loadCities(this.userData.id_city, true); // Cargar ciudades si ya hay una ciudad seleccionada
+          if (!this.userData.id_city) {
+            this.userData.id_city = '';  // Asegúrate de que id_city esté vacío si no hay una ciudad seleccionada
+          }
+
+          if (this.userData.id_province) {
+            this.loadCities(this.userData.id_province, true);
           }
         }
       },
@@ -47,6 +50,12 @@ export class ProfileComponent {
     this.profileService.getProvinces().subscribe(
       (response: any) => {
         this.provinces = response.data;
+        if (this.provinces.length > 0) {
+          if (!this.userData.id_province) {
+            this.userData.id_province = this.provinces[0].id_province;
+            this.loadCities(this.userData.id_province); // Cargar ciudades de la primera provincia
+          }
+        }
       },
       (error) => {
         console.error('Error fetching provinces:', error);
@@ -55,27 +64,19 @@ export class ProfileComponent {
   }
 
   loadCities(provinceId: number, initialLoad: boolean = false): void {
-    if (!initialLoad) {
-      this.userData.id_city = '';
-      this.userData.city_name = '';
-    }
-
     this.profileService.getCitiesByProvince(provinceId).subscribe(
       (response: any) => {
-        console.log('API Response for Cities:', response);  // Verificar la respuesta de la API en la consola
-        if (response && response.data && response.data.length > 0) {
-          this.cities = response.data;
-          console.log('Cities array:', this.cities);  // Verifica que las ciudades se están cargando correctamente
-        } else {
-          console.warn('No cities data found for the selected province.');
-        }
-
-        if (initialLoad && this.userData.id_city) {
-          const selectedCity = this.cities.find(
-            (city) => city.id_city === this.userData.id_city
-          );
-          if (selectedCity) {
-            this.userData.city_name = selectedCity.city_name;
+        this.cities = response.data;
+        if (this.cities.length > 0) {
+          if (initialLoad && this.userData.id_city !== '') {
+            const selectedCity = this.cities.find(city => city.id_city === this.userData.id_city);
+            if (selectedCity) {
+              this.userData.city_name = selectedCity.city_name;
+            }
+          } else {
+            // Selecciona la primera ciudad automáticamente si no hay una ciudad seleccionada
+            this.userData.id_city = this.cities[0].id_city;
+            this.userData.city_name = this.cities[0].city_name;
           }
         }
       },
@@ -88,9 +89,11 @@ export class ProfileComponent {
   onProvinceChange(event: Event): void {
     const target = event.target as HTMLSelectElement;
     const provinceId = Number(target.value);
-    console.log('Province selected:', provinceId);
     if (provinceId) {
       this.loadCities(provinceId);
+      this.userData.id_city = '';  // Resetear a "Seleccione una ciudad..." cuando cambia la provincia
+    } else {
+      this.cities = [];  // Vaciar las ciudades si no hay provincia seleccionada
     }
   }
 
@@ -101,4 +104,8 @@ export class ProfileComponent {
       this.userData.id_city = selectedCity.id_city;
     }
   }
+  
+
+
+
 }

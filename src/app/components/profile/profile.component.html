@@ -58,8 +58,7 @@
                 </div>
                 <div class="col-md-3">
                   <label for="provincia" class="form-label">Provincia</label>
-                  <select class="form-select" id="provincia" [(ngModel)]="userData.id_province" (change)="onProvinceChange($event)">
-                    <option value="">Seleccione una provincia...</option>
+                  <select class="form-select" id="id_province" name="id_province" [(ngModel)]="userData.id_province" (change)="onProvinceChange($event)" >
                     <option *ngFor="let province of provinces" [value]="province.id_province">
                       {{ province.name }}
                     </option>
@@ -69,14 +68,14 @@
                   <label for="poblacion" class="form-label">Población</label>
                   <select
                     class="form-select"
-                    id="ciudad"
+                    id="id_city"
+                    name="id_city"
                     [(ngModel)]="userData.id_city"
                     name="id_city"
                     (change)="onCityChange(userData.id_city)"
                     #city="ngModel"
                     required
                   >
-                  <option value="">Seleccione una ciudad...</option>
                   <option *ngFor="let city of cities" [value]="city.id_city">
                     {{ city.city_name }} - {{ city.zip_code }}
                   </option>
@@ -90,7 +89,6 @@
                       <option value="admin">Administrador del Sistema</option>
                       <option value="salon">Usuario de Salón</option>
                       <option value="client">Cliente</option>
-                      <!-- otras opciones -->
                     </select>
                 </div>
               </div>
