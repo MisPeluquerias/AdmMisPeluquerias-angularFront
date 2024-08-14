@@ -25,4 +25,7 @@ export class ProfileService {
       params: { id_province: id_province.toString() }
     });
   }
+  updateUserData(userData: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/profile-user/updateUser`, userData);
+  }
 }

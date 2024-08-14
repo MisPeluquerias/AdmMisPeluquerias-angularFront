@@ -1,5 +1,6 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { ProfileService } from '../../core/service/profile.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-profile',
@@ -13,7 +14,7 @@ export class ProfileComponent {
   cities: any[] = [];  // Lista de ciudades
   provinces: any[] = [];  // Lista de provincias
 
-  constructor(private profileService: ProfileService) {}
+  constructor(private profileService: ProfileService,private toastr:ToastrService) {}
 
   ngOnInit(): void {
     const userId = localStorage.getItem('usuarioId');  // Obtener el ID del usuario desde el local storage
@@ -104,8 +105,20 @@ export class ProfileComponent {
       this.userData.id_city = selectedCity.id_city;
     }
   }
-  
 
-
-
+  UpdateUserData(): void {
+    console.log('Saving user data:', this.userData);  // Imprime los datos del usuario a guardar
+    this.profileService.updateUserData(this.userData).subscribe(
+      (response) => {
+        this.toastr.success('<i class="las la-info-circle"> Datos actulizados con éxito</i>');
+        console.log('User data saved successfully:', response);  // Muestra la respuesta exitosa
+        // Aquí puedes redirigir o mostrar un mensaje de éxito al usuario
+      },
+      (error) => {
+        console.error('Error saving user data:', error);  // Muestra el error si la solicitud falla
+        this.errorMessage = 'Error saving user data';
+        this.toastr.error('<i class="las la-info-circle"> No se pudieron actualizar los datos</i>');
+      }
+    );
+  }
 }

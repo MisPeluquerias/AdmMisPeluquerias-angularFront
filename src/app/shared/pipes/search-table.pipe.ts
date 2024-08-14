@@ -15,5 +15,4 @@ export class SearchTablePipe implements PipeTransform {
       return JSON.stringify(item).toLowerCase().includes(args);
     });
   }
-
 }
