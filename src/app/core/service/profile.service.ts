@@ -25,4 +25,15 @@ export class ProfileService {
       params: { id_province: id_province.toString() }
     });
   }
+  updateUserData(userData: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/profile-user/updateUser`, userData);
+  }
+
+  updateUserPassword(id_user:string ,newPassword: string): Observable<any> {
+    const body = { id_user, password: newPassword };
+    return this.http.put<any>(`${this.baseUrl}/profile-user/updateUserPassword`, body);
+  }
+  uploadProfilePicture(id_user: string, formData: FormData): Observable<any> {
+    return this.http.put(`${this.baseUrl}/profile-user/uploadProfilePicture/${id_user}`, formData);
+  }
 }

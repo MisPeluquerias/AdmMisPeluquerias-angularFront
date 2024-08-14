@@ -10,10 +10,11 @@ export class HeaderComponent {
   constructor(private authService: AuthService) { }
 
 
-  notificationsCount: number = 9;
-
+  
   logout(): void {
     this.authService.logout();
   }
+
+
 
 }
