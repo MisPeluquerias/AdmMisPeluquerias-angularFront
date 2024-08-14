@@ -1,0 +1,9 @@
+.profile-img {
+  width: 100px; /* Fija el ancho a 80px */
+  height: 100px; /* Fija el alto a 80px */
+  object-fit: cover; /* Mantiene la imagen recortada y centrada */
+  border-radius: 50%; /* Hace la imagen circular */
+  display: block; /* Asegura que la imagen se comporte como un bloque y respete las dimensiones */
+}
+
+

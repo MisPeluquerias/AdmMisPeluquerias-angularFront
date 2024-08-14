@@ -16,3 +16,4 @@ export class SearchTablePipe implements PipeTransform {
     });
   }
 }
+

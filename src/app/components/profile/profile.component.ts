@@ -12,7 +12,9 @@ export class ProfileComponent {
   id_user: string = '';  // ID del usuario
   errorMessage: string = '';  // Mensaje de error
   cities: any[] = [];  // Lista de ciudades
-  provinces: any[] = [];  // Lista de provincias
+  provinces: any[] = [];
+  confirmPassword: string = '';
+  password: string = '';  // Lista de provincias
 
   constructor(private profileService: ProfileService,private toastr:ToastrService) {}
 
@@ -121,4 +123,74 @@ export class ProfileComponent {
       }
     );
   }
+  changePassword(): void {
+    if (this.password !== this.confirmPassword) {
+      this.errorMessage = 'Las contraseñas no coinciden';
+      this.toastr.error('<i class="las la-info-circle"> Las contraseñas no coinciden</i>'); // Mostrar mensaje de error (opcional)
+      return;
+    }
+
+    if (!this.password || this.password.length < 6) {
+      this.errorMessage = 'La contraseña debe tener al menos 6 caracteres';
+      this.toastr.error('<i class="las la-info-circle"> La contraseña debe tener al menos 6 caracteres</i>'); // Mostrar mensaje de error (opcional)
+      return;
+    }
+    console.log(this.userData.id_user);
+
+    // Si las contraseñas coinciden, procede a cambiarlas
+    this.profileService.updateUserPassword(this.userData.id_user, this.password).subscribe(
+      response => {
+        console.log('Contraseña cambiada exitosamente', response);
+        this.toastr.success('<i class="las la-info-circle"> Contraseña actualizada con éxito</i>');// Mostrar mensaje de éxito (opcional)
+        this.password = '';
+        this.confirmPassword = '';
+      },
+      error => {
+        console.error('Error al cambiar la contraseña', error);
+        this.toastr.error('<i class="las la-info-circle"> Error al cambiar la contraseña</i>');
+        //console.log(this.userData.id_user);
+      }
+    );
+  }
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+
+    if (file) {
+      // Validar tamaño máximo de 800 KB
+      const maxSize = 800 * 1024;
+      if (file.size > maxSize) {
+        this.toastr.error('El archivo excede el tamaño máximo permitido de 800 KB.');
+        return;
+      }
+
+      // Validar el formato del archivo
+      const validFormats = ['image/jpeg', 'image/png', 'image/gif'];
+      if (!validFormats.includes(file.type)) {
+        this.toastr.error('Formato de archivo no válido. Solo se permiten JPG, GIF o PNG.');
+        return;
+      }
+
+      // Si pasa las validaciones, puedes continuar con la lógica de subida de imagen
+      this.uploadProfilePicture(file);
+    }
+  }
+
+  uploadProfilePicture(file: File): void {
+    const formData = new FormData();
+    formData.append('profilePicture', file);
+
+    this.profileService.uploadProfilePicture(this.userData.id_user, formData).subscribe(
+      response => {
+        this.toastr.success('Foto de perfil actualizada exitosamente.');
+        // Actualizar la foto de perfil en la interfaz del usuario
+        this.userData.profilePicture = response.imageUrl;
+        window.location.reload();// Asegúrate de que la respuesta contiene la URL de la imagen
+      },
+      error => {
+        console.error('Error al subir la foto de perfil', error);
+        this.toastr.error('Error al subir la foto de perfil.');
+      }
+    );
+  }
 }
+
