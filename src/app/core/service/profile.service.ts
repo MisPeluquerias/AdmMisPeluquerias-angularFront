@@ -16,6 +16,8 @@ export class ProfileService {
     const params = new HttpParams().set('id_user', id_user.toString());
     return this.http.get(`${this.baseUrl}/profile-user/getDataUser`, { params });
   }
+
+  
   getProvinces(): Observable<any> {
     return this.http.get(`${this.baseUrl}/profile-user/getProvincesForProfile`);
   }

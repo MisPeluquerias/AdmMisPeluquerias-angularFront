@@ -27,7 +27,7 @@
     <!-- User profile with image -->
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle d-flex align-items-center me-4" id="navbarDropdownUser" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <img src="../../../../assets/img/sello.jpg" class="rounded-circle" alt="Foto de perfil" width="40" height="40">
+        <img [src]="userImagePath || '../../../../assets/img/sello.jpg'" class="rounded-circle" alt="Foto de perfil" width="40" height="40">
       </a>
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownUser">
         <li><a class="dropdown-item" href="profile">Mi perfil</a></li>
