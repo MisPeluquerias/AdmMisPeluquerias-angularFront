@@ -24,29 +24,31 @@
           </div>
           <div class="card-body">
             <div *ngIf="userData">
-              <div class="d-flex align-items-center mb-4">
-                <div class="me-3">
-                  <img
-                    [src]="
-                      userData.avatar_path || 'https://via.placeholder.com/80'
-                    "
-                    alt="Foto de perfil"
-                    class="img-fluid profile-img"
-                  />
-                </div>
-                <div>
-                  <input
-                    type="file"
-                    (change)="onFileSelected($event)"
-                    accept=".jpg, .jpeg, .png, .gif"
-                    class="form-control-file"
-
-                  />
-                  <p class="small text-muted mt-1">
-                    Archivos permitidos JPG, GIF o PNG. tamaño máximo 800K
-                  </p>
+              <div class="row mb-4">
+                <div class="col-12 d-flex flex-column flex-md-row align-items-center">
+                  <div class="me-md-3 mb-3 mb-md-0 text-center text-md-start">
+                    <img
+                      [src]="userData.avatar_path || 'https://via.placeholder.com/80'"
+                      alt="Foto de perfil"
+                      class="img-fluid profile-img"
+                    />
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <label for="fileInput" class="form-label">Subir imagen</label>
+                    <input
+                      type="file"
+                      (change)="onFileSelected($event)"
+                      accept=".jpg, .jpeg, .png, .gif"
+                      class="form-control"
+                      id="fileInput"
+                    />
+                    <p class="small text-muted mt-1">
+                      Archivos permitidos JPG, GIF o PNG. Tamaño máximo 800K
+                    </p>
+                  </div>
                 </div>
               </div>
+
 
               <form (ngSubmit)="UpdateUserData()">
                 <div class="row mb-3">

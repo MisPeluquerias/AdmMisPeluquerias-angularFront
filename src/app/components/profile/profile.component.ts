@@ -8,23 +8,23 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent {
-  userData: any = {};  // Contendrá los datos del usuario
-  id_user: string = '';  // ID del usuario
-  errorMessage: string = '';  // Mensaje de error
-  cities: any[] = [];  // Lista de ciudades
+  userData: any = {};
+  id_user: string = '';
+  errorMessage: string = '';
+  cities: any[] = [];
   provinces: any[] = [];
   confirmPassword: string = '';
-  password: string = '';  // Lista de provincias
+  password: string = '';
 
   constructor(private profileService: ProfileService,private toastr:ToastrService) {}
 
   ngOnInit(): void {
-    const userId = localStorage.getItem('usuarioId');  // Obtener el ID del usuario desde el local storage
+    const userId = localStorage.getItem('usuarioId');
     if (userId) {
       this.id_user = userId;
-      this.userData.id_city = '';  // Inicializar id_city a "" para mostrar "Seleccione una ciudad..."
-      this.getDataUser();  // Cargar los datos del usuario
-      this.loadProvinces();  // Cargar las provincias
+      this.userData.id_city = '';
+      this.getDataUser();
+      this.loadProvinces();
     }
   }
 
@@ -34,7 +34,7 @@ export class ProfileComponent {
         if (Array.isArray(data.data) && data.data.length > 0) {
           this.userData = data.data[0];
           if (!this.userData.id_city) {
-            this.userData.id_city = '';  // Asegúrate de que id_city esté vacío si no hay una ciudad seleccionada
+            this.userData.id_city = '';  
           }
 
           if (this.userData.id_province) {

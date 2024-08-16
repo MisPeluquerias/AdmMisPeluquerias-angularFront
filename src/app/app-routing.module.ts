@@ -19,7 +19,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent,title:'Adm | Mis Peluquerias'  },
   { path: 'home', component: HomeComponent,
     canActivate:[AuthGuard],title:'Adm | Mis Peluquerias' },
   { path: 'home/edit/:id', component: EditHomeComponent,

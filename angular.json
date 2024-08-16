@@ -41,10 +41,6 @@
               "node_modules/line-awesome/dist/line-awesome/css/line-awesome.min.css"
             ],
             "scripts": [
-              "src/assets/js/scripts.js",
-              "src/assets/demo/chart-area-demo.js",
-              "src/assets/demo/chart-bar-demo.js",
-              "src/assets/js/datatables-simple-demo.js"
             ],
             "server": "src/main.server.ts",
             "prerender": true,
