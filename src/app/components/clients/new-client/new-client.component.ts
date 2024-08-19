@@ -29,64 +29,92 @@ export class NewClientComponent {
     // Resetear mensajes de error
     this.errors = {};
 
+
     let hasError = false;
 
     if (!this.userData.name) {
       this.errors['name'] = 'El nombre es obligatorio';
+      console.log('nombre requerido');
       hasError = true;
     }
 
     if (!this.userData.lastname) {
       this.errors['lastname'] = 'Los apellidos son obligatorios';
+      console.log('Apellidos requeridos');
       hasError = true;
     }
 
     if (!this.userData.email || !this.validateEmail(this.userData.email)) {
       this.errors['email'] = 'El correo electrónico no es válido';
+      console.log('Email requerido');
       hasError = true;
     }
 
     if (!this.userData.phone || !this.validatePhone(this.userData.phone)) {
       this.errors['phone'] = 'El número de teléfono no es válido';
+      console.log('Telefono requerido');
       hasError = true;
     }
 
     if (!this.userData.address) {
       this.errors['address'] = 'La dirección es obligatoria';
+      console.log('Direccion requerida');
       hasError = true;
     }
 
     if (!this.userData.id_province) {
       this.errors['id_province'] = 'Debe seleccionar una provincia';
+      console.log('id_province requerida');
       hasError = true;
     }
 
     if (!this.userData.id_city) {
       this.errors['id_city'] = 'Debe seleccionar una población';
+      console.log('id_city requerida');
       hasError = true;
     }
 
     if (!this.userData.dni || !this.validateDNI(this.userData.dni)) {
       this.errors['dni'] = 'El NIF no es válido';
+      console.log('Nif requerido');
       hasError = true;
     }
 
-    if (this.password !== this.confirmPassword) {
+    if (this.userData.password !== this.userData.confirmPassword) {
       this.errors['confirmPassword'] = 'Las contraseñas no coinciden';
+      console.log('Contraseña requerida');
       hasError = true;
     }
 
-    if (!this.password || this.password.length < 6) {
+    if (!this.userData.password || this.userData.password.length < 6) {
       this.errors['password'] = 'La contraseña debe tener al menos 6 caracteres';
+      console.log('Confirmacion de contraseña requerida');
       hasError = true;
     }
+
+    console.log('Password:', this.userData.password);
+    this.userData.permiso = 'client';
+    this.userData.id_user = "";
 
     if (hasError) {
       return;
     }
 
-    // Si no hay errores, proceder con el guardado del cliente
-    console.log(this.userData.id_user);
+    this.newClientService.addNewClient(this.userData).subscribe(
+      response => {
+        //console.log('Cliente creado con éxito:', response);
+        this.toastr.success('<i class="las la-info-circle"> Cliente creado con éxito</i>');
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
+      },
+      error => {
+        console.error('Error al crear el cliente:', error);
+        this.toastr.error('<i class="las la-info-circle"> Ya existe un usuario con este email</i>');
+
+      }
+    );
+    //console.log(this.userData.id_user);
   }
 
   validateEmail(email: string): boolean {

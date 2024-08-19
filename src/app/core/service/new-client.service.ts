@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development'
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -27,9 +27,10 @@ export class NewClientService {
   uploadProfilePicture(id_user: string, formData: FormData): Observable<any> {
     return this.http.put(`${this.baseUrl}/new-client/uploadProfilePicture/${id_user}`, formData);
   }
+
   addNewClient(userData: any): Observable<any> {
-    return this.http.put<any>(`${this.baseUrl}/new-client/updateUser`, userData);
-  }
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(`${this.baseUrl}/new-client/addNewUser`, userData, { headers });  }
 }
 
 

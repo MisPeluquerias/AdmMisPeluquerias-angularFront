@@ -48,60 +48,139 @@
                 <div class="row mb-3">
                   <div class="col-md-6">
                     <label for="nombre" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" id="name" name="name" [(ngModel)]="userData.name" />
-                    <div *ngIf="errors['name']" class="text-danger">{{ errors['name'] }}</div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="name"
+                      name="name"
+                      [(ngModel)]="userData.name"
+                    />
                   </div>
                   <div class="col-md-6">
                     <label for="apellidos" class="form-label">Apellidos</label>
-                    <input type="text" class="form-control" id="lastname" name="lastname" [(ngModel)]="userData.lastname" />
-                    <div *ngIf="errors['lastname']" class="text-danger">{{ errors['lastname'] }}</div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="lastname"
+                      name="lastname"
+                      [(ngModel)]="userData.lastname"
+                    />
                   </div>
                 </div>
-
                 <div class="row mb-3">
                   <div class="col-md-6">
                     <label for="email" class="form-label">E-mail</label>
-                    <input type="email" class="form-control" id="email" name="email" [(ngModel)]="userData.email" />
-                    <div *ngIf="errors['email']" class="text-danger">{{ errors['email'] }}</div>
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="email"
+                      name="email"
+                      [(ngModel)]="userData.email"
+                    />
                   </div>
                   <div class="col-md-6">
                     <label for="telefono" class="form-label">Nº de Teléfono</label>
-                    <input type="tel" class="form-control" id="phone" name="phone" [(ngModel)]="userData.phone" />
-                    <div *ngIf="errors['phone']" class="text-danger">{{ errors['phone'] }}</div>
+                    <input
+                      type="tel"
+                      class="form-control"
+                      id="phone"
+                      name="phone"
+                      [(ngModel)]="userData.phone"
+                    />
                   </div>
                 </div>
-
-                <!-- Resto de los campos -->
-
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="direccion" class="form-label">Dirección</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="address"
+                      name="address"
+                      [(ngModel)]="userData.address"
+                    />
+                  </div>
+                  <div class="col-md-3">
+                    <label for="provincia" class="form-label">Provincia</label>
+                    <select
+                      class="form-select"
+                      id="id_province"
+                      name="id_province"
+                      [(ngModel)]="userData.id_province"
+                      (change)="onProvinceChange($event)"
+                    >
+                      <option
+                        *ngFor="let province of provinces"
+                        [value]="province.id_province"
+                      >
+                        {{ province.name }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="poblacion" class="form-label">Población</label>
+                    <select
+                      class="form-select"
+                      id="id_city"
+                      name="id_city"
+                      [(ngModel)]="userData.id_city"
+                      (change)="onCityChange(userData.id_city)"
+                      required
+                    >
+                      <option *ngFor="let city of cities" [value]="city.id_city">
+                        {{ city.city_name }} - {{ city.zip_code }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
                 <div class="row mb-4">
                   <div class="col-md-6">
-                    <label for="dni" class="form-label">NIF</label>
-                    <input type="text" class="form-control" id="dni" name="dni" [(ngModel)]="userData.dni" />
-                    <div *ngIf="errors['dni']" class="text-danger">{{ errors['dni'] }}</div>
+                    <label for="permiso" class="form-label">NIF</label>
+                    <input
+                    type="text"
+                    class="form-control"
+                    id="dni"
+                    name="dni"
+                    [(ngModel)]="userData.dni"
+                  />
                   </div>
                 </div>
 
-                <div class="card mt-4">
-                  <div class="card-body">
-                    <h5>Nueva Contraseña</h5>
-                    <div class="row mb-3">
-                      <div class="col-md-6">
-                        <label for="password" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Introduce nueva contraseña..." [(ngModel)]="password" />
-                        <div *ngIf="errors['password']" class="text-danger">{{ errors['password'] }}</div>
-                      </div>
-                      <div class="col-md-6">
-                        <label for="confirmPassword" class="form-label">Repetir contraseña</label>
-                        <input type="password" class="form-control" id="confirmPassword" placeholder="Repetir contraseña..." name="confirmPassword" [(ngModel)]="confirmPassword" />
-                        <div *ngIf="errors['confirmPassword']" class="text-danger">{{ errors['confirmPassword'] }}</div>
-                      </div>
+
+              <div class="card mt-4">
+                <div class="card-body">
+                  <h5>Nueva Contraseña</h5>
+                  <div class="row mb-3">
+                    <div class="col-md-6">
+                      <label for="password" class="form-label">Contraseña</label>
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="password"
+                        name="password"
+                        placeholder="Introduce nueva contraseña..."
+                        [(ngModel)]="userData.password"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="confirmPassword" class="form-label">Repetir contraseña</label>
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="confirmPassword"
+                        placeholder="Repetir contraseña..."
+                        name="confirmPassword"
+                        [(ngModel)]="userData.confirmPassword"
+                      />
                     </div>
                   </div>
                 </div>
-
-                <button type="submit" class="btn btn-danger me-2 mt-3">Guardar</button>
-                <button type="reset" class="btn btn-secondary mt-3">Cancelar</button>
-              </form>
+              </div>
+              <button type="submit" class="btn btn-danger me-2 mt-3">
+                Guardar
+              </button>
+              <button type="reset" class="btn btn-secondary mt-3">Cancelar</button>
+            </form>
             </div>
           </div>
         </div>
