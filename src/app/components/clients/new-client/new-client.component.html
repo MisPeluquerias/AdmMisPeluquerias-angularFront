@@ -7,17 +7,13 @@
         <h1 class="mt-1">Panel de control</h1>
         <ol class="breadcrumb mb-4">
           <li class="breadcrumb-item active">
-            Ajuste de cuenta / <b>Mi cuenta</b>
+            Ajuste de cuenta / <b>Nuevo Cliente</b>
           </li>
         </ol>
+
         <div class="card mb-4">
           <div class="card-header">
-            <img
-              src="../../../favicon.ico"
-              width="30"
-              class="img-fluid me-2"
-              alt=""
-            />
+            <img src="../../../favicon.ico" width="30" class="img-fluid me-2" alt="Favicon" />
             <!--  <i class="fas fa-table me-1"></i> -->
             Mi perfil
           </div>
@@ -47,7 +43,8 @@
                   </div>
                 </div>
               </div>
-              <form (ngSubmit)="UpdateUserData()">
+
+              <form (ngSubmit)="addNewClient()">
                 <div class="row mb-3">
                   <div class="col-md-6">
                     <label for="nombre" class="form-label">Nombre</label>
@@ -81,11 +78,8 @@
                       [(ngModel)]="userData.email"
                     />
                   </div>
-                  <div class="col-md-6">1
-
-                    <label for="telefono" class="form-label"
-                      >Nº de Teléfono</label
-                    >
+                  <div class="col-md-6">
+                    <label for="telefono" class="form-label">Nº de Teléfono</label>
                     <input
                       type="tel"
                       class="form-control"
@@ -130,15 +124,10 @@
                       id="id_city"
                       name="id_city"
                       [(ngModel)]="userData.id_city"
-                      name="id_city"
                       (change)="onCityChange(userData.id_city)"
-                      #city="ngModel"
                       required
                     >
-                      <option
-                        *ngFor="let city of cities"
-                        [value]="city.id_city"
-                      >
+                      <option *ngFor="let city of cities" [value]="city.id_city">
                         {{ city.city_name }} - {{ city.zip_code }}
                       </option>
                     </select>
@@ -146,86 +135,52 @@
                 </div>
                 <div class="row mb-4">
                   <div class="col-md-6">
-                    <label for="permiso" class="form-label">Permiso</label>
-                    <select
-                      class="form-select"
-                      id="permiso"
-                      name="permiso"
-                      [(ngModel)]="userData.permiso"
-                    >
-                      <option value="admin">Administrador del Sistema</option>
-                      <option value="salon">Usuario de Salón</option>
-                      <option value="client">Cliente</option>
-                    </select>
-                  </div>
-                </div>
-                <button type="submit" class="btn btn-danger me-2">
-                  Guardar
-                </button>
-                <button type="reset" class="btn btn-secondary">Cancelar</button>
-              </form>
-              <div class="card mt-4">
-                <div class="card-body">
-                  <h5>Cambiar contraseña</h5>
-                  <form (ngSubmit)="changePassword()">
-                    <div class="row mb-3">
-                      <div class="col-md-6">
-                        <label for="password" class="form-label"
-                          >Contraseña</label
-                        >
-                        <input
-                          type="password"
-                          class="form-control"
-                          id="password"
-                          name="password"
-                          placeholder="Introduce nueva contraseña..."
-                          [(ngModel)]="password"
-                        />
-                      </div>
-                      <div class="col-md-6">
-                        <label for="confirmPassword" class="form-label"
-                          >Repetir contraseña</label
-                        >
-                        <input
-                          type="password"
-                          class="form-control"
-                          id="confirmPassword"
-                          placeholder="Repetir contraseña..."
-                          name="confirmPassword"
-                          [(ngModel)]="confirmPassword"
-                        />
-                      </div>
-                    </div>
-                    <button type="submit" class="btn btn-warning">
-                      Cambiar contraseña
-                    </button>
-                  </form>
-                </div>
-              </div>
-              <!-- Sección de Desactivar cuenta -->
-              <div class="card mt-4">
-                <div class="card-body">
-                  <h5>Desactivar cuenta</h5>
-                  <div class="alert alert-warning" role="alert">
-                    <strong>¿Estás seguro de que quieres desactivar tu cuenta?</strong><br />
-                    Una vez que desactives tu cuenta, no hay vuelta atrás. Por favor esté seguro.
-                  </div>
-                  <div class="form-check mb-3">
+                    <label for="permiso" class="form-label">NIF</label>
                     <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="confirmDeactivation"
-                      [(ngModel)]="isConfirmed"
-                    />
-                    <label class="form-check-label" for="confirmDeactivation">
-                      Confirmo la desactivación de mi cuenta
-                    </label>
+                    type="text"
+                    class="form-control"
+                    id="dni"
+                    name="dni"
+                    [(ngModel)]="userData.dni"
+                  />
                   </div>
-                  <button type="button" class="btn btn-danger" [disabled]="!isConfirmed" (click)="desactivateAccount(id_user);">
-                    Desactivar cuenta
-                  </button>
+                </div>
+
+
+              <div class="card mt-4">
+                <div class="card-body">
+                  <h5>Nueva Contraseña</h5>
+                  <div class="row mb-3">
+                    <div class="col-md-6">
+                      <label for="password" class="form-label">Contraseña</label>
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="password"
+                        name="password"
+                        placeholder="Introduce nueva contraseña..."
+                        [(ngModel)]="userData.password"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="confirmPassword" class="form-label">Repetir contraseña</label>
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="confirmPassword"
+                        placeholder="Repetir contraseña..."
+                        name="confirmPassword"
+                        [(ngModel)]="userData.confirmPassword"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
+              <button type="submit" class="btn btn-danger me-2 mt-3">
+                Guardar
+              </button>
+              <button type="reset" class="btn btn-secondary mt-3">Cancelar</button>
+            </form>
             </div>
           </div>
         </div>

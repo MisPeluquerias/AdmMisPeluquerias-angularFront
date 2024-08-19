@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ProfileService } from '../../core/service/profile.service';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-profile',
@@ -8,23 +10,24 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent {
-  userData: any = {};  // Contendrá los datos del usuario
-  id_user: string = '';  // ID del usuario
-  errorMessage: string = '';  // Mensaje de error
-  cities: any[] = [];  // Lista de ciudades
+  userData: any = {};
+  id_user: string = '';
+  errorMessage: string = '';
+  cities: any[] = [];
   provinces: any[] = [];
   confirmPassword: string = '';
-  password: string = '';  // Lista de provincias
+  password: string = '';
+  isConfirmed: boolean = false;
 
-  constructor(private profileService: ProfileService,private toastr:ToastrService) {}
+  constructor(private profileService: ProfileService,private toastr:ToastrService,private router:Router) {}
 
   ngOnInit(): void {
-    const userId = localStorage.getItem('usuarioId');  // Obtener el ID del usuario desde el local storage
+    const userId = localStorage.getItem('usuarioId');
     if (userId) {
       this.id_user = userId;
-      this.userData.id_city = '';  // Inicializar id_city a "" para mostrar "Seleccione una ciudad..."
-      this.getDataUser();  // Cargar los datos del usuario
-      this.loadProvinces();  // Cargar las provincias
+      this.userData.id_city = '';
+      this.getDataUser();
+      this.loadProvinces();
     }
   }
 
@@ -34,7 +37,7 @@ export class ProfileComponent {
         if (Array.isArray(data.data) && data.data.length > 0) {
           this.userData = data.data[0];
           if (!this.userData.id_city) {
-            this.userData.id_city = '';  // Asegúrate de que id_city esté vacío si no hay una ciudad seleccionada
+            this.userData.id_city = '';
           }
 
           if (this.userData.id_province) {
@@ -77,7 +80,6 @@ export class ProfileComponent {
               this.userData.city_name = selectedCity.city_name;
             }
           } else {
-            // Selecciona la primera ciudad automáticamente si no hay una ciudad seleccionada
             this.userData.id_city = this.cities[0].id_city;
             this.userData.city_name = this.cities[0].city_name;
           }
@@ -152,6 +154,8 @@ export class ProfileComponent {
       }
     );
   }
+
+
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
 
@@ -191,6 +195,21 @@ export class ProfileComponent {
         this.toastr.error('Error al subir la foto de perfil.');
       }
     );
+  }
+
+  desactivateAccount(userId:string): void {
+    if (this.isConfirmed) {
+      this.profileService.desactivateAccount(userId).subscribe({
+        next: (response) => {
+          console.log('Cuenta desactivada con éxito', response);
+          // Redirigir o actualizar la UI según lo necesario
+          this.router.navigate(['/login']);
+        },
+        error: (error) => {
+          console.error('Error al desactivar la cuenta', error);
+        }
+      });
+    }
   }
 }
 

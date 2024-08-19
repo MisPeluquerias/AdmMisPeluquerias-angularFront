@@ -12,7 +12,7 @@ export class ClientsComponent {
   currentPage: number = 1;
   pageSize: number = 10;
   totalItems: number = 0;
-  Math = Math;  // Exponer Math al contexto de la plantilla
+  Math = Math;
   searchText:string='';
   allSelected: boolean = false;
 
@@ -38,7 +38,7 @@ export class ClientsComponent {
     onSearch(): void {
       this.loadAllClients(this.currentPage);
       if (this.searchText.trim() === '') {
-        this.loadAllClients(this.currentPage); // Reload with current page if search is cleared
+        this.loadAllClients(this.currentPage); 
       }
     }
 
@@ -87,9 +87,4 @@ export class ClientsComponent {
     this.AllClients = this.AllClients.filter(client => !client.selected);
     this.allSelected = false;
   }
-
-
-
-
-
 }

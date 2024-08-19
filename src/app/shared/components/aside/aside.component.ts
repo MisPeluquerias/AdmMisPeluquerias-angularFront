@@ -29,12 +29,12 @@ ngOnInit(): void {
 getUserName(): void {
   this.asideService.getUserName(this.id_user).subscribe(
     (response) => {
-      console.log('Response completa:', response);  // Imprime toda la respuesta
+      //console.log('Response completa:', response);  // Imprime toda la respuesta
 
       if (response && response.success) {
         if (response.data && response.data.length > 0) {
           this.userName = response.data[0].name;  // Accede al primer elemento del array y toma la propiedad 'name'
-          console.log('User Name:', this.userName);  // Verifica que el nombre del usuario se asigna correctamente
+          //console.log('User Name:', this.userName);  // Verifica que el nombre del usuario se asigna correctamente
         } else {
           console.error('No user name found in response data');
         }
