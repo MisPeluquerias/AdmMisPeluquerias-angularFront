@@ -25,6 +25,4 @@ export class ServicesService {
 
     return this.http.get<any>(`${this.baseUrl}/services/getAllServices`, { params });
   }
-
-
 }

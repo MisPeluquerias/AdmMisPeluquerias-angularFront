@@ -31,6 +31,8 @@ import { NewHomeComponent } from './components/home/new-home/new-home.component'
 import { ProfileComponent } from './components/profile/profile.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { FilterPipe } from './shared/pipes/filter.pipe';
+import { NewClientComponent } from './components/clients/new-client/new-client.component';
 
 
 
@@ -57,6 +59,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     SearchTablePipe,
     NewHomeComponent,
     ProfileComponent,
+    FilterPipe,
+    NewClientComponent,
   ],
   imports: [
     BrowserModule,

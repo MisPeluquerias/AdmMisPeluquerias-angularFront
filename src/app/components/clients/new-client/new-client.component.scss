@@ -1,0 +1,36 @@
+.profile-img {
+  width: 100px; /* Fija el ancho a 80px */
+  height: 100px; /* Fija el alto a 80px */
+  object-fit: cover; /* Mantiene la imagen recortada y centrada */
+  border-radius: 50%; /* Hace la imagen circular */
+  display: block; /* Asegura que la imagen se comporte como un bloque y respete las dimensiones */
+}
+
+
+.custom-file-upload {
+  position: relative;
+  display: inline-block;
+}
+
+.custom-file-upload input[type="file"] {
+  position: absolute;
+  z-index: -1; /* Oculta el input pero mantiene su funcionalidad */
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+.custom-file-upload label {
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.custom-file-upload label:hover {
+  background-color: #0056b3;
+}

@@ -1,0 +1,112 @@
+<app-header></app-header>
+<div id="layoutSidenav">
+  <app-aside></app-aside>
+  <div id="layoutSidenav_content">
+    <main>
+      <div class="container-fluid px-4">
+        <h1 class="mt-1">Panel de control</h1>
+        <ol class="breadcrumb mb-4">
+          <li class="breadcrumb-item active">
+            Ajuste de cuenta / <b>Nuevo Cliente</b>
+          </li>
+        </ol>
+
+        <div class="card mb-4">
+          <div class="card-header">
+            <img src="../../../favicon.ico" width="30" class="img-fluid me-2" alt="Favicon" />
+            <!--  <i class="fas fa-table me-1"></i> -->
+            Mi perfil
+          </div>
+          <div class="card-body">
+            <div *ngIf="userData">
+              <div class="row mb-4">
+                <div class="col-12 d-flex flex-column flex-md-row align-items-center">
+                  <div class="me-md-3 mb-3 mb-md-0 text-center text-md-start">
+                    <img
+                      [src]="userData.avatar_path || 'https://via.placeholder.com/80'"
+                      alt="Foto de perfil"
+                      class="img-fluid profile-img"
+                    />
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <label for="fileInput" class="form-label">Subir imagen</label>
+                    <input
+                      type="file"
+                      (change)="onFileSelected($event)"
+                      accept=".jpg, .jpeg, .png, .gif"
+                      class="form-control"
+                      id="fileInput"
+                    />
+                    <p class="small text-muted mt-1">
+                      Archivos permitidos JPG, GIF o PNG. Tamaño máximo 800K
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <form (ngSubmit)="addNewClient()">
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="name" name="name" [(ngModel)]="userData.name" />
+                    <div *ngIf="errors['name']" class="text-danger">{{ errors['name'] }}</div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="apellidos" class="form-label">Apellidos</label>
+                    <input type="text" class="form-control" id="lastname" name="lastname" [(ngModel)]="userData.lastname" />
+                    <div *ngIf="errors['lastname']" class="text-danger">{{ errors['lastname'] }}</div>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="email" class="form-label">E-mail</label>
+                    <input type="email" class="form-control" id="email" name="email" [(ngModel)]="userData.email" />
+                    <div *ngIf="errors['email']" class="text-danger">{{ errors['email'] }}</div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="telefono" class="form-label">Nº de Teléfono</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" [(ngModel)]="userData.phone" />
+                    <div *ngIf="errors['phone']" class="text-danger">{{ errors['phone'] }}</div>
+                  </div>
+                </div>
+
+                <!-- Resto de los campos -->
+
+                <div class="row mb-4">
+                  <div class="col-md-6">
+                    <label for="dni" class="form-label">NIF</label>
+                    <input type="text" class="form-control" id="dni" name="dni" [(ngModel)]="userData.dni" />
+                    <div *ngIf="errors['dni']" class="text-danger">{{ errors['dni'] }}</div>
+                  </div>
+                </div>
+
+                <div class="card mt-4">
+                  <div class="card-body">
+                    <h5>Nueva Contraseña</h5>
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Introduce nueva contraseña..." [(ngModel)]="password" />
+                        <div *ngIf="errors['password']" class="text-danger">{{ errors['password'] }}</div>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="confirmPassword" class="form-label">Repetir contraseña</label>
+                        <input type="password" class="form-control" id="confirmPassword" placeholder="Repetir contraseña..." name="confirmPassword" [(ngModel)]="confirmPassword" />
+                        <div *ngIf="errors['confirmPassword']" class="text-danger">{{ errors['confirmPassword'] }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-danger me-2 mt-3">Guardar</button>
+                <button type="reset" class="btn btn-secondary mt-3">Cancelar</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <app-footer></app-footer>
+  </div>
+</div>

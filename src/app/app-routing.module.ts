@@ -16,48 +16,107 @@ import { EditHomeComponent } from './components/home/edit-home/edit-home.compone
 import { NewHomeComponent } from './components/home/new-home/new-home.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { ProfileComponent } from './components/profile/profile.component';
+import { NewClientComponent } from './components/clients/new-client/new-client.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent,title:'Adm | Mis Peluquerias'  },
-  { path: 'home', component: HomeComponent,
-    canActivate:[AuthGuard],title:'Adm | Mis Peluquerias' },
-  { path: 'home/edit/:id', component: EditHomeComponent,
-    canActivate:[AuthGuard],title:'Adm | Mis Peluquerias' },
-  { path: 'clients', component: ClientsComponent,
-    canActivate:[AuthGuard],title:'Adm | Mis Peluquerias' },
-  { path: 'administrators', component: AdministratorsComponent,
-    canActivate:[AuthGuard],title:'Adm | Mis Peluquerias' },
-  { path: 'cities', component: CitiesComponent,
-    canActivate:[AuthGuard],title:'Adm | Mis Peluquerias' },
-  { path: 'categories', component: CategoriesComponent,
-    canActivate:[AuthGuard],title:'Adm | Mis Peluquerias'},
-  { path: 'contact', component: ContactComponent,
-    canActivate:[AuthGuard], title:'Adm | Mis Peluquerias'},
-  { path: 'contact-proffesional', component: ContactProffesionalComponent,
-    canActivate:[AuthGuard], title:'Adm | Mis Peluquerias'},
-  { path: 'services', component:ServicesComponent,
-    canActivate:[AuthGuard],title:'Adm | Mis Peluquerias'},
-  { path: 'reclamations', component: ReclamationsComponent,
-    canActivate:[AuthGuard], title:'Adm | Mis Peluquerias'},
-  { path: 'export', component: ExportComponent,
-    canActivate:[AuthGuard], title:'Adm | Mis Peluquerias'},
-  { path: 'import', component: ImportComponent,
-    canActivate:[AuthGuard],title:'Adm | Mis Peluquerias'},
-  { path: 'new-home', component: NewHomeComponent,
-    canActivate:[AuthGuard], title:'Adm | Mis Peluquerias'},
-    { path: 'profile', component:ProfileComponent,
-      canActivate:[AuthGuard], title:'Adm | Mis Peluquerias'},
+  { path: 'login', component: LoginComponent, title: 'Adm | Mis Peluquerias' },
+  {
+    path: 'home',
+    component: HomeComponent,
+    canActivate: [AuthGuard],
+    title: 'Adm | Mis Peluquerias',
+  },
+  {
+    path: 'home/edit/:id',
+    component: EditHomeComponent,
+    canActivate: [AuthGuard],
+    title: 'Adm | Mis Peluquerias',
+  },
+  {
+    path: 'clients',
+    component: ClientsComponent,
+    canActivate: [AuthGuard],
+    title: 'Adm | Mis Peluquerias',
+  },
+  {
+    path: 'administrators',
+    component: AdministratorsComponent,
+    canActivate: [AuthGuard],
+    title: 'Adm | Mis Peluquerias',
+  },
+  {
+    path: 'cities',
+    component: CitiesComponent,
+    canActivate: [AuthGuard],
+    title: 'Adm | Mis Peluquerias',
+  },
+  {
+    path: 'categories',
+    component: CategoriesComponent,
+    canActivate: [AuthGuard],
+    title: 'Adm | Mis Peluquerias',
+  },
+  {
+    path: 'contact',
+    component: ContactComponent,
+    canActivate: [AuthGuard],
+    title: 'Adm | Mis Peluquerias',
+  },
+  {
+    path: 'contact-proffesional',
+    component: ContactProffesionalComponent,
+    canActivate: [AuthGuard],
+    title: 'Adm | Mis Peluquerias',
+  },
+  {
+    path: 'services',
+    component: ServicesComponent,
+    canActivate: [AuthGuard],
+    title: 'Adm | Mis Peluquerias',
+  },
+  {
+    path: 'reclamations',
+    component: ReclamationsComponent,
+    canActivate: [AuthGuard],
+    title: 'Adm | Mis Peluquerias',
+  },
+  {
+    path: 'export',
+    component: ExportComponent,
+    canActivate: [AuthGuard],
+    title: 'Adm | Mis Peluquerias',
+  },
+  {
+    path: 'import',
+    component: ImportComponent,
+    canActivate: [AuthGuard],
+    title: 'Adm | Mis Peluquerias',
+  },
+  {
+    path: 'new-home',
+    component: NewHomeComponent,
+    canActivate: [AuthGuard],
+    title: 'Adm | Mis Peluquerias',
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [AuthGuard],
+    title: 'Adm | Mis Peluquerias',
+  },
+  {
+    path: 'new-client',
+    component: NewClientComponent,
+    canActivate: [AuthGuard],
+    title: 'Adm | Mis Peluquerias',
+  },
 
-
-  { path: '**', component:LoginComponent }
-
+  { path: '**', component: LoginComponent },
 ];
-
-
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
