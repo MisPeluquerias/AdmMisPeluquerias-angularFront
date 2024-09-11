@@ -21,20 +21,6 @@
                 <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="searchText" (input)="onSearch()">
               </div>
               <div class="col-12 col-md-4 d-flex justify-content-md-end ms-auto">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-secondary dropdown-toggle me-2" data-bs-toggle="dropdown" aria-expanded="false">
-                 Filtro
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Separated link</a></li>
-                  </ul>
-                </div>
-                <button class="btn btn-danger">Nuevo</button>
-
               </div>
               <div *ngIf="hasSelected()" class="mt-3 text-end" >
                 <button class="btn btn-danger" (click)="deleteSelected() " style="background-color: darkorange;">Eliminar seleccionados</button>
@@ -45,21 +31,42 @@
                 <thead class="thead-dark">
                   <tr>
                     <th><input type="checkbox" (change)="toggleAllSelection()" [checked]="allSelected" /></th>
-                    <th class="col-2">Fecha</th>
+                    <th class="col-2">Usuario</th>
+                    <th>Email</th>
                     <th>Negocio</th>
-                    <th class="col-6">Observacion</th>
+                    <th >Observacion</th>
+                    <th >DNI Frontal</th>
+                    <th >DNI Trasero</th>
+                    <th >Documentos</th>
                     <th class="col-1">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let reclamation of AllReclamations">
                     <td><input type="checkbox" [(ngModel)]="reclamation.selected" (change)="checkIfAllSelected()" /></td>
-                    <td>{{ reclamation.created_at | spanishDate}}</td>
-                    <td>{{ reclamation.salon_name}}</td>
-                    <td>{{ reclamation.observation}}</td>
-
+                    <td>{{ reclamation.user_name }}</td>
+                    <td>{{ reclamation.email }}</td>
+                    <td>{{ reclamation.salon_name }}</td>
+                    <td>{{ reclamation.observation }}</td>
+                    <td>
+                      <a [href]="reclamation.dnifront_path" target="_blank">
+                        <img [src]="reclamation.dnifront_path" alt="DNI Frontal" class="fixed-size-img" />
+                      </a>
+                    </td>
+                    <td>
+                      <a [href]="reclamation.dniback_path" target="_blank">
+                        <img [src]="reclamation.dniback_path" alt="DNI Trasero" class="fixed-size-img" />
+                    </a>
+                    </td>
+                    <td>
+                      <a [href]="reclamation.file_path" target="_blank">
+                        <img [src]="reclamation.file_path" alt="Documentos" class="fixed-size-img" />
+                    </a>
+                    </td>
+                    
                     <td><button class="btn btn-dark"><i class="fas fa-edit"></i></button></td>
                   </tr>
+                  
                 </tbody>
               </table>
             </div>

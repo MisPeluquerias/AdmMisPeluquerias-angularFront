@@ -14,6 +14,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   errorMessage: string = '';
   encryptionKey = "b3d5b524b5064bf7714c59261101b842ad378f2ba94d98a739b9b01cf219515f"
+  showPassword = false;
 
   baseUrl: string = environment.baseUrl;
 
@@ -27,6 +28,10 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.required],
       rememberMe: [false]
     });
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 
   ngOnInit(): void {

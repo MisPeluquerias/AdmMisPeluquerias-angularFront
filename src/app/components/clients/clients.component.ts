@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { ClientsService } from '../../core/service/clients.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-clients',
@@ -16,7 +18,9 @@ export class ClientsComponent {
   searchText:string='';
   allSelected: boolean = false;
 
-  constructor(private clientsService: ClientsService) { }
+  constructor(private clientsService: ClientsService,
+    private router:Router
+  ) { }
 
   ngOnInit(): void {
     this.loadAllClients(this.currentPage);
@@ -87,4 +91,9 @@ export class ClientsComponent {
     this.AllClients = this.AllClients.filter(client => !client.selected);
     this.allSelected = false;
   }
+
+  editClient(id: number) {
+    this.router.navigate(['edit-client/edit', id]);
+  }
+  
 }

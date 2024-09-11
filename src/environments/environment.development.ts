@@ -1,4 +1,4 @@
 export const environment = {
   production:false,
- baseUrl: 'https://apibetaadm.mispeluquerias.com'
-  };
+ baseUrl: 'http://localhost:3000'
+};

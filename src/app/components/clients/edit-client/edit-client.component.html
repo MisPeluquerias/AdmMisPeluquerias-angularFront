@@ -7,7 +7,7 @@
         <h1 class="mt-1">Panel de control</h1>
         <ol class="breadcrumb mb-4">
           <li class="breadcrumb-item active">
-            Ajuste de cuenta / <b>Nuevo Cliente</b>
+            Ajuste de cuenta / <b>Editar Cliente</b>
           </li>
         </ol>
 
@@ -15,16 +15,16 @@
           <div class="card-header">
             <img src="../../../favicon.ico" width="30" class="img-fluid me-2" alt="Favicon" />
             <!--  <i class="fas fa-table me-1"></i> -->
-            Mi perfil
+            Editar Cliente
           </div>
           <div class="card-body">
-            <div *ngIf="userData">
+            <div *ngIf="clientData">
               <!--
               <div class="row mb-4">
                 <div class="col-12 d-flex flex-column flex-md-row align-items-center">
                   <div class="me-md-3 mb-3 mb-md-0 text-center text-md-start">
                     <img
-                      [src]="userData.avatar_path || 'https://via.placeholder.com/80'"
+                      [src]="clientData.avatar_path || '../../../../assets/img/sello.jpg'"
                       alt="Foto de perfil"
                       class="img-fluid profile-img"
                     />
@@ -43,9 +43,10 @@
                     </p>
                   </div>
                 </div>
-                -->
+              </div>
+              -->
 
-              <form (ngSubmit)="addNewClient()">
+              <form (ngSubmit)="updateClient()">
                 <div class="row mb-3">
                   <div class="col-md-6">
                     <label for="nombre" class="form-label">Nombre</label>
@@ -54,7 +55,7 @@
                       class="form-control"
                       id="name"
                       name="name"
-                      [(ngModel)]="userData.name"
+                      [(ngModel)]="clientData.name"
                     />
                   </div>
                   <div class="col-md-6">
@@ -64,7 +65,7 @@
                       class="form-control"
                       id="lastname"
                       name="lastname"
-                      [(ngModel)]="userData.lastname"
+                      [(ngModel)]="clientData.lastname"
                     />
                   </div>
                 </div>
@@ -76,7 +77,7 @@
                       class="form-control"
                       id="email"
                       name="email"
-                      [(ngModel)]="userData.email"
+                      [(ngModel)]="clientData.email"
                     />
                   </div>
                   <div class="col-md-6">
@@ -86,7 +87,7 @@
                       class="form-control"
                       id="phone"
                       name="phone"
-                      [(ngModel)]="userData.phone"
+                      [(ngModel)]="clientData.phone"
                     />
                   </div>
                 </div>
@@ -98,25 +99,23 @@
                       class="form-control"
                       id="address"
                       name="address"
-                      [(ngModel)]="userData.address"
+                      [(ngModel)]="clientData.address"
                     />
                   </div>
                   <div class="col-md-3">
                     <label for="provincia" class="form-label">Provincia</label>
                     <select
-                      class="form-select"
-                      id="id_province"
-                      name="id_province"
-                      [(ngModel)]="userData.id_province"
-                      (change)="onProvinceChange($event)"
-                    >
-                      <option
-                        *ngFor="let province of provinces"
-                        [value]="province.id_province"
-                      >
-                        {{ province.name }}
-                      </option>
-                    </select>
+                    class="form-select"
+                    id="id_province"
+                    name="id_province"
+                    [(ngModel)]="clientData.id_province"
+                    (change)="onProvinceChange($event)" 
+                  >
+                    <option *ngFor="let province of provinces" [value]="province.id_province">
+                      {{ province.name }}
+                    </option>
+                  </select>
+                  
                   </div>
                   <div class="col-md-3">
                     <label for="poblacion" class="form-label">Población</label>
@@ -124,8 +123,8 @@
                       class="form-select"
                       id="id_city"
                       name="id_city"
-                      [(ngModel)]="userData.id_city"
-                      (change)="onCityChange(userData.id_city)"
+                      [(ngModel)]="clientData.id_city"
+                      (change)="onCityChange(clientData.id_city)"
                       required
                     >
                       <option *ngFor="let city of cities" [value]="city.id_city">
@@ -142,12 +141,10 @@
                     class="form-control"
                     id="dni"
                     name="dni"
-                    [(ngModel)]="userData.dni"
+                    [(ngModel)]="clientData.dni"
                   />
                   </div>
                 </div>
-
-
               <div class="card mt-4">
                 <div class="card-body">
                   <h5>Nueva Contraseña</h5>
@@ -160,7 +157,7 @@
                         id="password"
                         name="password"
                         placeholder="Introduce nueva contraseña..."
-                        [(ngModel)]="userData.password"
+                        [(ngModel)]="clientData.password"
                       />
                     </div>
                     <div class="col-md-6">
@@ -171,7 +168,7 @@
                         id="confirmPassword"
                         placeholder="Repetir contraseña..."
                         name="confirmPassword"
-                        [(ngModel)]="userData.confirmPassword"
+                        [(ngModel)]="clientData.confirmPassword"
                       />
                     </div>
                   </div>

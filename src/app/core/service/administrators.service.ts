@@ -22,6 +22,19 @@ export class AdministratorsService {
       params = params.set('search', searchText);
     }
 
-    return this.http.get<any>(`${this.baseUrl}/Administrators/getAllAdministrators`, { params });
+    return this.http.get<any>(`${this.baseUrl}/administrators/getAllAdministrators`, { params });
   }
+
+  getUserEmail(email:string){
+    return this.http.get<any[]>(`${this.baseUrl}/administrators/searchEmailInLive`, {
+      params: {
+        email
+      },
+    });
+  }
+  
+  addnewAdmin(email: string) {
+    console.log('email enviado desde el servicio', email);
+    return this.http.put<any[]>(`${this.baseUrl}/administrators/addNewAdmin`, { email });
+}
 }

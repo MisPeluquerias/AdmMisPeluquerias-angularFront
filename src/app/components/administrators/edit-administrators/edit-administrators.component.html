@@ -1,3 +1,4 @@
+<p>edit-client works!</p>
 <app-header></app-header>
 <div id="layoutSidenav">
   <app-aside></app-aside>
@@ -15,16 +16,16 @@
           <div class="card-header">
             <img src="../../../favicon.ico" width="30" class="img-fluid me-2" alt="Favicon" />
             <!--  <i class="fas fa-table me-1"></i> -->
-            Mi perfil
+            Editar Cliente
           </div>
           <div class="card-body">
-            <div *ngIf="userData">
+            <div *ngIf="adminData">
               <!--
               <div class="row mb-4">
                 <div class="col-12 d-flex flex-column flex-md-row align-items-center">
                   <div class="me-md-3 mb-3 mb-md-0 text-center text-md-start">
                     <img
-                      [src]="userData.avatar_path || 'https://via.placeholder.com/80'"
+                      [src]="adminData.avatar_path || '../../../../assets/img/sello.jpg'"
                       alt="Foto de perfil"
                       class="img-fluid profile-img"
                     />
@@ -43,9 +44,10 @@
                     </p>
                   </div>
                 </div>
-                -->
+              </div>
+              -->
 
-              <form (ngSubmit)="addNewClient()">
+              <form (ngSubmit)="updateAdmin()">
                 <div class="row mb-3">
                   <div class="col-md-6">
                     <label for="nombre" class="form-label">Nombre</label>
@@ -54,7 +56,7 @@
                       class="form-control"
                       id="name"
                       name="name"
-                      [(ngModel)]="userData.name"
+                      [(ngModel)]="adminData.name"
                     />
                   </div>
                   <div class="col-md-6">
@@ -64,7 +66,7 @@
                       class="form-control"
                       id="lastname"
                       name="lastname"
-                      [(ngModel)]="userData.lastname"
+                      [(ngModel)]="adminData.lastname"
                     />
                   </div>
                 </div>
@@ -76,7 +78,7 @@
                       class="form-control"
                       id="email"
                       name="email"
-                      [(ngModel)]="userData.email"
+                      [(ngModel)]="adminData.email"
                     />
                   </div>
                   <div class="col-md-6">
@@ -86,7 +88,7 @@
                       class="form-control"
                       id="phone"
                       name="phone"
-                      [(ngModel)]="userData.phone"
+                      [(ngModel)]="adminData.phone"
                     />
                   </div>
                 </div>
@@ -98,25 +100,23 @@
                       class="form-control"
                       id="address"
                       name="address"
-                      [(ngModel)]="userData.address"
+                      [(ngModel)]="adminData.address"
                     />
                   </div>
                   <div class="col-md-3">
                     <label for="provincia" class="form-label">Provincia</label>
                     <select
-                      class="form-select"
-                      id="id_province"
-                      name="id_province"
-                      [(ngModel)]="userData.id_province"
-                      (change)="onProvinceChange($event)"
-                    >
-                      <option
-                        *ngFor="let province of provinces"
-                        [value]="province.id_province"
-                      >
-                        {{ province.name }}
-                      </option>
-                    </select>
+                    class="form-select"
+                    id="id_province"
+                    name="id_province"
+                    [(ngModel)]="adminData.id_province"
+                    (change)="onProvinceChange($event)" 
+                  >
+                    <option *ngFor="let province of provinces" [value]="province.id_province">
+                      {{ province.name }}
+                    </option>
+                  </select>
+                  
                   </div>
                   <div class="col-md-3">
                     <label for="poblacion" class="form-label">Población</label>
@@ -124,8 +124,8 @@
                       class="form-select"
                       id="id_city"
                       name="id_city"
-                      [(ngModel)]="userData.id_city"
-                      (change)="onCityChange(userData.id_city)"
+                      [(ngModel)]="adminData.id_city"
+                      (change)="onCityChange(adminData.id_city)"
                       required
                     >
                       <option *ngFor="let city of cities" [value]="city.id_city">
@@ -133,21 +133,34 @@
                       </option>
                     </select>
                   </div>
+                  
+
                 </div>
                 <div class="row mb-4">
                   <div class="col-md-6">
-                    <label for="permiso" class="form-label">NIF</label>
+                    <label for="dni" class="form-label">NIF</label>
                     <input
-                    type="text"
-                    class="form-control"
-                    id="dni"
-                    name="dni"
-                    [(ngModel)]="userData.dni"
-                  />
+                      type="text"
+                      class="form-control"
+                      id="dni"
+                      name="dni"
+                      [(ngModel)]="adminData.dni"
+                    />
+                  </div>
+                  
+                  <div class="col-md-6">
+                    <label for="permiso" class="form-label">Permiso</label>
+                    <select
+                      class="form-select"
+                      id="permiso"
+                      name="permiso"
+                      [(ngModel)]="adminData.permiso"
+                    >
+                      <option value="admin">Administrador</option>
+                      <option value="client">Cliente</option>
+                    </select>
                   </div>
                 </div>
-
-
               <div class="card mt-4">
                 <div class="card-body">
                   <h5>Nueva Contraseña</h5>
@@ -160,7 +173,18 @@
                         id="password"
                         name="password"
                         placeholder="Introduce nueva contraseña..."
-                        [(ngModel)]="userData.password"
+                        [(ngModel)]="adminData.password"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="password" class="form-label">Contraseña</label>
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="password"
+                        name="password"
+                        placeholder="Introduce nueva contraseña..."
+                        [(ngModel)]="adminData.password"
                       />
                     </div>
                     <div class="col-md-6">
@@ -171,7 +195,7 @@
                         id="confirmPassword"
                         placeholder="Repetir contraseña..."
                         name="confirmPassword"
-                        [(ngModel)]="userData.confirmPassword"
+                        [(ngModel)]="adminData.confirmPassword"
                       />
                     </div>
                   </div>

@@ -36,6 +36,7 @@ export class CategoriesComponent {
     });
   }
 
+
   onSearch(): void {
     this.loadAllCategories(this.currentPage);
     if (this.searchText.trim() === '') {

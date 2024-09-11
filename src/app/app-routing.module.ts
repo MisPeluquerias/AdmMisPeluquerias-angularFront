@@ -17,6 +17,10 @@ import { NewHomeComponent } from './components/home/new-home/new-home.component'
 import { AuthGuard } from './core/guards/auth.guard';
 import { ProfileComponent } from './components/profile/profile.component';
 import { NewClientComponent } from './components/clients/new-client/new-client.component';
+import { EditClientComponent } from './components/clients/edit-client/edit-client.component';
+import { EditAdministratorsComponent } from './components/administrators/edit-administrators/edit-administrators.component';
+import { OwnerSalonComponent } from './components/owner-salon/owner-salon.component';
+import { EditOwnerComponent } from './components/owner-salon/edit-owner/edit-owner.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -111,9 +115,41 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     title: 'Adm | Mis Peluquerias',
   },
+  {
+    path: 'edit-client/edit/:id',
+    component: EditClientComponent,
+    canActivate: [AuthGuard],
+    title: 'Adm | Mis Peluquerias',
+  },
+  {
+    path: 'edit-administrator/edit/:id',
+    component: EditAdministratorsComponent,
+    canActivate: [AuthGuard],
+    title: 'Adm | Mis Peluquerias',
+  },
+
+  {
+    path: 'owners',
+    component: OwnerSalonComponent,
+    canActivate: [AuthGuard],
+    title: 'Adm | Mis Peluquerias',
+  },
+  {
+    path: 'edit-owner/edit/:id',
+    component: EditOwnerComponent,
+    canActivate: [AuthGuard],
+    title: 'Adm | Mis Peluquerias',
+  },
+  {
+    path: '',
+    component: ProfileComponent,
+    canActivate: [AuthGuard],
+    title: 'Adm | Mis Peluquerias',
+  },
 
   { path: '**', component: LoginComponent },
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

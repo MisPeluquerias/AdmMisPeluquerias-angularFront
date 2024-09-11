@@ -24,4 +24,9 @@ export class CategoriesService {
 
     return this.http.get<any>(`${this.baseUrl}/categories/getAllCategories`, { params });
   }
+
+  addCategory(id_salon: number, category: string, destacado: number = 0, active: number = 1): Observable<any> {
+    const body = { id_salon:-1, category, destacado, active };
+    return this.http.post<any>(`${this.baseUrl}/categories/addCategory`, body);
+  }
 }

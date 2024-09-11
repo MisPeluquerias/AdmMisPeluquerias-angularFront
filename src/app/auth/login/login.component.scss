@@ -1,0 +1,12 @@
+.input-group-text {
+    background-color: #f8f9fa; /* color de fondo */
+    border-left: none; /* sin borde izquierdo */
+  }
+  
+  .input-group-text .bx {
+    font-size: 18px; /* tamaño del icono */
+  }
+  
+  .input-group-text.cursor-pointer {
+    cursor: pointer; /* cambiar cursor al pasar sobre el icono */
+  }

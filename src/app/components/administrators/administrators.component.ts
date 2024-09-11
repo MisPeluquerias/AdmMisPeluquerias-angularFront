@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
 import { AdministratorsService } from '../../core/service/administrators.service';
+import { Subject, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-administrators',
   templateUrl: './administrators.component.html',
-  styleUrl: './administrators.component.scss'
+  styleUrls: ['./administrators.component.scss']
 })
 export class AdministratorsComponent {
 
@@ -14,33 +18,90 @@ export class AdministratorsComponent {
   totalItems: number = 0;
   Math = Math;
   allSelected: boolean = false;
-  searchText='';
+  searchText = '';
+  newAdmin: any = [];
+  emailUsers: string[] = [];
 
-  constructor(private administratorsService: AdministratorsService) { }
+  private searchTermsEmail = new Subject<string>();
+
+  constructor(private administratorsService: AdministratorsService,
+    private toastr : ToastrService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.loadAllAministrators(this.currentPage);
+  
+    this.searchTermsEmail.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap((term) => {
+        if (term.length >= 2) {
+          return this.administratorsService.getUserEmail(term);
+        } else {
+          return of([]); 
+        }
+      })
+    )
+    .subscribe({
+      next: (emailUsers) => {
+        // Verificamos si el array contiene objetos y si estos objetos tienen la propiedad 'email'
+        this.emailUsers = emailUsers
+          .filter((user: any) => user && user.email)
+          .map((user: any) => user.email);
+  
+        console.log('Resultados de la búsqueda de emails:', this.emailUsers);
+      },
+      error: (error) => {
+        console.error('Error al buscar emails:', error);
+      },
+    });
+  }
+
+  searchEmail(term: string): void {
+    this.searchTermsEmail.next(term);
+  }
+
+  selectEmail(email: string): void {
+    this.newAdmin.email = email;
+    this.emailUsers = []; // Limpiar la lista de resultados después de seleccionar
   }
 
   loadAllAministrators(page: number): void {
-    this.administratorsService.loadAllAdministrators(page, this.pageSize,this.searchText).subscribe({
+    this.administratorsService.loadAllAdministrators(page, this.pageSize, this.searchText).subscribe({
       next: (response: any) => {
         this.AllAdministrators = response.data;
         this.totalItems = response.totalItems;
       },
       error: (err) => {
-        console.error('Error loading salons', err);
+        console.error('Error loading administrators', err);
       }
     });
   }
+
+  addNewAdmin(email: string): void {
+    this.administratorsService.addnewAdmin(email).subscribe({
+      next: (response) => {
+        //console.log('Administrador añadido con éxito:', response);
+        this.toastr.success('Administrador añadido con éxito');
+
+        setTimeout(() => {
+    window.location.reload();}, 1000);
+      },
+      error: (error) => {
+        console.error('Error al añadir el administrador:', error);
+        this.toastr.success('Error, no se pudo añadir el administrador');
+          setTimeout(() => {
+          window.location.reload();}, 2000);
+      }
+    });
+  }
+
   onSearch(): void {
-
     this.loadAllAministrators(this.currentPage);
-
     if (this.searchText.trim() === '') {
-      this.loadAllAministrators(this.currentPage); // Reload with current page if search is cleared
+      this.loadAllAministrators(this.currentPage); // Recargar con la página actual si se borra la búsqueda
     }
-
   }
 
   onPageChange(page: number): void {
@@ -70,22 +131,26 @@ export class AdministratorsComponent {
 
     return pages;
   }
-  toggleAllSelection() {
+
+  toggleAllSelection(): void {
     this.allSelected = !this.allSelected;
-    this.AllAdministrators.forEach(administrartor => administrartor.selected = this.allSelected);
+    this.AllAdministrators.forEach(administrator => administrator.selected = this.allSelected);
   }
 
-  checkIfAllSelected() {
+  checkIfAllSelected(): void {
     this.allSelected = this.AllAdministrators.every(administrator => administrator.selected);
   }
 
-  hasSelected() {
+  hasSelected(): boolean {
     return this.AllAdministrators.some(administrator => administrator.selected);
   }
 
-  deleteSelected() {
+  deleteSelected(): void {
     this.AllAdministrators = this.AllAdministrators.filter(administrator => !administrator.selected);
     this.allSelected = false;
   }
 
+  editAdministrator(id: number) {
+    this.router.navigate(['edit-administrator/edit',id]);
+  }
 }

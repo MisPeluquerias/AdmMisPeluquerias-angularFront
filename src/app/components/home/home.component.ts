@@ -12,12 +12,12 @@ export class HomeComponent implements OnInit {
   currentPage: number = 1;
   pageSize: number = 10;
   totalItems: number = 0;
-  Math = Math;  // Exponer Math al contexto de la plantilla
+  Math = Math;
   searchText='';
-
+  filterState: string = '';
+  filterActive: boolean = true;
 
   constructor(private homeService: HomeService, private router:Router) { }
-
 
   allSelected: boolean = false;
 
@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit {
   }
 
   loadAllSalon(page: number): void {
-    this.homeService.loadAllSalon(page, this.pageSize, this.searchText).subscribe({
+    this.homeService.loadAllSalon(page, this.pageSize, this.searchText, this.filterState, this.filterActive).subscribe({
       next: (response: any) => {
         this.AllSalon = response.data;
         this.totalItems = response.totalItems;
@@ -37,6 +37,10 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  onFilterChange(): void {
+    this.loadAllSalon(this.currentPage);
+  }
+
   onSearch(): void {
 
     this.loadAllSalon(this.currentPage);
@@ -44,7 +48,6 @@ export class HomeComponent implements OnInit {
     if (this.searchText.trim() === '') {
       this.loadAllSalon(this.currentPage); // Reload with current page if search is cleared
     }
-
   }
 
   onPageChange(page: number): void {
@@ -71,7 +74,6 @@ export class HomeComponent implements OnInit {
     for (let i = start; i <= end; i++) {
       pages.push(i);
     }
-
     return pages;
   }
 
@@ -97,6 +99,5 @@ export class HomeComponent implements OnInit {
   editSalon(id: number) {
     this.router.navigate(['home/edit', id]);
   }
-
 
 }

@@ -13,6 +13,13 @@ export class NewClientService {
   constructor(private http:HttpClient) { }
 
 
+  getClientById(id_salon: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/edithome/getSalonById`, {
+      params: {
+        id_salon
+      },
+    });;
+  }
 
   getProvinces(): Observable<any> {
     return this.http.get(`${this.baseUrl}/new-client/getProvincesForNewClient`);

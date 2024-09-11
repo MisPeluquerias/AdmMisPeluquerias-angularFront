@@ -12,7 +12,7 @@ export class NewClientComponent {
   password: string = '';
   confirmPassword: string = '';
   errorMessage: string = '';
-  userData: any = {};
+  userData: any = [];
   cities: any[] = [];
   provinces: any[] = [];
   errors: any = {};
@@ -26,10 +26,7 @@ export class NewClientComponent {
 
 
   addNewClient(): void {
-    // Resetear mensajes de error
     this.errors = {};
-
-
     let hasError = false;
 
     if (!this.userData.name) {

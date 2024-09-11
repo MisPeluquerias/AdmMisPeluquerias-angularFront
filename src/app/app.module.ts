@@ -33,6 +33,10 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { FilterPipe } from './shared/pipes/filter.pipe';
 import { NewClientComponent } from './components/clients/new-client/new-client.component';
+import { EditClientComponent } from './components/clients/edit-client/edit-client.component';
+import { EditAdministratorsComponent } from './components/administrators/edit-administrators/edit-administrators.component';
+import { OwnerSalonComponent } from './components/owner-salon/owner-salon.component';
+import { EditOwnerComponent } from './components/owner-salon/edit-owner/edit-owner.component';
 
 
 
@@ -61,6 +65,10 @@ import { NewClientComponent } from './components/clients/new-client/new-client.c
     ProfileComponent,
     FilterPipe,
     NewClientComponent,
+    EditClientComponent,
+    EditAdministratorsComponent,
+    OwnerSalonComponent,
+    EditOwnerComponent,
   ],
   imports: [
     BrowserModule,
@@ -80,7 +88,9 @@ import { NewClientComponent } from './components/clients/new-client/new-client.c
   providers: [
     provideHttpClient(withFetch()),
     provideAnimationsAsync(),
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, 
+      useClass: AuthInterceptor, 
+      multi: true },
   ],
   bootstrap: [AppComponent]
 })

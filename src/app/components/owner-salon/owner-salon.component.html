@@ -1,3 +1,4 @@
+<p>owner-salon works!</p>
 <app-header></app-header>
 <div id="layoutSidenav">
   <app-aside></app-aside>
@@ -6,15 +7,14 @@
       <div class="container-fluid px-4">
         <h1 class="mt-1">Panel de control</h1>
         <ol class="breadcrumb mb-4">
-          <li class="breadcrumb-item active">Administración / <b>Administradores</b></li>
+          <li class="breadcrumb-item active">Administración / <b>Propietarios</b></li>
         </ol>
-
         <!-- Contenido de la tabla -->
         <div class="card mb-4">
           <div class="card-header">
             <img src="../../../favicon.ico" width="30" class="img-fluid me-2" alt="">
            <!-- <i class="fas fa-table me-1"></i>-->
-            Lista de Administradores
+            Lista de Propietarios
           </div>
           <div class="card-body">
             <div class="row mb-4">
@@ -22,7 +22,7 @@
                 <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="searchText" (input)="onSearch()">
               </div>
               <div class="col-12 col-md-4 d-flex justify-content-md-end ms-auto">
-                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#newAdminModal">Nuevo</button>
+                <button  class="btn btn-danger"  data-bs-toggle="modal" data-bs-target="#newAdminModal">Nuevo</button>
               </div>
               <div *ngIf="hasSelected()" class="mt-3 text-end" >
                 <button class="btn btn-danger" (click)="deleteSelected() " style="background-color: darkorange;">Eliminar seleccionados</button>
@@ -41,13 +41,13 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let admin of AllAdministrators">
-                    <td><input type="checkbox" [(ngModel)]="admin.selected" (change)="checkIfAllSelected()" /></td>
-                    <td>{{ admin.name }}</td>
-                    <td>{{ admin.email }}</td>
-                    <td>{{ admin.created_at | date }}</td>
-                    <td>{{ admin.phone }}</td>
-                    <td><button class="btn btn-dark" (click)="editAdministrator(admin.id_user)"><i class="fas fa-edit" ></i></button></td>
+                  <tr *ngFor="let owner of AllOwners">
+                    <td><input type="checkbox" [(ngModel)]="owner.selected" (change)="checkIfAllSelected()" /></td>
+                    <td>{{ owner.name }}</td>
+                    <td>{{ owner.email }}</td>
+                    <td>{{ owner.created_at |date:'dd-MM-yyyy' }}</td>
+                    <td>{{ owner.phone }}</td>
+                    <td><button class="btn btn-dark" (click)="editOwner(owner.id_user)"><i class="fas fa-edit"></i></button></td>
                   </tr>
                 </tbody>
               </table>
@@ -94,13 +94,11 @@
 </div>
 
 
-
-<!-- Modal -->
 <div class="modal fade" id="newAdminModal" tabindex="-1" aria-labelledby="newAdminModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="newAdminModalLabel">Nuevo Administrador</h5>
+        <h5 class="modal-title" id="newAdminModalLabel">Nuevo Propietario</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -109,35 +107,66 @@
         </div>
         <form>
           <div class="mb-3 position-relative">
-            <label for="adminEmail" class="form-label">Introduce Email:</label>
+            <label for="ownerEmail" class="form-label">Introduce email de propietario:</label>
             <input 
               type="email" 
               class="form-control" 
-              id="adminEmail" 
-              [(ngModel)]="newAdmin.email" 
+              id="ownerEmail" 
+              [(ngModel)]="newOwner.email" 
               name="email" 
               required
-              (input)="searchEmail(newAdmin.email)"
+              (input)="searchEmail(newOwner.email)"
               autocomplete="off"
             >
             <!-- Lista de resultados de búsqueda -->
-            <ul *ngIf="emailUsers.length > 0" class="list-group email-list">
+            <ul *ngIf="emailOwners.length > 0" class="list-group email-list">
               <li 
-                *ngFor="let email of emailUsers" 
+                *ngFor="let email of emailOwners" 
                 class="list-group-item list-group-item-action"
                 (click)="selectEmail(email)"
               ><i class="las la-user"></i>
                 {{ email }}
               </li>
             </ul>
+
+            <label for="salonName" class="form-label mt-3">Introduce el nombre del salón:</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="salonName" 
+              [(ngModel)]="selectedSalon" 
+              name="salon" 
+              (input)="searchSalon(selectedSalon)"
+              autocomplete="off"
+            >
+            <!-- Lista de resultados de búsqueda -->
+            <ul *ngIf="dataSalonList.length > 0" class="list-group email-list">
+              <li 
+                *ngFor="let salon of dataSalonList" 
+                class="list-group-item list-group-item-action"
+                (click)="selectSalon(salon)"
+              ><i class="las la-user"></i>
+                {{ salon.name }}
+              </li>
+            </ul>
+            <!-- Mostrar los salones seleccionados -->
+            <div class="mt-3">
+              <label class="form-label">Salones añadidos:</label>
+              <ul class="list-group">
+                <li *ngFor="let salon of newOwner.salons; let i = index" class="list-group-item d-flex justify-content-between align-items-center">
+                  {{ salon.name }}
+                  <button type="button" class="btn btn-danger btn-sm" (click)="removeSalon(i)">
+                    <i class="las la-times"></i>
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>
           <div class="d-flex justify-content-end">
-          <button type="submit" class="btn btn-danger" (click)="addNewAdmin(newAdmin.email)">Añadir</button>
-        </div>
+            <button type="submit" class="btn btn-danger" (click)="addNewOwner(newOwner.email)">Añadir</button>
+          </div>
         </form>
       </div>
     </div>
   </div>
 </div>
-
-

@@ -25,7 +25,6 @@ export class EditHomeService {
     });;
   }
 
-
   updateSalon(salonData: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/edithome/updateSalon`, salonData);
   }
@@ -49,17 +48,12 @@ export class EditHomeService {
     return this.http.put(url, body, { headers });
   }
 
-
-
   uploadImage(imageData: FormData): Observable<any> {
     const url = `${this.baseUrl}/edithomeimages/uploadImg`;
     return this.http.post(url, imageData).pipe(
       catchError(this.handleError)
     );
   }
-
-
-
 
   // Manejo de errores
   private handleError(error: HttpErrorResponse) {

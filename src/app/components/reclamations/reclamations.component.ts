@@ -1,51 +1,47 @@
 import { Component } from '@angular/core';
 import { ReclamationService } from '../../core/service/reclamation.service';
 
-
 @Component({
   selector: 'app-reclamations',
   templateUrl: './reclamations.component.html',
-  styleUrl: './reclamations.component.scss'
+  styleUrls: ['./reclamations.component.scss'] // corregido styleUrl a styleUrls
 })
 export class ReclamationsComponent {
-
   AllReclamations: any[] = [];
   currentPage: number = 1;
-  pageSize: number = 10;
+  pageSize: number = 3;
   totalItems: number = 0;
-  Math = Math;  // Exponer Math al contexto de la plantilla
   allSelected: boolean = false;
   searchText: string = '';
 
   constructor(private reclamationService: ReclamationService) { }
 
   ngOnInit(): void {
-    this.loadAllReclamations(this.currentPage);
+    this.loadAllReclamations();
   }
 
-  loadAllReclamations (page: number): void {
-    this.reclamationService.loadAllReclamation(page, this.pageSize,this.searchText).subscribe({
+  loadAllReclamations(): void {
+    this.reclamationService.loadAllReclamation(this.currentPage, this.pageSize, this.searchText).subscribe({
       next: (response: any) => {
         this.AllReclamations = response.data;
-        this.totalItems = response.totalItems;
+        this.totalItems = response.pagination.totalItems;
       },
       error: (err) => {
-        console.error('Error loading salons', err);
+        console.error('Error loading reclamations', err);
       }
     });
   }
 
   onSearch(): void {
-    this.loadAllReclamations(this.currentPage);
-    if (this.searchText.trim() === '') {
-      this.loadAllReclamations(this.currentPage);
-    }
+    this.currentPage = 1; // Resetea la página actual a 1 cuando buscas
+    this.loadAllReclamations();
   }
 
-
   onPageChange(page: number): void {
-    this.currentPage = page;
-    this.loadAllReclamations(page);
+    if (page > 0 && page <= this.pageCount) {
+      this.currentPage = page;
+      this.loadAllReclamations();
+    }
   }
 
   get pageCount(): number {
@@ -85,8 +81,19 @@ export class ReclamationsComponent {
   }
 
   deleteSelected() {
-    this.AllReclamations = this.AllReclamations.filter(reclamation => !reclamation.selected);
-    this.allSelected = false;
+    /*
+    const selectedIds = this.AllReclamations.filter(reclamation => reclamation.selected).map(reclamation => reclamation.id);
+    if (selectedIds.length > 0) {
+      this.reclamationService.deleteReclamations(selectedIds).subscribe({
+        next: () => {
+          this.loadAllReclamations();
+          this.allSelected = false;
+        },
+        error: (err) => {
+          console.error('Error deleting selected reclamations', err);
+        }
+      });
+    }
+      */
   }
-
 }
