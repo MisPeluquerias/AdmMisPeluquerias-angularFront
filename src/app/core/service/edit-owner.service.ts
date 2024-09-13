@@ -47,4 +47,31 @@ export class EditOwnerService {
       params: { id_user: id_salon.toString() },
     });
   }
+
+  getSalonName(name: string) {
+    return this.http.get<any[]>(
+      `${this.baseUrl}/edit-owner/searchSalonInLive`,
+      {
+        params: {
+          name,
+        },
+      }
+    );
+  }
+
+  updateUserSalon(id_user_salon: number, id_salon: number): Observable<any> {
+    const url = `${this.baseUrl}/edit-owner/updateUserSalon/${id_user_salon}`;
+    const body = { id_salon }; 
+    return this.http.put(url, body); 
+  }
+
+
+  deleteUserSalon(id_user_salon: number): Observable<any> {
+    const url = `${this.baseUrl}/edit-owner/deleteUserSalon/${id_user_salon}`;
+    return this.http.delete(url);
+  }
+
+  addUserSalon(data: { id_user: number; id_salon: number }): Observable<any> {
+    return this.http.post(`${this.baseUrl}/edit-owner/addUserSalon`, data);
+}
 }

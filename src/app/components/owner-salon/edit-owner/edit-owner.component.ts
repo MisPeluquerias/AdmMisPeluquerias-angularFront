@@ -3,6 +3,8 @@ import { EditOwnerService } from '../../../core/service/edit-owner.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
 import { Modal } from 'bootstrap';
+import { Subject,of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 
 
@@ -21,6 +23,13 @@ export class EditOwnerComponent {
   userData: any = [];
   ownerSalon:any =[];
   salonToDelete: number | null = null;
+  selectedSalon: string = '';
+  editOwner: any = { email: '', salons: [] };
+  dataSalonList: any[] = [];
+  private searchTermsSalon = new Subject<string>();
+  id_user_salon:any;
+  id_salon:any;
+  isSalonSelected: boolean = false;
   
 
   constructor(private editOwnerService:EditOwnerService,
@@ -29,23 +38,59 @@ export class EditOwnerComponent {
   )
   {}
 
-  ngOnInit(): void {
-    const id_user = this.route.snapshot.paramMap.get('id');
 
-    if (id_user) {
-      this.getOwnerData(+id_user); // Convierte id_user a número antes de pasar
+  ngOnInit(): void {
+    const id_user_str = this.route.snapshot.paramMap.get('id');  // Obtén el ID como cadena de texto
+
+    if (id_user_str) {
+      this.id_user = +id_user_str;  // Convierte el ID a número y lo asigna a id_user
+      this.getOwnerData(this.id_user); // Convierte id_user a número antes de pasar
+      this.getSalonOwnerById(this.id_user);
     } else {
       console.error('No id_user found in the URL');
     }
+
     this.getProvinces();
-    this.getSalonOwnerById(id_user)
+
+    this.searchTermsSalon.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap((term) => {
+        if (term.length >= 2) {
+          return this.editOwnerService.getSalonName(term);
+        } else {
+          return of([]);
+        }
+      })
+    ).subscribe({
+      next: (dataSalon) => {
+        this.dataSalonList = dataSalon
+          .filter((salon: any) => salon && salon.id_salon && salon.name)
+          .map((salon: any) => ({
+            id: salon.id_salon,
+            name: salon.name
+          }));
+      },
+      error: (error) => {
+        console.error('Error al buscar salones:', error);
+      },
+    });
   }
+
+
+
+  editSalon(salon: any): void {
+    //console.log('Objeto salon:', salon); // Verifica que el objeto tiene las propiedades correctas
+    this.selectedSalon = salon.name; 
+    this.id_user_salon = salon.id_user_salon;
+    this.id_salon = salon.id_salon;
+}
 
   getOwnerData(id_user: number): void {
     this.editOwnerService.getOwnerById(id_user).subscribe(
       (response: any) => {
         this.ownerData = response.data;
-        console.log(this.ownerData); // Asegúrate de que response.data contiene los datos correctos
+        //console.log(this.ownerData); // Asegúrate de que response.data contiene los datos correctos
 
         if (this.ownerData.id_province) {
           this.getCities(this.ownerData.id_province, true); // Asegúrate de que se cargan las ciudades primero
@@ -57,11 +102,10 @@ export class EditOwnerComponent {
     );
   }
 
-
   updateOwner(): void {
     this.editOwnerService.updateOwner(this.ownerData).subscribe(
       (response) => {
-        console.log('Propietario actualizado exitosamente', response);
+        //console.log('Propietario actualizado exitosamente', response);
         this.toastr.success('Cambios realizados con éxito');
       },
       (error) => {
@@ -70,6 +114,7 @@ export class EditOwnerComponent {
       }
     );
   }
+
 
   getProvinces(): void {
     this.editOwnerService.getProvinces().subscribe(
@@ -127,6 +172,7 @@ export class EditOwnerComponent {
     );
   }
 
+
   onCityChange(cityId: number): void {
     const selectedCity = this.cities.find((city) => city.id_city === cityId);
     if (selectedCity) {
@@ -139,7 +185,7 @@ export class EditOwnerComponent {
       (response: any) => {
         // Si response.data no es un array, conviértelo a array
         this.salons = Array.isArray(response.data) ? response.data : [response.data];
-        console.log('Salones asignados', this.salons);
+        //console.log('Salones asignados', this.salons);
       },
       (error) => {
         console.error('Error fetching salons:', error);
@@ -147,32 +193,104 @@ export class EditOwnerComponent {
     );
   }
 
-  deleteSalon(id_salon: number): void {
-    this.salonToDelete = id_salon;
+  deleteSalon(salon: any): void {
+    //console.log('Objeto salon:', salon); // Verifica que el objeto tiene las propiedades correctas
+    this.selectedSalon = salon.name; 
+    this.id_user_salon = salon.id_user_salon;
+    this.id_salon = salon.id_salon;
+  }
 
-    const deleteModalElement = document.getElementById('deleteSalonModal');
-    if (deleteModalElement) {
-      const deleteModal = new Modal(deleteModalElement);
-      deleteModal.show();
+  selectSalon(salon: { id: number, name: string }): void {
+    this.selectedSalon = salon.name;
+    this.id_salon = salon.id; 
+    this.isSalonSelected = true; // Actualiza el id_salon con el nuevo salón seleccionado
+    this.dataSalonList = [];   // Limpiar la lista después de la selección
+  }
 
-      const confirmButton = document.querySelector('#deleteSalonModal .btn-danger') as HTMLElement;
-      confirmButton.onclick = () => {
-        if (this.salonToDelete !== null) {
-          this.editOwnerService.deleteSalonById(this.salonToDelete).subscribe(
-            () => {
-              this.toastr.success('Salón eliminado con éxito');
-              this.salons = this.salons.filter(salon => salon.id_salon !== this.salonToDelete);
-              this.salonToDelete = null;
-              deleteModal.hide();
-            },
-            (error) => {
-              console.error('Error al eliminar el salón', error);
-              this.toastr.error('No se pudo eliminar el salón');
-              this.salonToDelete = null;
-            }
-          );
-        }
-      };
+
+
+searchSalon(term: string): void {
+  this.isSalonSelected = false;
+  this.searchTermsSalon.next(term);
+}
+
+updateUserSalon(id_user_salon: number, id_salon: number): void {
+  if (!this.isSalonSelected) {
+    this.toastr.error('Por favor, selecciona un salón de la lista.');
+    return;
+  }
+
+  //console.log('Datos que se envían al backend:', { id_user_salon, id_salon });
+  this.editOwnerService.updateUserSalon(id_user_salon, id_salon).subscribe(
+    (response: any) => {
+      //console.log('Relación usuario-salón actualizada exitosamente', response);
+      this.toastr.success('Salón actualizado con éxito');
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+      this.getSalonOwnerById(this.id_user); 
+    },
+    (error) => {
+      console.error('Error al actualizar el salón del usuario', error);
+      this.toastr.error('No se pudo actualizar el salón');
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     }
+  );
+}
+
+
+deleteUserSalon(id_user_salon: number): void {
+    this.editOwnerService.deleteUserSalon(id_user_salon).subscribe({
+      next: (response: any) => {
+        //console.log('Salón eliminado exitosamente', response);
+        this.toastr.success('Salón eliminado con éxito');
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+        this.getSalonOwnerById(this.id_user);  // Actualiza la lista de salones después de la eliminación
+      },
+      error: (error) => {
+        console.error('Error al eliminar el salón', error);
+        this.toastr.error('No se pudo eliminar el salón');
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      }
+    });
+  }
+
+  addUserSalon(): void {
+    if (!this.isSalonSelected || !this.id_salon) {
+      this.toastr.error('Por favor, selecciona un salón de la lista.');
+      return;
+    }
+
+    if (this.id_user === undefined) {  // Verifica que id_user no es undefined
+      this.toastr.error('ID de usuario no válido.');
+      return;
+    }
+
+    const data = {
+      id_user: this.id_user,
+      id_salon: this.id_salon
+    };
+
+    console.log('Datos enviados:', data);
+
+    this.editOwnerService.addUserSalon(data).subscribe(
+      (response: any) => {
+        this.toastr.success('Salón añadido con éxito');
+        this.getSalonOwnerById(this.id_user);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      },
+      (error) => {
+        console.error('Error al añadir el salón', error);
+        this.toastr.error('No se pudo añadir el salón');
+      }
+    );
   }
 }

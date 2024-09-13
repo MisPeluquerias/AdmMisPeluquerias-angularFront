@@ -1,0 +1,123 @@
+<p>edit-city works!</p>
+<p>edit-client works!</p>
+<app-header></app-header>
+<div id="layoutSidenav">
+  <app-aside></app-aside>
+  <div id="layoutSidenav_content">
+    <main>
+      <div class="container-fluid px-4">
+        <h1 class="mt-1">Panel de control</h1>
+        <ol class="breadcrumb mb-4">
+          <li class="breadcrumb-item active">
+            Ajuste de cuenta / <b>Editar ciudad</b>
+          </li>
+        </ol>
+        <div class="card mb-4">
+          <div class="card-header">
+            <img src="../../../favicon.ico" width="30" class="img-fluid me-2" alt="Favicon" />
+            <!--  <i class="fas fa-table me-1"></i> -->
+            Editar Ciudad
+          </div>
+          <div class="card-body">
+            <div *ngIf="cityData">
+              <!--
+              <div class="row mb-4">
+                <div class="col-12 d-flex flex-column flex-md-row align-items-center">
+                  <div class="me-md-3 mb-3 mb-md-0 text-center text-md-start">
+                    <img
+                      [src]="adminData.avatar_path || '../../../../assets/img/sello.jpg'"
+                      alt="Foto de perfil"
+                      class="img-fluid profile-img"
+                    />
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <label for="fileInput" class="form-label">Subir imagen</label>
+                    <input
+                      type="file"
+                      (change)="onFileSelected($event)"
+                      accept=".jpg, .jpeg, .png, .gif"
+                      class="form-control"
+                      id="fileInput"
+                    />
+                    <p class="small text-muted mt-1">
+                      Archivos permitidos JPG, GIF o PNG. Tamaño máximo 800K
+                    </p>
+                  </div>
+                </div>
+              </div>
+              -->
+              <form (ngSubmit)="updateCity()">
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="name"
+                      name="name"
+                      [(ngModel)]="cityData.name"
+                    />
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="latitud" class="form-label">Latitud</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="latitud"
+                      name="latitud"
+                      [(ngModel)]="cityData.latitud"
+                    />
+                  </div>
+                </div>
+                <div class="row ">
+                  <div class="col-md-6 mb-3">
+                    <label for="longitud" class="form-label">Longitud</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="longitud"
+                      name="longitud"
+                      [(ngModel)]="cityData.longitud"
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="zip_code" class="form-label">Codigo Zip</label>
+                    <input
+                      type="zip_code"
+                      class="form-control"
+                      id="zip_code"
+                      name="zip_code"
+                      [(ngModel)]="cityData.zip_code"
+                    />
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-md-3">
+                    <label for="provincia" class="form-label">Provincia</label>
+                    <select
+                    class="form-select"
+                    id="id_province"
+                    name="id_province"
+                    [(ngModel)]="cityData.id_province"
+                  >
+                    <option *ngFor="let province of provinces" [value]="province.id_province">
+                      {{ province.name }}
+                    </option>
+                  </select>
+                  </div>
+                </div>
+              <div class="card mt-4">
+              </div>
+              <button type="submit" class="btn btn-danger me-2 mt-3">
+                Guardar
+              </button>
+              <button type="reset" class="btn btn-secondary mt-3" routerLink="/cities">Cancelar</button>
+            </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <app-footer></app-footer>
+  </div>
+</div>

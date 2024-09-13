@@ -54,6 +54,7 @@ export class OwnerSalonComponent {
       },
     });
 
+    
     this.searchTermsSalon.pipe(
       debounceTime(300),
       distinctUntilChanged(),

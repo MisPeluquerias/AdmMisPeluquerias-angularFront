@@ -21,6 +21,9 @@ import { EditClientComponent } from './components/clients/edit-client/edit-clien
 import { EditAdministratorsComponent } from './components/administrators/edit-administrators/edit-administrators.component';
 import { OwnerSalonComponent } from './components/owner-salon/owner-salon.component';
 import { EditOwnerComponent } from './components/owner-salon/edit-owner/edit-owner.component';
+import { EditCityComponent } from './components/cities/edit-city/edit-city.component';
+
+
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -124,6 +127,12 @@ const routes: Routes = [
   {
     path: 'edit-administrator/edit/:id',
     component: EditAdministratorsComponent,
+    canActivate: [AuthGuard],
+    title: 'Adm | Mis Peluquerias',
+  },
+  {
+    path: 'edit-city/edit/:id',
+    component: EditCityComponent,
     canActivate: [AuthGuard],
     title: 'Adm | Mis Peluquerias',
   },

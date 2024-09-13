@@ -1,0 +1,52 @@
+
+.salon-list {
+  position: absolute;
+  max-height: 200px;
+  overflow-y: auto;
+  width: 100%;
+  left: 0;
+  top: 90%; /* Posiciona justo debajo del input */
+  border-radius: 0.5rem;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  z-index: 1000;
+}
+
+.salon-item {
+  padding: 0.5rem 1rem;
+  transition: background-color 0.2s ease;
+  max-height: 200px;
+}
+
+
+.salon-item:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.salon-item i {
+  font-size: 1.25rem;
+  color: #6c757d;
+}
+
+.salon-item span {
+  flex-grow: 1;
+  font-weight: 500;
+  color: #333;
+}
+  
+
+#salonName {
+    border: none;
+    border-bottom: 2px solid #000;
+    border-radius: 0; 
+    margin-bottom: 0; 
+}
+
+
+#ownerEmail {
+    border: none; 
+    border-bottom: 2px solid #000; 
+    border-radius: 0;
+    margin-bottom: 0;
+}

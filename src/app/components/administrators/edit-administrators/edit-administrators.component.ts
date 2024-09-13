@@ -22,6 +22,7 @@ constructor(private editAdmistratorsService:EditAdministratorService,
 }
 
 
+
 ngOnInit(): void {
   const id_user = this.route.snapshot.paramMap.get('id');
 
@@ -94,6 +95,7 @@ onProvinceChange(eventOrProvinceId: Event | number): void {
   }
 }
 
+
 getCities(provinceId: number, initialLoad: boolean = false): void {
   this.editAdmistratorsService.getCitiesByProvince(provinceId).subscribe(
     (response: any) => {
@@ -117,6 +119,7 @@ getCities(provinceId: number, initialLoad: boolean = false): void {
     }
   );
 }
+
 
 onCityChange(cityId: number): void {
   const selectedCity = this.cities.find((city) => city.id_city === cityId);

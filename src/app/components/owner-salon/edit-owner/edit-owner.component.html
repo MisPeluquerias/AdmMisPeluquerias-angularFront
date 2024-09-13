@@ -10,10 +10,14 @@
             Ajuste de cuenta / <b>Editar Propietario</b>
           </li>
         </ol>
-
         <div class="card mb-4">
           <div class="card-header">
-            <img src="../../../favicon.ico" width="30" class="img-fluid me-2" alt="Favicon" />
+            <img
+              src="../../../favicon.ico"
+              width="30"
+              class="img-fluid me-2"
+              alt="Favicon"
+            />
             <!--  <i class="fas fa-table me-1"></i> -->
             Editar Cliente
           </div>
@@ -45,7 +49,7 @@
                 </div>
               </div>
               -->
-
+              
               <form (ngSubmit)="updateOwner()">
                 <div class="row mb-3">
                   <div class="col-md-6">
@@ -81,7 +85,9 @@
                     />
                   </div>
                   <div class="col-md-6">
-                    <label for="telefono" class="form-label">Nº de Teléfono</label>
+                    <label for="telefono" class="form-label"
+                      >Nº de Teléfono</label
+                    >
                     <input
                       type="tel"
                       class="form-control"
@@ -105,17 +111,19 @@
                   <div class="col-md-3">
                     <label for="provincia" class="form-label">Provincia</label>
                     <select
-                    class="form-select"
-                    id="id_province"
-                    name="id_province"
-                    [(ngModel)]="ownerData.id_province"
-                    (change)="onProvinceChange($event)" 
-                  >
-                    <option *ngFor="let province of provinces" [value]="province.id_province">
-                      {{ province.name }}
-                    </option>
-                  </select>
-                  
+                      class="form-select"
+                      id="id_province"
+                      name="id_province"
+                      [(ngModel)]="ownerData.id_province"
+                      (change)="onProvinceChange($event)"
+                    >
+                      <option
+                        *ngFor="let province of provinces"
+                        [value]="province.id_province"
+                      >
+                        {{ province.name }}
+                      </option>
+                    </select>
                   </div>
                   <div class="col-md-3">
                     <label for="poblacion" class="form-label">Población</label>
@@ -127,7 +135,10 @@
                       (change)="onCityChange(ownerData.id_city)"
                       required
                     >
-                      <option *ngFor="let city of cities" [value]="city.id_city">
+                      <option
+                        *ngFor="let city of cities"
+                        [value]="city.id_city"
+                      >
                         {{ city.city_name }} - {{ city.zip_code }}
                       </option>
                     </select>
@@ -137,82 +148,100 @@
                   <div class="col-md-6">
                     <label for="permiso" class="form-label">NIF</label>
                     <input
-                    type="text"
-                    class="form-control"
-                    id="dni"
-                    name="dni"
-                    [(ngModel)]="ownerData.dni"
-                  />
+                      type="text"
+                      class="form-control"
+                      id="dni"
+                      name="dni"
+                      [(ngModel)]="ownerData.dni"
+                    />
                   </div>
                 </div>
-              <div class="card mt-4">
-                <div class="card-body">
-                  <h5 class="h5">Nueva Contraseña</h5>
-                  <div class="row mb-3">
-                    <div class="col-md-6">
-                      <label for="password" class="form-label">Contraseña</label>
-                      <input
-                        type="password"
-                        class="form-control"
-                        id="password"
-                        name="password"
-                        placeholder="Introduce nueva contraseña..."
-                        [(ngModel)]="ownerData.password"
-                      />
-                    </div>
-                    <div class="col-md-6">
-                      <label for="confirmPassword" class="form-label">Repetir contraseña</label>
-                      <input
-                        type="password"
-                        class="form-control"
-                        id="confirmPassword"
-                        placeholder="Repetir contraseña..."
-                        name="confirmPassword"
-                        [(ngModel)]="ownerData.confirmPassword"
-                      />
+                <div class="card mt-4">
+                  <div class="card-body">
+                    <h5 class="h5">Nueva Contraseña</h5>
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <label for="password" class="form-label"
+                          >Contraseña</label
+                        >
+                        <input
+                          type="password"
+                          class="form-control"
+                          id="password"
+                          name="password"
+                          placeholder="Introduce nueva contraseña..."
+                          [(ngModel)]="ownerData.password"
+                        />
+                      </div>
+                      <div class="col-md-6">
+                        <label for="confirmPassword" class="form-label"
+                          >Repetir contraseña</label
+                        >
+                        <input
+                          type="password"
+                          class="form-control"
+                          id="confirmPassword"
+                          placeholder="Repetir contraseña..."
+                          name="confirmPassword"
+                          [(ngModel)]="ownerData.confirmPassword"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              
-              <button type="submit" class="btn btn-danger me-2 mt-3">
-                Guardar
-              </button>
-              <button type="reset" class="btn btn-secondary mt-3">Cancelar</button>
-            </form>
-            <div class="card mt-4">
-              <div class="card-body">
-                <h6 class="h5">Salones en propiedad</h6>
-              </div>
-           
-              <div class="table-responsive w-100 mx-auto rounded">
-                <table class="table table-hover table-light">
-                  <thead class="thead-dark">
-                    <tr class="text-center">
-                      <th>Nombre</th>
-                      <th class="col-1">Editar</th>
-                      <th class="col-1">Eliminar</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let salon of salons" class="text-center">
-                      <td>{{ salon.name }}</td>
-                      <td class="text-center">
-                        <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#editSalonModal">
-                          <i class="fas fa-edit"></i>
-                        </button>
-                      </td>
-                      <td class="text-center">
-                        <button class="btn btn-danger" (click)="deleteSalon(salon.id_salon)" data-bs-toggle="modal" data-bs-target="#deleteSalonModal">
-                          <i class="fas fa-trash"></i></button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+
+                <button type="submit" class="btn btn-danger me-2 mt-3">
+                  Guardar
+                </button>
+                <button type="reset" class="btn btn-secondary mt-3" routerLink="/owners">
+                  Cancelar
+                </button>
+              </form>
+              <div class="card mt-4 row">
+                <div class="card-body d-flex align-items-center">
+                  <h6 class="h5">Salones en propiedad</h6>
+                  <button class="btn bg-danger ms-auto"  data-bs-toggle="modal"
+                  data-bs-target="#addUserSalonModal">Nuevo</button>
+                </div>
+                <div class="table-responsive w-100 mx-auto rounded">
+                  <table class="table table-hover table-light">
+                    <thead class="thead-dark">
+                      <tr class="text-center">
+                        <th>Nombre</th>
+                        <th class="col-1">Editar</th>
+                        <th class="col-1">Eliminar</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let salon of salons" class="text-center">
+                        <td>{{ salon.name }}</td>
+                        <td class="text-center">
+                          <button
+                            class="btn btn-dark"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editSalonModal"
+                            (click)="editSalon(salon)"
+                          >
+                            <i class="fas fa-edit"></i>
+                          </button>
+                        </td>
+                        <td class="text-center">
+                          <button
+                            class="btn btn-danger"
+                            (click)="deleteSalon(salon)"
+                            data-bs-toggle="modal"
+                            data-bs-target="#deleteSalonModal"
+                          >
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
     </main>
@@ -220,50 +249,208 @@
   </div>
 </div>
 
-<div class="modal fade" id="deleteSalonModal" tabindex="-1" aria-labelledby="deleteSalonModalLabel" aria-hidden="true">
+<!--Modal para eliminar salon-->
+
+<div
+  class="modal fade"
+  id="deleteSalonModal"
+  tabindex="-1"
+  aria-labelledby="deleteSalonModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="deleteSalonModalLabel">Eliminar Salón</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
         <div class="text-center">
-          <img src="../../../assets/img/sello.jpg" alt="sello" width="120" class="img-fluid">
+          <img
+            src="../../../assets/img/sello.jpg"
+            alt="sello"
+            width="120"
+            class="img-fluid"
+          />
           <p>¿Estás seguro que deseas eliminar este salón?</p>
         </div>
         <div class="d-flex justify-content-end">
-          <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancelar</button>
-          <button 
-          type="button" 
-          class="btn btn-danger" 
-          [disabled]="!salonToDelete" 
-          (click)="salonToDelete !== null && deleteSalon(salonToDelete!)">
-          Eliminar
-        </button>
+          <button
+            type="button"
+            class="btn btn-secondary me-2"
+            data-bs-dismiss="modal"
+          >
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="deleteUserSalon(id_user_salon)"
+          >
+            Eliminar
+          </button>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-
-<div class="modal fade" id="editSalonModal" tabindex="-1" aria-labelledby="editSalonModalLabel" aria-hidden="true">
+<!--Modal para editar salón-->
+<div
+  class="modal fade"
+  id="editSalonModal"
+  tabindex="-1"
+  aria-labelledby="editSalonModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="editSalonModalLabel">Editar Salón</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
         <div class="text-center">
-          <img src="../../../assets/img/sello.jpg" alt="sello" width="120" class="img-fluid">
-          <p>Introduce el nuevo salón</p>
+          <img
+            src="../../../assets/img/sello.jpg"
+            alt="sello"
+            width="120"
+            class="img-fluid"
+          />
+          <div class="row mt-3">
+            <!--
+            <div class="col-12">
+              <label for="salonId" class="form-label">ID User Salon:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="salonId"
+                [value]="id_user_salon"
+                disabled
+              />
+            </div>
+            -->
+            <div class="col-12 mt-3">
+              <label for="salonName" class="form-label"
+                >Introduce el nombre del salón:</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="salonName"
+                [(ngModel)]="selectedSalon"
+                name="name"
+                (input)="searchSalon(selectedSalon)"
+                name="salon"
+                autocomplete="off"
+              />
+              <ul *ngIf="dataSalonList.length > 0" class="list-group salon-list mt-2">
+                <li
+                  *ngFor="let salon of dataSalonList"
+                  class="list-group-item list-group-item-action salon-item d-flex align-items-center"
+                  (click)="selectSalon(salon)"
+                >
+                  <i class="las la-industry"></i>
+                  <span>{{ salon.name }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary">Guardar cambios</button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="updateUserSalon(id_user_salon, id_salon)"
+        >
+          Guardar
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Cancelar
+        </button>
       </div>
     </div>
   </div>
+</div>
+
+<!-- Modal para añadir user_salon -->
+<div
+  class="modal fade"
+  id="addUserSalonModal"
+  tabindex="-1"
+  aria-labelledby="addUserSalonModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addUserSalonModalLabel">Añadir Salón</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center">
+          <img
+            src="../../../assets/img/sello.jpg"
+            alt="sello"
+            width="120"
+            class="img-fluid"
+          />
+        </div>
+          <div class="row">
+            <div class="col-md-12">
+              <label for="salonName" class="form-label">Introduzca salón:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="salonName"
+                [(ngModel)]="selectedSalon"
+                name="salon"
+                (input)="searchSalon(selectedSalon)"
+                autocomplete="off"
+              />
+              <ul *ngIf="dataSalonList.length > 0" class="list-group salon-list mt-2">
+                <li
+                  *ngFor="let salon of dataSalonList"
+                  class="list-group-item list-group-item-action salon-item d-flex align-items-center"
+                  (click)="selectSalon(salon)"
+                >
+                  <i class="las la-industry me-2"></i>
+                  <span>{{ salon.name }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+         </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-danger" (click)="addUserSalon()">Guardar</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+          </div>
+    </div>
+  </div>
+</div>

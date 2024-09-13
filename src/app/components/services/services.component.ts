@@ -24,8 +24,7 @@ export class ServicesComponent {
   }
 
   loadAllServices(page: number): void {
-
-
+    
     this.servicesService.loadAllServices(page, this.pageSize,this.searchText).subscribe({
       next: (response: any) => {
         this.AllServices = response.data;
@@ -44,7 +43,6 @@ export class ServicesComponent {
     }
   }
 
- 
   onPageChange(page: number): void {
     this.currentPage = page;
     this.loadAllServices(page);

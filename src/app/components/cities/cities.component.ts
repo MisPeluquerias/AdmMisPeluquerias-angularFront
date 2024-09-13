@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CitiesService } from '../../core/service/cities.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cities',
@@ -15,7 +16,9 @@ export class CitiesComponent {
   allSelected: boolean = false;
   searchText: string = '';
 
-  constructor(private citiesService: CitiesService) { }
+  constructor(private citiesService: CitiesService,
+    private router:Router
+  ) { }
 
   ngOnInit(): void {
     this.loadAllCities(this.currentPage);
@@ -31,6 +34,7 @@ export class CitiesComponent {
       next: (response: any) => {
         this.AllCities = response.data;
         this.totalItems = response.totalItems;
+        console.log('ciudades cargadas',this.AllCities);
       },
       error: (err) => {
         console.error('Error loading cities', err);
@@ -84,5 +88,8 @@ export class CitiesComponent {
     this.allSelected = false;
   }
 
+  editCity(id: number) {
+    this.router.navigate(['edit-city/edit',id]);
+  }
 
 }

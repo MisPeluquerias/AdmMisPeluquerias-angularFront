@@ -8,10 +8,9 @@
         <h1 class="mt-1">Panel de control</h1>
         <ol class="breadcrumb mb-4">
           <li class="breadcrumb-item active">
-            Ajuste de cuenta / <b>Nuevo Cliente</b>
+            Ajuste de cuenta / <b>Editar Administrador</b>
           </li>
         </ol>
-
         <div class="card mb-4">
           <div class="card-header">
             <img src="../../../favicon.ico" width="30" class="img-fluid me-2" alt="Favicon" />
@@ -46,7 +45,6 @@
                 </div>
               </div>
               -->
-
               <form (ngSubmit)="updateAdmin()">
                 <div class="row mb-3">
                   <div class="col-md-6">
@@ -116,7 +114,6 @@
                       {{ province.name }}
                     </option>
                   </select>
-                  
                   </div>
                   <div class="col-md-3">
                     <label for="poblacion" class="form-label">Población</label>
@@ -133,8 +130,7 @@
                       </option>
                     </select>
                   </div>
-                  
-
+                
                 </div>
                 <div class="row mb-4">
                   <div class="col-md-6">
@@ -204,7 +200,7 @@
               <button type="submit" class="btn btn-danger me-2 mt-3">
                 Guardar
               </button>
-              <button type="reset" class="btn btn-secondary mt-3">Cancelar</button>
+              <button type="reset" class="btn btn-secondary mt-3" routerLink="/administrators">Cancelar</button>
             </form>
             </div>
           </div>

@@ -48,7 +48,7 @@
                     <td>{{ city.zip_code }}</td>
                     <td>{{ city.latitud }}</td>
                     <td>{{ city.longitud}}</td>
-                    <td><button class="btn btn-dark"><i class="fas fa-edit"></i></button></td>
+                    <td><button class="btn btn-dark" (click)="editCity(city.id_city)"><i class="fas fa-edit"></i></button></td>
                   </tr>
                 </tbody>
               </table>
