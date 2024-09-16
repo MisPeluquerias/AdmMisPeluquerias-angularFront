@@ -40,6 +40,7 @@ export class EditHomeService {
   }
 
 
+
   updateSalonHours(id: number, hours_old: string): Observable<any> {
     const url = `${this.baseUrl}/edithome/updateSalonHours/${id}`;
     const body = { hours_old };

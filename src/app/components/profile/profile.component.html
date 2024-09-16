@@ -57,7 +57,12 @@
                       id="name"
                       name="name"
                       [(ngModel)]="userData.name"
+                      required
+                      #name="ngModel"
                     />
+                    <div *ngIf="name.invalid && name.touched" class="text-danger">
+                      Nombre es obligatorio
+                    </div>
                   </div>
                   <div class="col-md-6">
                     <label for="apellidos" class="form-label">Apellidos</label>
@@ -67,9 +72,15 @@
                       id="lastname"
                       name="lastname"
                       [(ngModel)]="userData.lastname"
+                      required
+                      #lastname="ngModel"
                     />
+                    <div *ngIf="lastname.invalid && lastname.touched" class="text-danger">
+                      Apellidos son obligatorios
+                    </div>
                   </div>
                 </div>
+              
                 <div class="row mb-3">
                   <div class="col-md-6">
                     <label for="email" class="form-label">E-mail</label>
@@ -79,22 +90,32 @@
                       id="email"
                       name="email"
                       [(ngModel)]="userData.email"
+                      required
+                      email
+                      #email="ngModel"
                     />
+                    <div *ngIf="email.invalid && email.touched" class="text-danger">
+                      Introduzca un correo electrónico válido
+                    </div>
                   </div>
-                  <div class="col-md-6">1
-
-                    <label for="telefono" class="form-label"
-                      >Nº de Teléfono</label
-                    >
+                  <div class="col-md-6">
+                    <label for="telefono" class="form-label">Nº de Teléfono</label>
                     <input
                       type="tel"
                       class="form-control"
                       id="phone"
                       name="phone"
                       [(ngModel)]="userData.phone"
+                      required
+                      pattern="^\d{9}$"
+                      #phone="ngModel"
                     />
+                    <div *ngIf="phone.invalid && phone.touched" class="text-danger">
+                      Número de teléfono es obligatorio y debe tener 9 dígitos
+                    </div>
                   </div>
                 </div>
+              
                 <div class="row mb-3">
                   <div class="col-md-6">
                     <label for="direccion" class="form-label">Dirección</label>
@@ -104,7 +125,12 @@
                       id="address"
                       name="address"
                       [(ngModel)]="userData.address"
+                      required
+                      #address="ngModel"
                     />
+                    <div *ngIf="address.invalid && address.touched" class="text-danger">
+                      Dirección es obligatoria
+                    </div>
                   </div>
                   <div class="col-md-3">
                     <label for="provincia" class="form-label">Provincia</label>
@@ -114,7 +140,10 @@
                       name="id_province"
                       [(ngModel)]="userData.id_province"
                       (change)="onProvinceChange($event)"
+                      required
+                      #id_province="ngModel"
                     >
+                      <option value="" disabled selected>Seleccione una provincia</option>
                       <option
                         *ngFor="let province of provinces"
                         [value]="province.id_province"
@@ -122,6 +151,9 @@
                         {{ province.name }}
                       </option>
                     </select>
+                    <div *ngIf="id_province.invalid && id_province.touched" class="text-danger">
+                      Provincia es obligatoria
+                    </div>
                   </div>
                   <div class="col-md-3">
                     <label for="poblacion" class="form-label">Población</label>
@@ -130,35 +162,21 @@
                       id="id_city"
                       name="id_city"
                       [(ngModel)]="userData.id_city"
-                      name="id_city"
                       (change)="onCityChange(userData.id_city)"
-                      #city="ngModel"
                       required
+                      #id_city="ngModel"
                     >
-                      <option
-                        *ngFor="let city of cities"
-                        [value]="city.id_city"
-                      >
+                      <option value="" disabled selected>Seleccione una población</option>
+                      <option *ngFor="let city of cities" [value]="city.id_city">
                         {{ city.city_name }} - {{ city.zip_code }}
                       </option>
                     </select>
+                    <div *ngIf="id_city.invalid && id_city.touched" class="text-danger">
+                      Población es obligatoria
+                    </div>
                   </div>
                 </div>
-                <div class="row mb-4">
-                  <div class="col-md-6">
-                    <label for="permiso" class="form-label">Permiso</label>
-                    <select
-                      class="form-select"
-                      id="permiso"
-                      name="permiso"
-                      [(ngModel)]="userData.permiso"
-                    >
-                      <option value="admin">Administrador del Sistema</option>
-                      <option value="salon">Usuario de Salón</option>
-                      <option value="client">Cliente</option>
-                    </select>
-                  </div>
-                </div>
+               
                 <button type="submit" class="btn btn-danger me-2">
                   Guardar
                 </button>

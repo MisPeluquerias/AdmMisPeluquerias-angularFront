@@ -52,6 +52,13 @@ getAdminData(id_user: number): void {
 }
 
 updateAdmin(): void {
+
+  if(this.adminData.password !== this.adminData.confirmPassword){
+    this.toastr.error('Las contraseñas no coinciden');
+    return
+  }
+  
+
   this.editAdmistratorsService.updateAdmin(this.adminData).subscribe(
     (response) => {
       console.log('Administrador actualizado exitosamente', response);
@@ -63,6 +70,7 @@ updateAdmin(): void {
     }
   );
 }
+
 
 getProvinces(): void {
   this.editAdmistratorsService.getProvinces().subscribe(

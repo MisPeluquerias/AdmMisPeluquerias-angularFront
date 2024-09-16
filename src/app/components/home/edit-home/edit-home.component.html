@@ -10,7 +10,7 @@
             Administración / <b>Negocios / </b> <b>{{ salonData.name }}</b>
           </li>
         </ol>
-
+        
         <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
           <li class="nav-item" role="presentation">
             <button
@@ -69,6 +69,7 @@
             </button>
           </li>
           <li class="nav-item" role="presentation">
+            <!--
             <button
               class="nav-link"
               id="permisos-tab"
@@ -79,8 +80,12 @@
               aria-controls="permisos"
               aria-selected="false"
             >
+           
               <i class="fa-solid fa-lock me-2"></i>Permisos
             </button>
+            -->
+            
+          
           </li>
           <li class="nav-item" role="presentation">
             <button
@@ -111,7 +116,7 @@
             </button>
           </li>
         </ul>
-
+      
         <div class="tab-content bg-light" id="myTabContent">
           <!-- Contenido de la pestaña Negocio -->
 
@@ -175,7 +180,12 @@
                     id="name"
                     name="name"
                     [(ngModel)]="salonData.name"
+                    required
+                    #name="ngModel"
                   />
+                  <div *ngIf="name.invalid && name.touched" class="text-danger">
+                    Nombre es obligatorio
+                  </div>
                 </div>
                 <div class="col-md-6">
                   <label for="email" class="form-label">E-mail</label>
@@ -185,10 +195,16 @@
                     id="email"
                     name="email"
                     [(ngModel)]="salonData.email"
+                    required
+                    email
+                    #email="ngModel"
                   />
+                  <div *ngIf="email.invalid && email.touched" class="text-danger">
+                    Introduzca un correo electrónico válido
+                  </div>
                 </div>
               </div>
-
+            
               <div class="row mb-3">
                 <div class="col-md-6">
                   <label for="direccion" class="form-label">Dirección</label>
@@ -198,22 +214,31 @@
                     id="address"
                     name="address"
                     [(ngModel)]="salonData.address"
+                    required
+                    #address="ngModel"
                   />
+                  <div *ngIf="address.invalid && address.touched" class="text-danger">
+                    Dirección es obligatoria
+                  </div>
                 </div>
                 <div class="col-md-6">
-                  <label for="telefono" class="form-label"
-                    >Nº de Teléfono</label
-                  >
+                  <label for="telefono" class="form-label">Nº de Teléfono</label>
                   <input
-                    type="telf"
+                    type="tel"
                     class="form-control"
                     id="phone"
                     name="phone"
                     [(ngModel)]="salonData.phone"
+                    required
+                    pattern="^\d{9}$"
+                    #phone="ngModel"
                   />
+                  <div *ngIf="phone.invalid && phone.touched" class="text-danger">
+                    Número de teléfono es obligatorio y debe tener 9 dígitos
+                  </div>
                 </div>
               </div>
-
+            
               <div class="row mb-3">
                 <div class="col-md-6">
                   <label for="provincia" class="form-label">Provincia</label>
@@ -223,14 +248,17 @@
                     [(ngModel)]="salonData.id_province"
                     name="id_province"
                     (change)="onProvinceChange(salonData.id_province)"
+                    required
+                    #id_province="ngModel"
                   >
-                    <option
-                      *ngFor="let province of provinces"
-                      [value]="province.id_province"
-                    >
+                    <option value="" disabled selected>Seleccione una provincia</option>
+                    <option *ngFor="let province of provinces" [value]="province.id_province">
                       {{ province.name }}
                     </option>
                   </select>
+                  <div *ngIf="id_province.invalid && id_province.touched" class="text-danger">
+                    Provincia es obligatoria
+                  </div>
                 </div>
                 <div class="col-md-6">
                   <label for="ciudad" class="form-label">Ciudad-CP</label>
@@ -240,14 +268,20 @@
                     [(ngModel)]="salonData.id_city"
                     name="id_city"
                     (change)="onCityChange(salonData.id_city)"
+                    required
+                    #id_city="ngModel"
                   >
+                    <option value="" disabled selected>Seleccione una ciudad</option>
                     <option *ngFor="let city of cities" [value]="city.id_city">
                       {{ city.city_name }} - {{ city.zip_code }}
                     </option>
                   </select>
+                  <div *ngIf="id_city.invalid && id_city.touched" class="text-danger">
+                    Ciudad es obligatoria
+                  </div>
                 </div>
               </div>
-
+            
               <div class="row mb-3">
                 <div class="col-md-6">
                   <label for="latitud" class="form-label">Latitud</label>
@@ -257,7 +291,13 @@
                     id="latitud"
                     name="latitud"
                     [(ngModel)]="salonData.latitud"
+                    required
+                    pattern="^-?\d+(\.\d+)?$"
+                    #latitud="ngModel"
                   />
+                  <div *ngIf="latitud.invalid && latitud.touched" class="text-danger">
+                    Latitud es obligatoria y debe ser un número válido
+                  </div>
                 </div>
                 <div class="col-md-6">
                   <label for="longitud" class="form-label">Longitud</label>
@@ -267,7 +307,13 @@
                     id="longitud"
                     name="longitud"
                     [(ngModel)]="salonData.longitud"
+                    required
+                    pattern="^-?\d+(\.\d+)?$"
+                    #longitud="ngModel"
                   />
+                  <div *ngIf="longitud.invalid && longitud.touched" class="text-danger">
+                    Longitud es obligatoria y debe ser un número válido
+                  </div>
                 </div>
               </div>
 

@@ -13,6 +13,7 @@ export class HeaderComponent {
   constructor(private authService: AuthService,private headerService:HeaderService) { }
 
 
+  
   ngOnInit(): void {
     if (this.id_user) {  // Verificamos que id_user no sea null
       this.getImgUser(this.id_user);
@@ -49,7 +50,7 @@ export class HeaderComponent {
         // Accedemos al primer objeto en el array data y obtenemos el path de la imagen
         if (response.data && response.data.length > 0) {
           this.userImagePath = response.data[0].avatar_path;
-          console.log('Path de la imagen:', this.userImagePath); // Verificar el path recibido
+         // console.log('Path de la imagen:', this.userImagePath); // Verificar el path recibido
         } else {
           console.error('No se encontró la imagen en la respuesta.');
           this.userImagePath = '../../../../assets/img/sello.jpg'; // Imagen predeterminada

@@ -17,4 +17,12 @@ export class AsideService {
     const params = new HttpParams().set('id_user', id_user.toString());
     return this.http.get(`${this.baseUrl}/aside/getUserName`, { params });
   }
+  
+  getUserPermiso(): Observable<any> {
+    const permiso = localStorage.getItem('permiso');
+    return this.http.get(`${this.baseUrl}/decode-permiso/permiso-aside`, {
+      params: { permiso: permiso || ''}
+    });
+  }
+  
 }

@@ -3,3 +3,24 @@
     height: 150px; /* O la altura que prefieras */
     object-fit: cover; /* Ajusta la imagen para que cubra el área sin deformarse */
   }
+
+  .state-list {
+    position: absolute;
+    top: 10;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    max-height: 150px; /* Limita el alto de la lista */
+    overflow-y: auto; /* Agrega scroll si hay demasiadas opciones */
+    background-color: white; /* Asegura que el fondo sea blanco */
+    border: 1px solid rgba(0, 0, 0, 0.125); /* Agrega un borde */
+    border-top: none;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.state-list:hover{
+    cursor: pointer;
+    background-color: #808080;
+
+}

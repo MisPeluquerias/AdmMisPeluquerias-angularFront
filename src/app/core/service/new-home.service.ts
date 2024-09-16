@@ -31,4 +31,12 @@ export class NewHomeService {
 
     return this.http.post(url, salonData, { headers });
   }
+
+  getUserPermiso(): Observable<any> {
+    const permiso = localStorage.getItem('permiso');
+    return this.http.get(`${this.baseUrl}/decode-permiso/permiso-home`, {
+      params: { permiso: permiso || ''}
+    });
+  }
+
 }

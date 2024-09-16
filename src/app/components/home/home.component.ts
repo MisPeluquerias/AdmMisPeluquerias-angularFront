@@ -16,6 +16,8 @@ export class HomeComponent implements OnInit {
   searchText='';
   filterState: string = '';
   filterActive: boolean = true;
+  salonPermiso:string='';
+  showBoton:boolean=false;
 
   constructor(private homeService: HomeService, private router:Router) { }
 
@@ -23,6 +25,26 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadAllSalon(this.currentPage);
+    this.homeService.getUserPermiso().subscribe(
+      (response: any) => {
+        //console.log('Permiso recibido:', response.permiso);
+        if (response.permiso === 'salon') {
+          this.salonPermiso = 'salon';
+          this.showBoton = false;
+          //console.log('mostrarNegocios se establece en true');
+        } else if (response.permiso === 'admin') {
+          this.salonPermiso = 'admin';
+          this.showBoton = true;
+          //console.log('mostrarNegocios se establece en true');
+        } else {
+          this.showBoton = false;
+          //console.log('mostrarNegocios se establece en false');
+        }
+      },
+      (error) => {
+        console.log('Error fetching permiso:', error);
+      }
+    );
   }
 
   loadAllSalon(page: number): void {

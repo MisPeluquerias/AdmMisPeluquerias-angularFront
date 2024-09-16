@@ -111,6 +111,40 @@ export class ProfileComponent {
   }
 
   UpdateUserData(): void {
+    if (!this.userData.name) {
+      this.toastr.warning("Por favor, ingrese el nombre.");
+      return;
+    }
+  
+    if (!this.userData.lastname) {
+      this.toastr.warning("Por favor, ingrese los apellidos.");
+      return;
+    }
+  
+    if (!this.userData.email) {
+      this.toastr.warning("Por favor, ingrese el correo electrónico.");
+      return;
+    }
+  
+    if (!this.userData.phone) {
+      this.toastr.warning("Por favor, ingrese el número de teléfono.");
+      return;
+    }
+  
+    if (!this.userData.address) {
+      this.toastr.warning("Por favor, ingrese la dirección.");
+      return;
+    }
+  
+    if (!this.userData.id_province) {
+      this.toastr.warning("Por favor, seleccione una provincia.");
+      return;
+    }
+  
+    if (!this.userData.id_city) {
+      this.toastr.warning("Por favor, seleccione una población.");
+      return;
+    }
     console.log('Saving user data:', this.userData);  // Imprime los datos del usuario a guardar
     this.profileService.updateUserData(this.userData).subscribe(
       (response) => {

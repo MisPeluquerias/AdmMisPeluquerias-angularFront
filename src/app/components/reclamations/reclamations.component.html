@@ -6,67 +6,118 @@
       <div class="container-fluid px-4">
         <h1 class="mt-1">Panel de control</h1>
         <ol class="breadcrumb mb-4">
-          <li class="breadcrumb-item active">Administración / <b>Reclamaciones</b></li>
+          <li class="breadcrumb-item active">
+            Administración / <b>Reclamaciones</b>
+          </li>
         </ol>
 
         <!-- Contenido de la tabla -->
         <div class="card mb-4">
-          <div class="card-header"><img src="../../../favicon.ico" width="30" class="img-fluid me-2" alt="">
-           <!-- <i class="fas fa-table me-1"></i> -->
+          <div class="card-header">
+            <img
+              src="../../../favicon.ico"
+              width="30"
+              class="img-fluid me-2"
+              alt=""
+            />
+            <!-- <i class="fas fa-table me-1"></i> -->
             Lista de Reclamaciones
           </div>
           <div class="card-body">
             <div class="row mb-4">
               <div class="col-12 col-md-2 mb-2 mb-md-0">
-                <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="searchText" (input)="onSearch()">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Buscar"
+                  [(ngModel)]="searchText"
+                  (input)="onSearch()"
+                />
               </div>
-              <div class="col-12 col-md-4 d-flex justify-content-md-end ms-auto">
-              </div>
-              <div *ngIf="hasSelected()" class="mt-3 text-end" >
-                <button class="btn btn-danger" (click)="deleteSelected() " style="background-color: darkorange;">Eliminar seleccionados</button>
+              <div class="col-12 col-md-4 d-flex justify-content-md-end ms-auto"></div>
+              <div *ngIf="hasSelected()" class="mt-3 text-end">
+                <button
+                  class="btn btn-danger"
+                  (click)="deleteSelected()"
+                  style="background-color: darkorange"
+                >
+                  Eliminar seleccionados
+                </button>
               </div>
             </div>
             <div class="table-responsive">
               <table class="table table-hover table-light">
                 <thead class="thead-dark">
                   <tr>
-                    <th><input type="checkbox" (change)="toggleAllSelection()" [checked]="allSelected" /></th>
+                    <th>
+                      <input
+                        type="checkbox"
+                        (change)="toggleAllSelection()"
+                        [checked]="allSelected"
+                      />
+                    </th>
                     <th class="col-2">Usuario</th>
                     <th>Email</th>
                     <th>Negocio</th>
-                    <th >Observacion</th>
-                    <th >DNI Frontal</th>
-                    <th >DNI Trasero</th>
-                    <th >Documentos</th>
+                    <th>Observacion</th>
+                    <th>Ciudad</th>
+                    <th>Provincia</th>
+                    <th>DNI Frontal</th>
+                    <th>DNI Trasero</th>
+                    <th>Documentos</th>
+                    <th>Estado</th>
                     <th class="col-1">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let reclamation of AllReclamations">
-                    <td><input type="checkbox" [(ngModel)]="reclamation.selected" (change)="checkIfAllSelected()" /></td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        [(ngModel)]="reclamation.selected"
+                        (change)="checkIfAllSelected()"
+                      />
+                    </td>
                     <td>{{ reclamation.user_name }}</td>
                     <td>{{ reclamation.email }}</td>
                     <td>{{ reclamation.salon_name }}</td>
                     <td>{{ reclamation.observation }}</td>
+                    <td>{{ reclamation.city_name }}</td>
+                    <td>{{ reclamation.province_name }}</td>
                     <td>
                       <a [href]="reclamation.dnifront_path" target="_blank">
-                        <img [src]="reclamation.dnifront_path" alt="DNI Frontal" class="fixed-size-img" />
+                        <img
+                          [src]="reclamation.dnifront_path"
+                          alt="DNI Frontal"
+                          class="fixed-size-img"
+                        />
                       </a>
                     </td>
                     <td>
                       <a [href]="reclamation.dniback_path" target="_blank">
-                        <img [src]="reclamation.dniback_path" alt="DNI Trasero" class="fixed-size-img" />
-                    </a>
+                        <img
+                          [src]="reclamation.dniback_path"
+                          alt="DNI Trasero"
+                          class="fixed-size-img"
+                        />
+                      </a>
                     </td>
                     <td>
                       <a [href]="reclamation.file_path" target="_blank">
-                        <img [src]="reclamation.file_path" alt="Documentos" class="fixed-size-img" />
-                    </a>
+                        <img
+                          [src]="reclamation.file_path"
+                          alt="Documentos"
+                          class="fixed-size-img"
+                        />
+                      </a>
                     </td>
-                    
-                    <td><button class="btn btn-dark"><i class="fas fa-edit"></i></button></td>
+                    <td>{{ reclamation.state }}</td>
+                    <td>
+                      <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#changeStateModal">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                    </td>
                   </tr>
-                  
                 </tbody>
               </table>
             </div>
@@ -74,16 +125,29 @@
             <nav aria-label="Page navigation example">
               <ul class="pagination justify-content-center">
                 <li class="page-item" [class.disabled]="currentPage === 1">
-                  <a class="page-link" (click)="onPageChange(1)" aria-label="First">
+                  <a
+                    class="page-link"
+                    (click)="onPageChange(1)"
+                    aria-label="First"
+                  >
                     <span aria-hidden="true">&laquo;&laquo;</span>
                   </a>
                 </li>
                 <li class="page-item" [class.disabled]="currentPage === 1">
-                  <a class="page-link" (click)="onPageChange(currentPage - 1)" aria-label="Previous">
+                  <a
+                    class="page-link"
+                    (click)="onPageChange(currentPage - 1)"
+                    aria-label="Previous"
+                  >
                     <span aria-hidden="true">&laquo;</span>
                   </a>
                 </li>
-                <li class="page-item" *ngFor="let page of pages" [class.active]="page === currentPage" [class.disabled]="page === -1">
+                <li
+                  class="page-item"
+                  *ngFor="let page of pages"
+                  [class.active]="page === currentPage"
+                  [class.disabled]="page === -1"
+                >
                   <ng-container *ngIf="page === -1">
                     <span class="page-link">...</span>
                   </ng-container>
@@ -92,12 +156,20 @@
                   </ng-container>
                 </li>
                 <li class="page-item" [class.disabled]="currentPage === pageCount">
-                  <a class="page-link" (click)="onPageChange(currentPage + 1)" aria-label="Next">
+                  <a
+                    class="page-link"
+                    (click)="onPageChange(currentPage + 1)"
+                    aria-label="Next"
+                  >
                     <span aria-hidden="true">&raquo;</span>
                   </a>
                 </li>
                 <li class="page-item" [class.disabled]="currentPage === pageCount">
-                  <a class="page-link" (click)="onPageChange(pageCount)" aria-label="Last">
+                  <a
+                    class="page-link"
+                    (click)="onPageChange(pageCount)"
+                    aria-label="Last"
+                  >
                     <span aria-hidden="true">&raquo;&raquo;</span>
                   </a>
                 </li>
@@ -108,5 +180,41 @@
       </div>
     </main>
     <app-footer></app-footer>
+  </div>
+</div>
+
+
+<!-- Modal para cambiar el estado -->
+<div class="modal fade" id="changeStateModal" tabindex="-1" aria-labelledby="changeStateModalLabel" aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="changeStateModalLabel">Cambiar estado reclamación</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-4">
+          <img src="../../../assets/img/sello.jpg" alt="sello" width="120" class="img-fluid rounded-circle shadow">
+        </div>
+        <form>
+          <div class="mb-3">
+          
+              <label for="state" class="form-label">Estado de la reclamación</label>
+              <select 
+                class="form-select form-select-lg mb-3" 
+                name="state" 
+                id="state" 
+                aria-label="Large select example">                <option value="Pendiente">Pendiente</option>
+                <option value="En revisión">En revisión</option>
+                <option value="Validado">Validado</option>
+              </select>
+          </div> 
+          <div class="text-end">
+            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Guardar cambios</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </div>

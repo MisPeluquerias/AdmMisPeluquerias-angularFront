@@ -29,10 +29,10 @@
       <a class="nav-link dropdown-toggle d-flex align-items-center me-4" id="navbarDropdownUser" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
         <img [src]="userImagePath || '../../../../assets/img/sello.jpg'" class="rounded-circle" alt="Foto de perfil" width="40" height="40">
       </a>
-      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownUser">
-        <li><a class="dropdown-item" href="profile">Mi perfil</a></li>
+      <ul class="dropdown-menu dropdown-menu-end bg-danger text" aria-labelledby="navbarDropdownUser">
+        <li><a class="dropdown-item" href="profile"><i class="las la-user-circle"></i> Mi perfil</a></li>
         <li><hr class="dropdown-divider" /></li>
-        <li><a class="dropdown-item" href="#" (click)="logout()">Salir</a></li>
+        <li><a class="dropdown-item" href="#" (click)="logout()"><i class="las la-sign-out-alt"></i> Salir</a></li>
       </ul>
     </li>
   </ul>

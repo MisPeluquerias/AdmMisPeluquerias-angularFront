@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { EditHomeService } from '../../../core/service/edit-home.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { response } from 'express';
+import { error } from 'console';
 
 @Component({
   selector: 'app-edit-home',
@@ -75,8 +77,7 @@ export class EditHomeComponent implements OnInit {
   editRating: string = '';
   editReviewText: string = '';
   averageRating: number = 0;
-
-
+ 
   constructor(
     private route: ActivatedRoute,
     private editHomeService: EditHomeService,
@@ -211,6 +212,42 @@ export class EditHomeComponent implements OnInit {
       this.toastr.warning("Por favor, seleccione una ciudad para actualizar los datos");
       return;
     }
+  
+    if (!this.salonData.name) {
+      this.toastr.warning("Por favor, ingrese el nombre del salón");
+      return;
+    }
+  
+    if (!this.salonData.email) {
+      this.toastr.warning("Por favor, ingrese el correo electrónico del salón");
+      return;
+    }
+  
+    if (!this.salonData.address) {
+      this.toastr.warning("Por favor, ingrese la dirección del salón");
+      return;
+    }
+  
+    if (!this.salonData.phone) {
+      this.toastr.warning("Por favor, ingrese el número de teléfono del salón");
+      return;
+    }
+  
+    if (!this.salonData.id_province) {
+      this.toastr.warning("Por favor, seleccione una provincia");
+      return;
+    }
+  
+    if (!this.salonData.latitud) {
+      this.toastr.warning("Por favor, ingrese la latitud");
+      return;
+    }
+  
+    if (!this.salonData.longitud) {
+      this.toastr.warning("Por favor, ingrese la longitud");
+      return;
+    }
+    
     console.log(this.salonData);
 
     this.editHomeService.updateSalon(this.salonData).subscribe(
