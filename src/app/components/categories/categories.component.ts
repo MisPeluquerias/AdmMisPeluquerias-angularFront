@@ -17,6 +17,7 @@ export class CategoriesComponent {
   allSelected: boolean = false;
   searchText:string ='';
   selectedCategory: any = { name: '' };
+  
   category:any;
   oldCategory:any;
   newCategory:any;

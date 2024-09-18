@@ -22,10 +22,10 @@
                 <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="searchText" (input)="onSearch()">
               </div>
               <div class="col-12 col-md-4 d-flex justify-content-md-end ms-auto">
-                <button class="btn btn-danger">Nuevo</button>
+                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#newServiceModal">Nuevo</button>
               </div>
               <div *ngIf="hasSelected()" class="mt-3 text-end" >
-                <button class="btn btn-danger" (click)="deleteSelected() " style="background-color: darkorange;">Eliminar seleccionados</button>
+                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteServiceModal" style="background-color: darkorange;">Eliminar seleccionados</button>
               </div>
             </div>
             <div class="table-responsive">
@@ -35,7 +35,7 @@
                     <th><input type="checkbox" (change)="toggleAllSelection()" [checked]="allSelected" /></th>
                     <th>Nombre</th>
                     <th>Subservicios</th>
-                    <th colspan="2" class="col-1">Acciones</th>
+                    <th colspan="2" class="col-2">Editar Servicios/Subservicios</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -43,8 +43,8 @@
                     <td><input type="checkbox" [(ngModel)]="service.selected" (change)="checkIfAllSelected()" /></td>
                     <td>{{ service.service_name}}</td>
                     <td>{{ service.subservices}}</td>
-                    <td><button class="btn btn-dark"><i class="fas fa-edit"></i></button></td>
-                    <td><button class="btn btn-dark">Subservicios</button></td>
+                    <td><button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#editServiceModal" (click)="selectService(service)">Servicios</button></td>
+                    <td><button class="btn btn-dark"  data-bs-toggle="modal" data-bs-target="#editSubServiceModal" (click)="selectSubService(service)">Subservicios</button></td>
                   </tr>
                 </tbody>
               </table>
@@ -89,3 +89,143 @@
     <app-footer></app-footer>
   </div>
 </div>
+
+
+<!-- Modal para añadir servicios y subservicios -->
+<div class="modal fade" id="newServiceModal" tabindex="-1" aria-labelledby="newServiceModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newServiceModalLabel">Nuevo Servicio</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center">
+          <img src="../../../assets/img/sello.jpg" alt="sello" width="120" class="img-fluid">
+        </div>
+       
+          <div class="mb-3 position-relative">
+            <label for="newService" class="form-label">Introduce Servicio:</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="newService" 
+              [(ngModel)]="newService.name" 
+              placeholder="Escriba aquí..." 
+              name="newService" 
+              required 
+              autocomplete="off"
+            >
+            <label for="newSubservice" class="form-label mt-3">Introduce el subservicio asociado:</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="newSubservice" 
+              name="newSubservice"
+              [(ngModel)]="newSubserviceInput"
+              placeholder="Pulse Enter para añadir nuevo" 
+              (keyup.enter)="addSubservice()"
+              autocomplete="off"
+            >
+            <div class="mt-3">
+              <label class="form-label">Subservicios añadidos:</label>
+              <ul class="list-group">
+                <li *ngFor="let subservice of newSubservice; let i = index" class="list-group-item d-flex justify-content-between align-items-center">
+                  {{ subservice }}
+                  <button type="button" class="btn btn-danger btn-sm" (click)="removeService(i)">
+                    <i class="las la-times"></i>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="d-flex justify-content-end me-2">
+            
+            <button class="btn btn-danger"  (click)="addNewService()">Guardar</button>
+            <button
+              type="button"
+              class="btn btn-secondary ms-2"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+          </div>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal confirmacion eliminar -->
+<div class="modal fade" id="deleteServiceModal" tabindex="-1" aria-labelledby="deleteServiceModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteServiceModalLabel">Eliminar Categorías</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-3">
+          <img src="../../../assets/img/sello.jpg" alt="sello" width="120" class="img-fluid" />
+        </div>
+        <p>¿Estás seguro que deseas eliminar los servicios y subservicios seleccionados?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger" (click)="deleteSelected()" data-bs-dismiss="modal">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!--Modal para editar servicios-->
+<div class="modal fade" id="editServiceModal" tabindex="-1" aria-labelledby="editServiceLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editServiceLabel">Editar Servicio</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row mt-3">
+          <div class="col-12 mt-3">
+            <label for="serviceName" class="form-label">Introduce Nombre:</label>
+            <input type="text" class="form-control" id="editService" [(ngModel)]="selectedService.service_name" autocomplete="off" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="updateService()">Guardar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal para editar subservicios-->
+<div class="modal fade" id="editSubServiceModal" tabindex="-1" aria-labelledby="editSubServiceLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editSubServiceLabel">Editar Subservicios</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row mt-3">
+          <div class="col-12 mt-3">
+            <label for="subservicesTextarea" class="form-label">Subservicios:</label>
+            <textarea class="form-control" id="subservicesTextarea" rows="3" [(ngModel)]="subservicesAsText"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="updateSubService()">Guardar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
