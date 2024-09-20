@@ -10,7 +10,7 @@
             Administración / <b>Negocios / </b> <b>{{ salonData.name }}</b>
           </li>
         </ol>
-        
+
         <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
           <li class="nav-item" role="presentation">
             <button
@@ -84,8 +84,6 @@
               <i class="fa-solid fa-lock me-2"></i>Permisos
             </button>
             -->
-            
-          
           </li>
           <li class="nav-item" role="presentation">
             <button
@@ -116,7 +114,7 @@
             </button>
           </li>
         </ul>
-      
+
         <div class="tab-content bg-light" id="myTabContent">
           <!-- Contenido de la pestaña Negocio -->
 
@@ -199,12 +197,15 @@
                     email
                     #email="ngModel"
                   />
-                  <div *ngIf="email.invalid && email.touched" class="text-danger">
+                  <div
+                    *ngIf="email.invalid && email.touched"
+                    class="text-danger"
+                  >
                     Introduzca un correo electrónico válido
                   </div>
                 </div>
               </div>
-            
+
               <div class="row mb-3">
                 <div class="col-md-6">
                   <label for="direccion" class="form-label">Dirección</label>
@@ -217,12 +218,17 @@
                     required
                     #address="ngModel"
                   />
-                  <div *ngIf="address.invalid && address.touched" class="text-danger">
+                  <div
+                    *ngIf="address.invalid && address.touched"
+                    class="text-danger"
+                  >
                     Dirección es obligatoria
                   </div>
                 </div>
                 <div class="col-md-6">
-                  <label for="telefono" class="form-label">Nº de Teléfono</label>
+                  <label for="telefono" class="form-label"
+                    >Nº de Teléfono</label
+                  >
                   <input
                     type="tel"
                     class="form-control"
@@ -233,12 +239,15 @@
                     pattern="^\d{9}$"
                     #phone="ngModel"
                   />
-                  <div *ngIf="phone.invalid && phone.touched" class="text-danger">
+                  <div
+                    *ngIf="phone.invalid && phone.touched"
+                    class="text-danger"
+                  >
                     Número de teléfono es obligatorio y debe tener 9 dígitos
                   </div>
                 </div>
               </div>
-            
+
               <div class="row mb-3">
                 <div class="col-md-6">
                   <label for="provincia" class="form-label">Provincia</label>
@@ -251,12 +260,20 @@
                     required
                     #id_province="ngModel"
                   >
-                    <option value="" disabled selected>Seleccione una provincia</option>
-                    <option *ngFor="let province of provinces" [value]="province.id_province">
+                    <option value="" disabled selected>
+                      Seleccione una provincia
+                    </option>
+                    <option
+                      *ngFor="let province of provinces"
+                      [value]="province.id_province"
+                    >
                       {{ province.name }}
                     </option>
                   </select>
-                  <div *ngIf="id_province.invalid && id_province.touched" class="text-danger">
+                  <div
+                    *ngIf="id_province.invalid && id_province.touched"
+                    class="text-danger"
+                  >
                     Provincia es obligatoria
                   </div>
                 </div>
@@ -271,17 +288,22 @@
                     required
                     #id_city="ngModel"
                   >
-                    <option value="" disabled selected>Seleccione una ciudad</option>
+                    <option value="" disabled selected>
+                      Seleccione una ciudad
+                    </option>
                     <option *ngFor="let city of cities" [value]="city.id_city">
                       {{ city.city_name }} - {{ city.zip_code }}
                     </option>
                   </select>
-                  <div *ngIf="id_city.invalid && id_city.touched" class="text-danger">
+                  <div
+                    *ngIf="id_city.invalid && id_city.touched"
+                    class="text-danger"
+                  >
                     Ciudad es obligatoria
                   </div>
                 </div>
               </div>
-            
+
               <div class="row mb-3">
                 <div class="col-md-6">
                   <label for="latitud" class="form-label">Latitud</label>
@@ -295,7 +317,10 @@
                     pattern="^-?\d+(\.\d+)?$"
                     #latitud="ngModel"
                   />
-                  <div *ngIf="latitud.invalid && latitud.touched" class="text-danger">
+                  <div
+                    *ngIf="latitud.invalid && latitud.touched"
+                    class="text-danger"
+                  >
                     Latitud es obligatoria y debe ser un número válido
                   </div>
                 </div>
@@ -311,7 +336,10 @@
                     pattern="^-?\d+(\.\d+)?$"
                     #longitud="ngModel"
                   />
-                  <div *ngIf="longitud.invalid && longitud.touched" class="text-danger">
+                  <div
+                    *ngIf="longitud.invalid && longitud.touched"
+                    class="text-danger"
+                  >
                     Longitud es obligatoria y debe ser un número válido
                   </div>
                 </div>
@@ -362,19 +390,6 @@
                 </div>
               </div>
 
-              <div class="row mb-3">
-                <div class="col-md-12">
-                  <label for="categoria" class="form-label">Categorías</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="categories"
-                    name="categories"
-                    [(ngModel)]="salonData.categories"
-                  />
-                </div>
-              </div>
-
               <button
                 type="submit"
                 class="btn btn-danger me-2"
@@ -390,8 +405,75 @@
                 Cancelar
               </button>
             </form>
+            <div class="card mb-4 mt-3">
+              <div class="card-header">
+                <img
+                  src="../../../favicon.ico"
+                  width="30"
+                  class="img-fluid me-2"
+                  alt=""
+                />
+                Lista de categorias
+              </div>
+              <div class="card-body">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-3"
+                >
+                  <h4>Categorías</h4>
+                  <button
+                    class="btn btn-danger ms-auto"
+                    data-bs-toggle="modal"
+                    data-bs-target="#newCategoryModal"
+                  >
+                    Nueva
+                  </button>
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                  <div class="table-responsive w-50">
+                    <table class="table table-hover table-light">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th class="text-center">Categoría</th>
+                          <th colspan="2" class="col-1">Editar/Eliminar</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          *ngFor="let category of salonData.categoriesArray"
+                          class="text-center"
+                        >
+                          <td>{{ category.category }}</td>
+                          <!-- Muestra solo el nombre de la categoría -->
+                          <td>
+                            <!-- Botón para abrir el modal de edición -->
+                            <button
+                              class="btn btn-dark"
+                              data-bs-toggle="modal"
+                              data-bs-target="#editCategoryModal"
+                              (click)="onEditCategory(category)"
+                            >
+                              <i class="fas fa-edit"></i>
+                            </button>
+                          </td>
+                          <td>
+                            <!-- Botón para eliminar la categoría -->
+                            <button
+                              class="btn btn-danger"
+                              (click)="openDeleteModal(category.id_category)"
+                              data-bs-toggle="modal"
+                              data-bs-target="#deleteCategoryModal"
+                            >
+                              <i class="fas fa-trash"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-
           <!-- Contenido de la pestaña Horario -->
           <div
             class="tab-pane fade"
@@ -408,60 +490,46 @@
                     <thead class="thead-dark">
                       <tr>
                         <th>Día</th>
-                        <th class="text-start">Horario de Mañana</th>
-                        <th class="text-start">Cerrado</th>
-                        <th class="text-start">Horario de Tarde</th>
-                        <th class="text-start">Cerrado</th>
+                        <th class="text-start">Horarios del establecimiento</th>
+                        <th>Añadir</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let dia of dias">
-                        <td>{{ dia.nombre }}</td>
+                      <tr *ngFor="let day of days">
+                        <td>{{ day.name }}</td>
                         <td>
-                          <div class="d-flex align-items-center">
+                          <div
+                            *ngFor="let hour of day.hours; let i = index"
+                            class="d-flex mb-2 align-items-center"
+                          >
                             <input
                               type="time"
-                              class="form-control"
-                              [(ngModel)]="dia.mananaInicio"
-                              [readonly]="dia.cerradoManana"
+                              class="form-control w-25 me-2"
+                              [(ngModel)]="day.hours[i].open"
+                              placeholder="Abre"
                             />
                             <input
                               type="time"
-                              class="form-control ml-2"
-                              [(ngModel)]="dia.mananaFin"
-                              [readonly]="dia.cerradoManana"
+                              class="form-control w-25"
+                              [(ngModel)]="day.hours[i].close"
+                              placeholder="Cierra"
                             />
+                            <button
+                              class="btn btn-danger ms-2"
+                              (click)="removeHour(day, i)"
+                            >
+                              &minus;
+                            </button>
                           </div>
                         </td>
-                        <td class="text-start">
-                          <input
-                            type="checkbox"
-                            [(ngModel)]="dia.cerradoManana"
-                            (change)="toggleManana(dia)"
-                          />
-                        </td>
                         <td>
-                          <div class="d-flex align-items-center">
-                            <input
-                              type="time"
-                              class="form-control"
-                              [(ngModel)]="dia.tardeInicio"
-                              [readonly]="dia.cerradoTarde"
-                            />
-                            <input
-                              type="time"
-                              class="form-control ml-2"
-                              [(ngModel)]="dia.tardeFin"
-                              [readonly]="dia.cerradoTarde"
-                            />
-                          </div>
-                        </td>
-                        <td class="text-start">
-                          <input
-                            type="checkbox"
-                            [(ngModel)]="dia.cerradoTarde"
-                            (change)="toggleManana(dia)"
-                          />
+                          <button
+                            class="btn btn-danger"
+                            (click)="addHour(day)"
+                            [disabled]="day.hours.length >= 2"
+                          >
+                            &#43;
+                          </button>
                         </td>
                       </tr>
                     </tbody>
@@ -596,30 +664,52 @@
 
             <!-- Tabla de Servicios -->
             <div class="card mb-4">
-              <div class="card-body">
-                <div class="table-responsive">
+              <div class="card-header">
+                <img
+                  src="../../../favicon.ico"
+                  width="30"
+                  class="img-fluid me-2"
+                  alt=""
+                />
+                Lista de servicios
+              </div>
+              <div
+                class="card-body d-flex align-items-center justify-content-center"
+              >
+                <div class="table-responsive w-50 text-center">
                   <table class="table table-hover table-light">
                     <thead class="thead-dark">
                       <tr>
                         <th>Servicio</th>
                         <th>Subservicio</th>
                         <th>Tiempo</th>
-                        <th colspan="2">Editar/Eliminar</th>
+                        <th colspan="2" class="col-1">Editar/Eliminar</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr *ngFor="let service of getSalonServices">
                         <td>{{ service.service_name }}</td>
-                        <td>{{ service.subservices}}</td>
+                        <td>{{ service.subservice_name }}</td>
                         <td>{{ service.time }} minutos</td>
                         <td>
-                          <button class="btn btn-dark"
-                          data-bs-toggle="modal"
-                          data-bs-target="#modalEditService"
-                          (click)="openEditModal(service)">
+                          <button
+                            class="btn btn-dark"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalEditService"
+                            (click)="openEditModal(service)"
+                          >
                             <i class="fas fa-edit"></i>
                           </button>
-                          <button class="btn btn-danger ms-2" (click)="deleteServiceWithSubservice(service.id_service)" >
+                          <button
+                            class="btn btn-danger ms-2"
+                            (click)="
+                              openDeleteServiceModal(
+                                service.id_salon_service_type
+                              )
+                            "
+                            data-bs-toggle="modal"
+                            data-bs-target="#deleteServiceModal"
+                          >
                             <i class="fas fa-trash-alt"></i>
                           </button>
                         </td>
@@ -627,27 +717,47 @@
                     </tbody>
                   </table>
                 </div>
-                <!-- Paginación -->
-                <nav aria-label="Page navigation example">
-                  <ul class="pagination justify-content-center">
-                    <li class="page-item" [class.disabled]="currentPage === 1">
-                      <a class="page-link" href="#" aria-label="Previous" (click)="changePage(currentPage - 1)">
-                        <span aria-hidden="true">&laquo;</span>
-                      </a>
-                    </li>
-
-                    <li class="page-item" *ngFor="let page of getPagesArray()" [class.active]="page === currentPage">
-             <!--Falta href-->         <a class="page-link"  (click)="changePage(page)">{{ page }}</a>
-                    </li>
-
-                    <li class="page-item" [class.disabled]="currentPage === totalPages">
-                      <a class="page-link" href="#" aria-label="Next" (click)="changePage(currentPage + 1)">
-                        <span aria-hidden="true">&raquo;</span>
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
               </div>
+              <!-- Paginación -->
+              <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                  <li class="page-item" [class.disabled]="currentPage === 1">
+                    <a
+                      class="page-link"
+                      href="#"
+                      aria-label="Previous"
+                      (click)="changePage(currentPage - 1)"
+                    >
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+
+                  <li
+                    class="page-item"
+                    *ngFor="let page of getPagesArray()"
+                    [class.active]="page === currentPage"
+                  >
+                    <!--Falta href-->
+                    <a class="page-link" (click)="changePage(page)">{{
+                      page
+                    }}</a>
+                  </li>
+
+                  <li
+                    class="page-item"
+                    [class.disabled]="currentPage === totalPages"
+                  >
+                    <a
+                      class="page-link"
+                      href="#"
+                      aria-label="Next"
+                      (click)="changePage(currentPage + 1)"
+                    >
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
             </div>
           </div>
           <div
@@ -769,40 +879,63 @@
                         <td>{{ faq.question }}</td>
                         <td>{{ faq.answer }}</td>
                         <td>
-                          <button class="btn btn-dark me-3"
-                          data-bs-toggle="modal"
-                          data-bs-target="#editQuestionModal"
-                         (click)="editQuestion(faq)">
+                          <button
+                            class="btn btn-dark me-3"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editQuestionModal"
+                            (click)="editQuestion(faq)"
+                          >
                             <i class="fas fa-edit"></i>
                           </button>
-                          <button class="btn btn-danger"
-                          (click)="deleteQuestion(faq.id_faq)">
+                          <button
+                            class="btn btn-danger"
+                            (click)="deleteQuestion(faq.id_faq)"
+                          >
                             <i class="fas fa-trash"></i>
                           </button>
                         </td>
                       </tr>
                     </tbody>
                   </table>
-
                 </div>
                 <!-- Paginación -->
                 <nav aria-label="Page navigation example">
                   <ul class="pagination justify-content-center">
                     <!-- Botón de "Anterior" -->
                     <li class="page-item" [class.disabled]="currentPage === 1">
-                      <a class="page-link" href="#" aria-label="Previous" (click)="changePage(currentPage - 1)">
+                      <a
+                        class="page-link"
+                        href="#"
+                        aria-label="Previous"
+                        (click)="changePage(currentPage - 1)"
+                      >
                         <span aria-hidden="true">&laquo;</span>
                       </a>
                     </li>
 
                     <!-- Números de página -->
-                    <li *ngFor="let page of getPagesArray()" class="page-item" [class.active]="page === currentPage">
-              <!--Fatla href-->        <a class="page-link" (click)="changePage(page)">{{ page }}</a>
+                    <li
+                      *ngFor="let page of getPagesArray()"
+                      class="page-item"
+                      [class.active]="page === currentPage"
+                    >
+                      <!--Fatla href-->
+                      <a class="page-link" (click)="changePage(page)">{{
+                        page
+                      }}</a>
                     </li>
 
                     <!-- Botón de "Siguiente" -->
-                    <li class="page-item" [class.disabled]="currentPage === totalPages">
-                      <a class="page-link" href="#" aria-label="Next" (click)="changePage(currentPage + 1)">
+                    <li
+                      class="page-item"
+                      [class.disabled]="currentPage === totalPages"
+                    >
+                      <a
+                        class="page-link"
+                        href="#"
+                        aria-label="Next"
+                        (click)="changePage(currentPage + 1)"
+                      >
                         <span aria-hidden="true">&raquo;</span>
                       </a>
                     </li>
@@ -821,7 +954,9 @@
             <div class="text-center my-4">
               <h2>{{ averageRating.toFixed(2) }} <small>/5</small></h2>
               <div>
-                <ng-container *ngFor="let star of generateStarRatingArray(averageRating)">
+                <ng-container
+                  *ngFor="let star of generateStarRatingArray(averageRating)"
+                >
                   <i
                     class="fas"
                     [ngClass]="{
@@ -829,7 +964,9 @@
                       'fa-star-half-alt': star === 0.5,
                       'fa-star-empty': star === 0
                     }"
-                    [style.color]="star === 1 || star === 0.5 ? 'gold' : 'lightgray'"
+                    [style.color]="
+                      star === 1 || star === 0.5 ? 'gold' : 'lightgray'
+                    "
                   ></i>
                 </ng-container>
               </div>
@@ -852,7 +989,7 @@
                         <th>Reseña</th>
                         <th>Usuario</th>
                         <th>Calificación</th>
-                      <th>Editar/Eliminar</th>
+                        <th>Editar/Eliminar</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -861,27 +998,47 @@
                         <td>{{ review.observacion }}</td>
                         <td>{{ review.name }}</td>
                         <td>
-        <div class="star-rating">
-          <!-- Generar estrellas llenas -->
-          <ng-container *ngFor="let star of getFilledStars(review.qualification); let i = index">
-            <span class="star" [ngClass]="{'filled': i < review.qualification}">&#9733;</span>
-          </ng-container>
-          <!-- Generar estrellas vacías si la calificación es menor a 5 -->
-          <ng-container *ngFor="let star of getEmptyStars(review.qualification); let j = index">
-            <span class="star">&#9734;</span> <!-- Estrella vacía -->
-          </ng-container>
-        </div>
-      </td>
+                          <div class="star-rating">
+                            <!-- Generar estrellas llenas -->
+                            <ng-container
+                              *ngFor="
+                                let star of getFilledStars(
+                                  review.qualification
+                                );
+                                let i = index
+                              "
+                            >
+                              <span
+                                class="star"
+                                [ngClass]="{ filled: i < review.qualification }"
+                                >&#9733;</span
+                              >
+                            </ng-container>
+                            <!-- Generar estrellas vacías si la calificación es menor a 5 -->
+                            <ng-container
+                              *ngFor="
+                                let star of getEmptyStars(review.qualification);
+                                let j = index
+                              "
+                            >
+                              <span class="star">&#9734;</span>
+                              <!-- Estrella vacía -->
+                            </ng-container>
+                          </div>
+                        </td>
                         <td>
-                          <button class="btn btn-dark me-3"
-                          data-bs-toggle="modal"
-                          (click)="editReview(review)"
-                          data-bs-target="#editReviewModal">
+                          <button
+                            class="btn btn-dark me-3"
+                            data-bs-toggle="modal"
+                            (click)="editReview(review)"
+                            data-bs-target="#editReviewModal"
+                          >
                             <i class="fas fa-edit"></i>
                           </button>
-                          <button class="btn btn-danger"
-                          (click)="deleteReview(review.id_review)">
-
+                          <button
+                            class="btn btn-danger"
+                            (click)="deleteReview(review.id_review)"
+                          >
                             <i class="fas fa-trash"></i>
                           </button>
                         </td>
@@ -894,19 +1051,39 @@
                   <ul class="pagination justify-content-center">
                     <!-- Botón de "Anterior" -->
                     <li class="page-item" [class.disabled]="currentPage === 1">
-                      <a class="page-link" href="#" aria-label="Previous" (click)="changePage(currentPage - 1)">
+                      <a
+                        class="page-link"
+                        href="#"
+                        aria-label="Previous"
+                        (click)="changePage(currentPage - 1)"
+                      >
                         <span aria-hidden="true">&laquo;</span>
                       </a>
                     </li>
 
                     <!-- Números de página -->
-                    <li *ngFor="let page of getPagesArray()" class="page-item" [class.active]="page === currentPage">
-              <!--Fatla href-->        <a class="page-link" (click)="changePage(page)">{{ page }}</a>
+                    <li
+                      *ngFor="let page of getPagesArray()"
+                      class="page-item"
+                      [class.active]="page === currentPage"
+                    >
+                      <!--Fatla href-->
+                      <a class="page-link" (click)="changePage(page)">{{
+                        page
+                      }}</a>
                     </li>
 
                     <!-- Botón de "Siguiente" -->
-                    <li class="page-item" [class.disabled]="currentPage === totalPages">
-                      <a class="page-link" href="#" aria-label="Next" (click)="changePage(currentPage + 1)">
+                    <li
+                      class="page-item"
+                      [class.disabled]="currentPage === totalPages"
+                    >
+                      <a
+                        class="page-link"
+                        href="#"
+                        aria-label="Next"
+                        (click)="changePage(currentPage + 1)"
+                      >
                         <span aria-hidden="true">&raquo;</span>
                       </a>
                     </li>
@@ -946,16 +1123,22 @@
         <form>
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="serviceSelect" class="form-label fw-bold">Servicio</label>
+              <label for="serviceSelect" class="form-label fw-bold"
+                >Servicio</label
+              >
               <select
                 id="serviceSelect"
                 class="form-select"
                 aria-label="Selecciona una opción"
                 [(ngModel)]="newServiceName"
+                (change)="onServiceSelect($event)"
                 name="newServiceName"
               >
                 <option value="" selected>Selecciona una opción</option>
-                <option *ngFor="let service of getSalonDataSelect" [value]="service.name">
+                <option
+                  *ngFor="let service of getSalonDataSelect"
+                  [value]="service.id_service"
+                >
                   {{ service.name }}
                 </option>
               </select>
@@ -976,17 +1159,25 @@
           </div>
 
           <div class="row">
-            <div class="col-md-12 mb-3 row">
+            <div class="col-md-6 mb-3 row">
               <label for="subserviceInput" class="form-label fw-bold"
                 >Subservicio</label
               >
-              <textarea
-              [(ngModel)]="newSubservices"
-              name="newSubservices"
-                class="form-control"
-                id="subserviceInput"
-                placeholder="Ingrese el subservicio separado por ';' y un espacio."
-              ></textarea>
+              <select
+                id="subServiceSelect"
+                class="form-select"
+                aria-label="Selecciona una opción"
+                [(ngModel)]="newSubservices"
+                name="newSubServiceName"
+              >
+                <option value="" selected>Selecciona una opción</option>
+                <option
+                  *ngFor="let subService of getSalonSubservices"
+                  [value]="subService.id_service_type"
+                >
+                  {{ subService.name }}
+                </option>
+              </select>
             </div>
           </div>
         </form>
@@ -995,11 +1186,14 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Cancelar
         </button>
-        <button type="button" class="btn btn-danger" (click)="addService()">Guardar</button>
+        <button type="button" class="btn btn-danger" (click)="addService()">
+          Guardar
+        </button>
       </div>
     </div>
   </div>
 </div>
+
 <!-- Modal  para editar servicio y subservicio -->
 
 <div
@@ -1021,20 +1215,28 @@
         ></button>
       </div>
       <div class="modal-body">
-        <p class="text-muted mb-4">Complete los detalles para editar servicio</p>
+        <p class="text-muted mb-4">
+          Complete los detalles para editar servicio
+        </p>
         <form>
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="serviceSelect" class="form-label fw-bold">Servicio</label>
+              <label for="serviceSelect" class="form-label fw-bold"
+                >Servicio</label
+              >
               <select
                 id="serviceSelect"
                 class="form-select"
                 aria-label="Selecciona una opción"
+                (change)="onServiceSelect($event)"
                 [(ngModel)]="newServiceName"
                 name="newServiceName"
               >
                 <option value="" selected>Selecciona una opción</option>
-                <option *ngFor="let service of getSalonDataSelect" [value]="service.name">
+                <option
+                  *ngFor="let service of getSalonDataSelect"
+                  [value]="service.id_service"
+                >
                   {{ service.name }}
                 </option>
               </select>
@@ -1055,17 +1257,26 @@
           </div>
 
           <div class="row">
-            <div class="col-md-12 mb-3 row">
+            <div class="col-md-6 mb-3 row">
               <label for="subserviceInput" class="form-label fw-bold"
                 >Subservicio</label
               >
-              <textarea
-              [(ngModel)]="newSubservices"
-              name="newSubservices"
-                class="form-control"
-                id="subserviceInput"
-                placeholder="Ingrese el subservicio separado por ';' y un espacio."
-              ></textarea>
+              <select
+                id="subServiceSelect"
+                class="form-select"
+                aria-label="Selecciona una opción"
+                [(ngModel)]="newSubservices"
+                (change)="onSubserviceSelect($event)"
+                name="newSubServiceName"
+              >
+                <option value="" selected>Selecciona una opción</option>
+                <option
+                  *ngFor="let subService of getSalonSubservices"
+                  [value]="subService.id_service_type"
+                >
+                  {{ subService.name }}
+                </option>
+              </select>
             </div>
           </div>
         </form>
@@ -1074,7 +1285,13 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Cancelar
         </button>
-        <button type="button  editReviewText: string = '';" class="btn btn-danger" (click)="updateServiceWithSubservice()">Guardar</button>
+        <button
+          type="button  editReviewText: string = '';"
+          class="btn btn-danger"
+          (click)="updateServiceWithSubservice()"
+        >
+          Guardar
+        </button>
       </div>
     </div>
   </div>
@@ -1087,54 +1304,57 @@
   aria-labelledby="editQuestionModalLabel"
   aria-hidden="true"
 >
-<div class="modal-dialog modal-dialog-centered">
-  <div class="modal-content shadow-lg">
-    <div class="modal-header bg-danger text-white">
-      <h5 class="modal-title" id="editQuestionModalLabel">
-        Responder Pregunta
-      </h5>
-      <button
-        type="button"
-        class="btn-close btn-close-white"
-        data-bs-dismiss="modal"
-        aria-label="Close"
-      ></button>
-    </div>
-    <div class="modal-body">
-      <form (ngSubmit)="updateQuestion()">
-        <div class="mb-3">
-          <label for="editQuestionText" class="form-label fw-bold">Pregunta</label>
-          <textarea
-            class="form-control border-0 bg-light"
-            id="editQuestionText"
-            rows="2"
-            [(ngModel)]="editQuestionText"
-            name="editQuestionText"
-            readonly
-          ></textarea>
-        </div>
-        <div class="mb-3">
-          <label for="editAnswerText" class="form-label fw-bold">Respuesta</label>
-          <textarea
-            class="form-control"
-            id="editAnswerText"
-            rows="4"
-            [(ngModel)]="editAnswerText"
-            name="editAnswerText"
-            required
-          ></textarea>
-        </div>
-        <div class="d-flex justify-content-end">
-          <button type="submit" class="btn btn-danger">
-            Guardar Respuesta
-          </button>
-        </div>
-      </form>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="editQuestionModalLabel">
+          Responder Pregunta
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="updateQuestion()">
+          <div class="mb-3">
+            <label for="editQuestionText" class="form-label fw-bold"
+              >Pregunta</label
+            >
+            <textarea
+              class="form-control border-0 bg-light"
+              id="editQuestionText"
+              rows="2"
+              [(ngModel)]="editQuestionText"
+              name="editQuestionText"
+              readonly
+            ></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="editAnswerText" class="form-label fw-bold"
+              >Respuesta</label
+            >
+            <textarea
+              class="form-control"
+              id="editAnswerText"
+              rows="4"
+              [(ngModel)]="editAnswerText"
+              name="editAnswerText"
+              required
+            ></textarea>
+          </div>
+          <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-danger">
+              Guardar Respuesta
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>
-</div>
-
 
 <div
   class="modal fade"
@@ -1196,7 +1416,8 @@
                   type="radio"
                   name="editRating"
                   id="editStar4"
-                  value="2"r
+                  value="2"
+                  r
                   [(ngModel)]="editRating"
                 /><label for="editStar4" class="star">&#9733;</label>
                 <input
@@ -1220,4 +1441,230 @@
   </div>
 </div>
 
+<!--Modal para añadir categoría-->
+<div
+  class="modal fade"
+  id="newCategoryModal"
+  tabindex="-1"
+  aria-labelledby="newCategoryLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newCategoryLabel">Nueva Categoría</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center">
+          <img
+            src="../../../assets/img/sello.jpg"
+            alt="sello"
+            width="120"
+            class="img-fluid"
+          />
+        </div>
+        <div class="row mt-3">
+          <select
+            id="getCategories"
+            class="form-select"
+            aria-label="Selecciona una opción"
+            [(ngModel)]="selectedCategory"
+          >
+            <option value="">Selecciona una opción</option>
+            <option
+              selected
+              *ngFor="let category of getCategories"
+              [value]="category.category"
+            >
+              {{ category.category }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+          (click)="addCategorySalon()"
+          data-bs-dismiss="modal"
+        >
+          Guardar
+        </button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
+<div
+  class="modal fade"
+  id="editCategoryModal"
+  tabindex="-1"
+  aria-labelledby="editCategoryLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editCategoryLabel">Editar Categoría</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center">
+          <img
+            src="../../../assets/img/sello.jpg"
+            alt="sello"
+            width="120"
+            class="img-fluid"
+          />
+        </div>
+        <form>
+          <div class="mb-3">
+            <label for="editCategorySelect" class="form-label mt-3"
+              >Selecciona la Categoría para Editar</label
+            >
+            <select
+              id="editCategorySelect"
+              class="form-select"
+              [(ngModel)]="selectedCategory.category"
+              name="editCategorySelect"
+            >
+              <option value="" disabled>Selecciona una categoría</option>
+              <option
+                *ngFor="let category of getCategories"
+                [ngValue]="category.category"
+              >
+                {{ category.category }}
+              </option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+          (click)="updateCategory()"
+        >
+          Guardar
+        </button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal para eliminar categorias-->
+<div
+  class="modal fade"
+  id="deleteCategoryModal"
+  tabindex="-1"
+  aria-labelledby="deleteCategoryModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteCategoryModalLabel">
+          Eliminar Categorías
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-3">
+          <img
+            src="../../../assets/img/sello.jpg"
+            alt="sello"
+            width="120"
+            class="img-fluid"
+          />
+        </div>
+        <p>¿Estás seguro que deseas eliminar la categoría seleccionada?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="confirmDeleteCategory()"
+          data-bs-dismiss="modal"
+        >
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal para eliminar servicios-->
+<div
+  class="modal fade"
+  id="deleteServiceModal"
+  tabindex="-1"
+  aria-labelledby="deleteServiceModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteServiceModalLabel">
+          Eliminar Categorías
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-3">
+          <img
+            src="../../../assets/img/sello.jpg"
+            alt="sello"
+            width="120"
+            class="img-fluid"
+          />
+        </div>
+        <p>¿Estás seguro que deseas eliminar el servicio seleccionado?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="confirmDeleteService()"
+          data-bs-dismiss="modal"
+        >
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { EditHomeService } from '../../../core/service/edit-home.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { response } from 'express';
-import { error } from 'console';
+import { ChangeDetectorRef } from '@angular/core';
+
 
 @Component({
   selector: 'app-edit-home',
@@ -12,6 +12,7 @@ import { error } from 'console';
   styleUrls: ['./edit-home.component.scss'],
 })
 export class EditHomeComponent implements OnInit {
+  getCategories:any[]=[];
   salonId: number = 0;
   salonData: any = {
     id_salon: '',
@@ -48,7 +49,7 @@ export class EditHomeComponent implements OnInit {
   provinces: any[] = [];
   cities: any[] = [];
   dias: any[] = [];
-  getSalonServices:any[]=[]
+  getSalonServices:any[]=[];
   totalItems: number = 0;
   currentPage: number = 1;
   pageSize: number = 10;
@@ -66,6 +67,7 @@ export class EditHomeComponent implements OnInit {
   newSubservices: string = '';
   newServiceTime:number=0;
   selectedService: any = {};
+  selectedSubservice: any = {};
   totalPages: number = 1;
   getSalonDataSelect:any[]=[];
   faqByIdSalon:any[]=[];
@@ -77,12 +79,21 @@ export class EditHomeComponent implements OnInit {
   editRating: string = '';
   editReviewText: string = '';
   averageRating: number = 0;
- 
+  getSalonSubservices:any[]=['Seleccione una opción'];
+  selectedServiceId: number | null = null;
+  selectedServiceName: string | null = null;
+  idSalonServiceType: number | null = null;
+  selectedCategory: any = {};
+  oldCategory: string = '';
+  idCategoryToDelete: any;
+  idServiceToDelete: any;
+  
   constructor(
     private route: ActivatedRoute,
     private editHomeService: EditHomeService,
     private toastr: ToastrService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private cdr: ChangeDetectorRef
   ) {}
 
 
@@ -96,6 +107,8 @@ export class EditHomeComponent implements OnInit {
       this.getServicesWithSubservices();
       this.getFaqByIdSalon();
       this.getReviewsById();
+      this.getCategoriesModal();
+      this.selectedCategory='';
     });
   }
 
@@ -126,12 +139,41 @@ export class EditHomeComponent implements OnInit {
   getSalonData(id_salon: number): void {
     this.editHomeService.getSalonById(id_salon).subscribe(
       (response: any) => {
-        this.salonData = response.data; // Asegúrate de que response.data contiene los datos correctos
-        this.processHours(this.salonData.hours_old);
+        this.salonData = response.data;
+        console.log('Salon Data', this.salonData);
+  
+        // Asegura que las categorías se parseen correctamente como un array de objetos JSON
+        if (this.salonData.categories) {
+          try {
+            // Parsear y filtrar categorías válidas
+            this.salonData.categoriesArray = JSON.parse(`[${this.salonData.categories}]`).filter(
+              (category: any) => category && category.id_category !== null && category.category !== null
+            );
+          } catch (error) {
+            console.error('Error parsing categories:', error);
+            this.salonData.categoriesArray = [];
+          }
+        } else {
+          this.salonData.categoriesArray = []; // Asegura que sea un array vacío si no hay categorías
+        }
 
-        if (this.salonData.id_province) {
-          this.onProvinceChange(this.salonData.id_province, true);
-          //console.log(this.salonData);
+
+        if (this.salonData.hours_old) {
+          try {
+            this.salonData.hours = JSON.parse(this.salonData.hours_old);
+            console.log('Parsed hours:', this.salonData.hours);
+        
+            // Mapear los horarios a los días de la tabla
+            this.days.forEach((day) => {
+              const matchingHours = this.salonData.hours.find(
+                (h: any) => h.day === day.name
+              );
+              day.hours = matchingHours ? matchingHours.hours : [];
+            });
+          } catch (error) {
+            console.error('Error parsing hours:', error);
+            this.salonData.hours = [];
+          }
         }
       },
       (error) => {
@@ -140,70 +182,45 @@ export class EditHomeComponent implements OnInit {
     );
   }
 
-  processHours(hours_old: string): void {
-    const days = hours_old.split(';').map(day => day.trim());
-    this.dias = days.map(day => {
-      const [nombre, manana, tarde] = day.split(',').map(part => part.trim());
-      return {
-        nombre,
-        mananaInicio: manana && manana !== 'Cerrado' ? manana.split(' ')[1] : '',
-        mananaFin: manana && manana !== 'Cerrado' ? manana.split(' ')[3] : '',
-        cerradoManana: !manana || manana === 'Cerrado',
-        tardeInicio: tarde && tarde !== 'Cerrado' ? tarde.split(' ')[1] : '',
-        tardeFin: tarde && tarde !== 'Cerrado' ? tarde.split(' ')[3] : '',
-        cerradoTarde: !tarde || tarde === 'Cerrado'
-      };
-    });
+
+  days = [
+    { name: 'Lunes', hours: [] as { open: string; close: string }[] },
+    { name: 'Martes', hours: [] as { open: string; close: string }[] },
+    { name: 'Miércoles', hours: [] as { open: string; close: string }[] },
+    { name: 'Jueves', hours: [] as { open: string; close: string }[] },
+    { name: 'Viernes', hours: [] as { open: string; close: string }[] },
+    { name: 'Sábado', hours: [] as { open: string; close: string }[] },
+    { name: 'Domingo', hours: [] as { open: string; close: string }[] }
+  ];
+
+  addHour(day: any) {
+    if (day.hours.length < 2) {
+      day.hours.push({ open: '', close: '' }); // Añade una nueva franja horaria vacía
+    }
+  }
+  
+
+
+
+  removeHour(day: any, index: number) {
+    day.hours.splice(index, 1); // Elimina la franja horaria seleccionada
   }
 
-  saveHours(): void {
-    let hasError = false;
 
-    // Validar y convertir this.dias a un formato adecuado para hours_old
-    const hours_old = this.dias.map(dia => {
-      let manana = 'Cerrado';
-      let tarde = 'Cerrado';
-
-      // Validar y formatear las horas de la mañana
-      if (!dia.cerradoManana) {
-        if (dia.mananaInicio && dia.mananaFin) {
-          manana = `De ${dia.mananaInicio} a ${dia.mananaFin}`;
-        } else {
-          this.toastr.error(`Las horas de la mañana para ${dia.nombre} no son válidas`);
-          hasError = true;
-        }
-      }
-
-      // Validar y formatear las horas de la tarde
-      if (!dia.cerradoTarde) {
-        if (dia.tardeInicio && dia.tardeFin) {
-          tarde = `De ${dia.tardeInicio} a ${dia.tardeFin}`;
-        } else {
-          this.toastr.error(`Las horas de la tarde para ${dia.nombre} no son válidas`);
-          hasError = true;
-        }
-      }
-
-      return `${dia.nombre}, ${manana}, ${tarde}`;
-    }).filter(item => item !== undefined).join('; ');
-
-    // Si hay errores, no continuar con la actualización
-    if (hasError) {
-      return;
-    }
-
-    // Llamar al servicio para actualizar los horarios en el servidor
-    this.editHomeService.updateSalonHours(this.salonId, hours_old).subscribe(
-      response => {
-        this.toastr.success('Horarios actualizados con éxito');
-        this.modalService.dismissAll();
-        console.log(hours_old);
-      },
-      error => {
-        console.error('Error updating salon hours:', error);
-        this.toastr.error('Error al actualizar los horarios');
-      }
-    );
+  saveHours() {
+    const hoursToSave = this.days.map(day => ({
+      day: day.name,
+      hours: day.hours.filter(hour => hour.open && hour.close) 
+    }));
+    const hours_old = JSON.stringify(hoursToSave);
+    this.editHomeService.updateSalonHours(this.salonId, hours_old).subscribe(response => {
+      this.toastr.success('Horarios guardados correctamente');
+      
+      console.log('Horas guardadas:', hours_old);
+    }, error => {
+      this.toastr.error('Error al guardar los horarios');
+      console.error('Error al guardar los horarios:', error);
+    });
   }
 
 
@@ -417,74 +434,100 @@ export class EditHomeComponent implements OnInit {
     );
   }
 
-  addService(): void {
 
-    const subservicesArray = this.newSubservices.split(';').map(subservice => subservice.trim());
+  onServiceSelect(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    this.selectedServiceId = +target.value; // Convierte el valor a número
+    const selectedService = this.getSalonDataSelect.find(service => service.id_service === this.selectedServiceId);
+  
+    if (selectedService) {
+      this.selectedServiceName = selectedService.name;
+    }
+    this.getSubservicesByService(this.selectedServiceId);
+    console.log('ID del servicio seleccionado:', this.selectedServiceId);
+    console.log('Nombre del servicio seleccionado:', this.selectedServiceName);
+  }
 
-    this.editHomeService.addService(this.salonId, this.newServiceName, subservicesArray, this.newServiceTime).subscribe(
+
+
+  getSubservicesByService(id_service: number): void {
+    this.editHomeService.getSubservicesByService(id_service).subscribe(
       (response) => {
         if (response.success) {
-          this.toastr.success('Servicio agregado con éxito');
-          this.getServicesWithSubservices(); // Recargar la lista de servicios
+          this.getSalonSubservices = response.data;
+          console.log('Subservicios cargados:', this.getSalonSubservices);
         } else {
-          this.toastr.error('Error al agregar el servicio');
+          console.error('Error al cargar los subservicios', response);
         }
       },
       (error) => {
-        console.error('Error adding service:', error);
+        console.error('Error al obtener subservicios', error);
+      }
+    );
+  }
+
+
+  addService(): void {
+  // Verifica que selectedServiceName no esté vacío antes de proceder
+  if (!this.selectedServiceName) {
+    this.toastr.error('Por favor, selecciona un servicio válido.');
+    return;
+  }
+
+  if (this.selectedSubservice === null || this.selectedSubservice === undefined) {
+    this.toastr.error('El Subservicio seleccionado es necesario para la actualización.');
+    return;
+  }
+  if (this.newServiceTime === null || this.newServiceTime === undefined || this.newServiceTime <= 0) {
+    this.toastr.error('El tiempo del servicio debe ser un valor válido y mayor a cero.');
+    return;
+  }
+
+
+  // Asegúrate de enviar selectedServiceName en lugar de newServiceName
+  this.editHomeService.addService(this.salonId, this.selectedServiceId,this.newSubservices, this.newServiceTime).subscribe(
+    (response) => {
+      if (response.success) {
+        this.toastr.success('Servicio agregado con éxito');
+        this.getServicesWithSubservices(); // Recargar la lista de servicios
+      } else {
         this.toastr.error('Error al agregar el servicio');
       }
-    );
-  }
+    },
+    (error) => {
+      console.error('Error adding service:', error);
+      this.toastr.error('Error al agregar el servicio');
+    }
+  );
+}
 
-  getServicesWithSubservices() {
-    this.editHomeService.getServicesWithSubservices(this.salonId).subscribe(
-      (response) => {
-        if (response.data && response.data.length > 0) {
-          this.getSalonServices = response.data;
-          console.log(this.getSalonServices); // Asegúrate de que los datos se asignen correctamente
-        } else {
-          console.error('No data found or response format incorrect', response);
+getServicesWithSubservices() {
+  this.editHomeService.getServicesWithSubservices(this.salonId).subscribe(
+    (response: any) => {
+      if (response.data) {
+        // Asignar los datos, incluso si están vacíos
+        this.getSalonServices = response.data;
+        console.log('Servicios actualizados:', this.getSalonServices);
+
+        // Maneja el caso de array vacío
+        if (this.getSalonServices.length === 0) {
+          console.warn('No hay servicios disponibles.');
         }
-      },
-      (error) => {
-        console.error('Error fetching services with subservices', error);
+      } else {
+        console.error('Formato de respuesta incorrecto', response);
+        this.getSalonServices = []; // Limpia la lista si el formato es incorrecto
       }
-    );
-  }
+    },
+    (error) => {
+      console.error('Error al obtener servicios con subservicios', error);
+    }
+  );
+}
 
-  openEditModal(service: any): void {
-    this.selectedService = { ...service }; // Clona el objeto del servicio seleccionado
-    this.newServiceName = this.selectedService.service_name;
-    this.newServiceTime = this.selectedService.time;
-    this.newSubservices = this.selectedService.subservices;
-  }
 
-  updateServiceWithSubservice(): void {
-    const subservicesArray = this.newSubservices.split(';').map(subservice => subservice.trim());
 
-    this.editHomeService.updateServiceWithSubservice(
-      this.selectedService.id_service,
-      this.salonId,
-      this.newServiceName,
-      subservicesArray,
-      this.newServiceTime
-    ).subscribe(
-      (response) => {
-        if (response.success) {
-          this.toastr.success('Servicio actualizado con éxito');
-          this.getServicesWithSubservices(); // Recargar la lista de servicios
-          this.modalService.dismissAll(); // Cerrar el modal
-        } else {
-          this.toastr.error('Error al actualizar el servicio');
-        }
-      },
-      (error) => {
-        console.error('Error updating service:', error);
-        this.toastr.error('Error al actualizar el servicio');
-      }
-    );
-  }
+
+
   changePage(page: number): void {
     if (page > 0 && page <= this.totalPages) {
       this.currentPage = page;
@@ -497,13 +540,14 @@ export class EditHomeComponent implements OnInit {
   }
 
 
-  deleteServiceWithSubservice(serviceId: number): void {
+  deleteServiceWithSubservice(id_salon_service_type: number): void {
     if (confirm('¿Estás seguro de que quieres eliminar este servicio?')) {
-      this.editHomeService.deleteServiceWithSubservice(serviceId).subscribe(
+      this.editHomeService.deleteServiceWithSubservice(id_salon_service_type).subscribe(
         (response) => {
           if (response.success) {
+            this.getServicesWithSubservices();
             this.toastr.success('Servicio eliminado con éxito');
-            this.getServicesWithSubservices(); // Refresca la lista de servicios
+             // Refresca la lista de servicios
           } else {
             this.toastr.error('Error al eliminar el servicio');
           }
@@ -515,6 +559,7 @@ export class EditHomeComponent implements OnInit {
       );
     }
   }
+
 
   updateQuestion(): void {
     const updatedQuestion = {
@@ -572,6 +617,8 @@ export class EditHomeComponent implements OnInit {
   }
   }
 
+
+
   getReviewsById(){
     this.editHomeService.loadReview(this.salonId).subscribe(
       reviews => {
@@ -600,8 +647,98 @@ export class EditHomeComponent implements OnInit {
       },
       error => console.error('Error actualizando la reseña', error)
     );
-
   }
+
+  openEditModal(service: any): void {
+    // Clona el objeto del servicio seleccionado
+    this.selectedService = { ...service };
+  
+    // Asigna los valores necesarios
+    this.newServiceName = this.selectedService.id_service; // ID del servicio seleccionado
+    this.newServiceTime = this.selectedService.time;
+  
+    // Asigna el ID de Salon Service Type
+    this.idSalonServiceType = this.selectedService.id_salon_service_type; // Asegúrate de que este valor exista en el objeto `service`
+  
+    // Cargar los subservicios correspondientes al servicio seleccionado
+    this.editHomeService.getSubservicesByService(this.selectedService.id_service).subscribe(
+      (response) => {
+        if (response.success) {
+          // Asigna los subservicios cargados a la lista correspondiente
+          this.getSalonSubservices = response.data;
+  
+          // Una vez cargados los subservicios, asigna el subservicio seleccionado
+          this.newSubservices = this.selectedService.id_service_type.toString();
+  
+          // Verificación: imprimir los valores asignados
+          console.log('Servicio seleccionado:', this.newServiceName);
+          console.log('Subservicio seleccionado:', this.newSubservices);
+          console.log('ID de Salon Service Type:', this.idSalonServiceType);
+        } else {
+          console.error('Error al cargar los subservicios:', response.message);
+        }
+      },
+      (error) => {
+        console.error('Error al obtener subservicios:', error);
+      }
+    );
+  }
+  
+
+  onSubserviceSelect(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    this.selectedSubservice = +target.value; // Asegúrate de que sea un número
+    console.log('Subservicio seleccionado:', this.selectedSubservice);
+  }
+
+
+  updateServiceWithSubservice(): void {
+    // Validaciones detalladas para identificar qué dato falta
+    if (this.idSalonServiceType === null || this.idSalonServiceType === undefined) {
+      this.toastr.error('El ID de Salon Service Type es necesario para la actualización.');
+      return;
+    }
+    if (this.selectedServiceId === null || this.selectedServiceId === undefined) {
+      this.toastr.error('El ID del Servicio seleccionado es necesario para la actualización.');
+      return;
+    }
+    if (this.selectedSubservice === null || this.selectedSubservice === undefined) {
+      this.toastr.error('El Subservicio seleccionado es necesario para la actualización.');
+      return;
+    }
+    if (this.newServiceTime === null || this.newServiceTime === undefined || this.newServiceTime <= 0) {
+      this.toastr.error('El tiempo del servicio debe ser un valor válido y mayor a cero.');
+      return;
+    }
+  
+    // Crear el objeto con los datos para la actualización
+    const updateData = {
+      idSalonServiceType: this.idSalonServiceType,
+      idService: this.selectedServiceId,
+      idServiceType: this.selectedSubservice,
+      time: this.newServiceTime,
+      active: 1, // Cambia si necesitas actualizarlo de manera diferente
+    };
+
+    // Llamada al servicio para actualizar el servicio con los subservicios
+    this.editHomeService.updateServiceWithSubservice(updateData).subscribe(
+      (response: any) => {
+        if (response.success) {
+          this.toastr.success('Servicio actualizado con éxito');
+          this.getServicesWithSubservices(); // Recargar la lista de servicios
+          this.modalService.dismissAll(); // Cerrar el modal de edición
+        } else {
+          this.toastr.error('Error al actualizar el servicio');
+        }
+      },
+      (error) => {
+        console.error('Error updating service:', error);
+        this.toastr.error('Error al actualizar el servicio');
+      }
+    );
+  }
+
+
   editReview(review: any): void {
     this.reviewToEdit = review;
     this.editReviewText = review.observacion;
@@ -653,4 +790,122 @@ export class EditHomeComponent implements OnInit {
       ...Array(emptyStars).fill(0),  // Estrellas vacías
     ];
   }
+
+
+  addCategorySalon() {
+    if (!this.selectedCategory) {
+      this.toastr.warning('Por favor, selecciona una categoría.'); // Mostrar advertencia si no se seleccionó ninguna categoría
+      return;
+    }
+
+    // Llama al servicio para añadir la categoría seleccionada al salón
+    this.editHomeService.addCategorySalon(this.salonId, this.selectedCategory).subscribe(
+      (response) => {
+        this.toastr.success('Categoría añadida correctamente.');
+        // Opcional: Puedes actualizar la lista de categorías o realizar otra acción después de añadir la categoría
+        this.getSalonData(this.salonId);
+      },
+      (error) => {
+        this.toastr.error('Error al añadir la categoría.');
+        console.error('Error:', error);
+      }
+    );
+
+    // Reiniciar la categoría seleccionada
+    this.selectedCategory = '';
+  }
+
+  getCategoriesModal(): void {
+    this.editHomeService.getCategories().subscribe(
+      (response: any) => {
+        // Verifica si response tiene datos en la propiedad data
+        if (response.data && response.data.length > 0) {
+          this.getCategories = response.data;
+          console.log('Categorias cargadas', this.getCategories);
+        } else {
+          console.error('No se encontraron categorías', response);
+        }
+      },
+      (error) => {
+        console.error('Error fetching categories', error);
+      }
+    );
+  }
+  
+  onEditCategory(category: any): void {
+    // Hacer una copia de la categoría seleccionada
+    this.selectedCategory = { ...category };
+    console.log('Categoría seleccionada para editar:', this.selectedCategory.category);
+  }
+
+  onDeleteCategory(category:any):void{
+    this.selectedCategory= { ...category};
+
+  }
+  
+  // Función para actualizar la categoría
+  updateCategory(): void {
+    if (this.selectedCategory && this.selectedCategory.id_category) {
+      const updateData = {
+        idSalon:this.salonId,
+        id_category: this.selectedCategory.id_category, // ID de la categoría
+        categories: this.selectedCategory.category   // Nuevo nombre de la categoría
+      };
+      
+
+
+      this.editHomeService.updateCategorySalon(updateData).subscribe(
+        (response: any) => {
+          console.log('Categoría actualizada:', this.selectedCategory);
+          this.toastr.success('Categoría actualizada correctamente.');
+          this.getSalonData(this.salonId); // Actualiza la lista de categoríasp
+        },
+        (error) => {
+          console.error('Error al actualizar la categoría:', error);
+          this.toastr.error('Error al actualizar la categoría.');
+        }
+      );
+    } else {
+      this.toastr.warning('Por favor, selecciona una categoría para actualizar.');
+    }
+
+      console.log('Id salon',this.salonId);
+      console.log('id category',this.selectedCategory.id_category);
+      console.log('category name',this.selectedCategory.category)
+}
+
+openDeleteModal(id_category: any) {
+  this.idCategoryToDelete = id_category; // Guarda el ID de la categoría a eliminar
+}
+
+openDeleteServiceModal(id_salon_service_type: any) {
+  this.idServiceToDelete = id_salon_service_type; // Guarda el ID del servicio a eliminar
+}
+
+
+confirmDeleteCategory() {
+  this.editHomeService.deleteCategorySalon(this.idCategoryToDelete).subscribe(
+    (response: any) => {
+      this.toastr.success('Categoría eliminada exitosamente', 'Éxito');
+      this.getSalonData(this.salonId); // Recarga los datos después de eliminar
+    },
+    (error) => {
+      this.toastr.error('Error al eliminar la categoría', 'Error');
+    }
+  );
+}
+
+confirmDeleteService() {
+  this.editHomeService.deleteServiceWithSubservice(this.idServiceToDelete).subscribe(
+    (response: any) => {
+      this.toastr.success('Servicio eliminado exitosamente', 'Éxito');
+       // Recarga la lista de servicios después de eliminar
+      this.getServicesWithSubservices();
+      this.cdr.detectChanges();
+    },
+    (error) => {
+      this.toastr.error('Error al eliminar el servicio', 'Error');
+    }
+  );
+}
 }

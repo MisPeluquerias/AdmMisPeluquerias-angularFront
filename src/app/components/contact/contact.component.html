@@ -41,6 +41,7 @@
                     <th>Telefono</th>
                     <th>Mensaje</th>
                     <th>Estado</th>
+                    <th>Cambiar estado</th>
                     <th>Contestar</th>
                   </tr>
                 </thead>
@@ -51,6 +52,27 @@
                     <td>{{ message.email }}</td>
                     <td>{{ message.phone }}</td>
                     <td>{{ message.text }}</td>
+                    <td>{{ message.status }}</td>
+                    <td>
+                      <!-- Botón para cambiar el estado -->
+                      <button
+                        class="btn btn-dark btn-icon"
+                       
+                        title="Cambiar estado"
+                      >
+                        <i class="fas fa-sync-alt"></i> <!-- Puedes usar un icono de actualización -->
+                      </button>
+                    </td>
+                    <td>
+                      <!-- Botón para contestar -->
+                      <button
+                        class="btn btn-dark btn-icon"
+                       
+                        title="Contestar"
+                      >
+                        <i class="fas fa-reply"></i> <!-- Puedes usar un icono de respuesta -->
+                      </button>
+                    </td>
                   </tr>
                 </tbody>
               </table>

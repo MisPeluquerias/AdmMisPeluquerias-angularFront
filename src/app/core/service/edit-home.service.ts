@@ -25,9 +25,11 @@ export class EditHomeService {
     });;
   }
 
+  
   updateSalon(salonData: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/edithome/updateSalon`, salonData);
   }
+
 
   getCitiesByProvince(id_province: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/edithome/getCitiesByProvince`, {
@@ -48,6 +50,8 @@ export class EditHomeService {
 
     return this.http.put(url, body, { headers });
   }
+
+
 
   uploadImage(imageData: FormData): Observable<any> {
     const url = `${this.baseUrl}/edithomeimages/uploadImg`;
@@ -81,6 +85,13 @@ export class EditHomeService {
     return this.http.get<any>(`${this.baseUrl}/edithome/getServices`);
 }
 
+  getSubservicesByService(id_service: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/edithome/getSubservicesByService`, {
+      params: { id_service: id_service.toString()}
+    });
+  }
+
+
   deleteImage(imageId: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/edithomeimages/deleteImage/${imageId}`);
   }
@@ -94,15 +105,26 @@ export class EditHomeService {
     return this.http.put<any>(`${this.baseUrl}/edithomeimages/updatePrincipalImage`, body);
   }
 
-  addService(salonId: number, serviceName: string,subservices:string[],time:number): Observable<any> {
+
+
+  addService(id_salon: number, id_service:any, id_service_type:any,time:any): Observable<any> {
     const body = {
-      id_salon: salonId,
-      name: serviceName,
-      subservices:subservices,
+      id_salon: id_salon,
+      id_service:id_service,
+      id_service_type: id_service_type,
       time:time
     };
     return this.http.post<any>(`${this.baseUrl}/edithome/addService`, body);
   }
+
+  addCategorySalon(id_salon: number, category: string): Observable<any> {
+    const body = {
+      id_salon: id_salon,
+      category: category
+    };
+    return this.http.post<any>(`${this.baseUrl}/edithome/addCategorySalon`, body);
+  }
+
 
   getServicesWithSubservices(salonId: number, page: number = 1, pageSize: number = 10): Observable<any> {
     const url = `${this.baseUrl}/edithome/getServicesWithSubservices?id_salon=${salonId}&page=${page}&pageSize=${pageSize}`;
@@ -110,26 +132,8 @@ export class EditHomeService {
 }
 
 
-  updateServiceWithSubservice(
-    idService: number,
-    idSalon: number,
-    serviceName: string,
-    subservices: string[],
-    time: number
-  ): Observable<any> {
-    const body = {
-      id_service: idService,
-      id_salon: idSalon,
-      name: serviceName,
-      subservices: subservices,
-      time: time
-    };
-
-    return this.http.put<any>(`${this.baseUrl}/edithome/updateServiceWithSubservice`, body);
-  }
-
-  deleteServiceWithSubservice(serviceId: number): Observable<any> {
-    const url = `${this.baseUrl}/edithome/deleteServiceWithSubservices/${serviceId}`;
+  deleteServiceWithSubservice(id_salon_service_type: number): Observable<any> {
+    const url = `${this.baseUrl}/edithome/deleteServiceWithSubservices/${id_salon_service_type}`;
     return this.http.delete<any>(url);
   }
 
@@ -147,6 +151,18 @@ export class EditHomeService {
     return this.http.post<any>(`${this.baseUrl}/edithome/deleteQuestion`, { id_faq });
   }
 
+  updateServiceWithSubservice(updateData: { idSalonServiceType: number, time: number, active: number }) {
+    return this.http.put(`${this.baseUrl}/edithome/updateServiceWithSubservice`, updateData); 
+  }
+
+  updateCategorySalon(updateData:any) {
+    return this.http.put(`${this.baseUrl}/edithome/updateCategorySalon`, updateData); 
+  }
+
+  deleteCategorySalon(id_category: any) {
+    return this.http.delete(`${this.baseUrl}/edithome/deleteCategotySalon/${id_category}`);
+  }
+  
 
   loadReview(id_salon: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/edithome/loadReview`, {
@@ -164,5 +180,9 @@ export class EditHomeService {
       id_review
     };
     return this.http.post<any[]>(`${this.baseUrl}/edithome/deleteReview`, body);
+  }
+
+  getCategories(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/edithome/getAllCategoriesSalon`);
   }
 }
