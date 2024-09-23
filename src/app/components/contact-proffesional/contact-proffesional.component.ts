@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ContactProffesionalService } from '../../core/service/contact-proffesional.service';
-
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -19,7 +19,15 @@ export class ContactProffesionalComponent {
   Math = Math;  // Exponer Math al contexto de la plantilla
   allSelected: boolean = false;
   searchText: string = '';
-  constructor(private contactService: ContactProffesionalService) { }
+  replyMessage: string = '';
+  reply:string="";
+  selectedContactProffesional:any={}
+  selectedMessage: any = {};
+  replySubject: string = '';
+  constructor(private contactProffesionalService: ContactProffesionalService,private toastr:ToastrService) { }
+;
+
+
 
   ngOnInit(): void {
     this.loadAllContactProffesionalMenssage(this.currentPage);
@@ -27,7 +35,7 @@ export class ContactProffesionalComponent {
 
   loadAllContactProffesionalMenssage(page: number): void {
 
-    this.contactService.loadContacProffesionaltMenssage(page, this.pageSize,this.searchText).subscribe({
+    this.contactProffesionalService.loadContacProffesionaltMenssage(page, this.pageSize,this.searchText).subscribe({
       next: (response: any) => {
         this.AllContactMenssage = response.data;
         this.totalItems = response.totalItems;
@@ -36,6 +44,28 @@ export class ContactProffesionalComponent {
         console.error('Error loading salons', err);
       }
     });
+  }
+
+  selectMessageToReply(message: any) {
+    this.selectedMessage = message;
+    this.replySubject = ''; // Ajusta el asunto según lo necesites
+    this.replyMessage = '';
+  }
+
+  sendReply() {
+    if (!this.replyMessage.trim()) {
+      alert('El mensaje no puede estar vacío.');
+      return;
+    }
+
+    // Aquí deberías implementar la lógica para enviar el mensaje, probablemente llamando a un servicio
+    console.log('Enviando respuesta:', {
+      to: this.selectedMessage.email,
+      subject: this.replySubject,
+      message: this.replyMessage,
+    });
+
+    // Luego de enviar, podrías resetear los campos o cerrar el modal.
   }
 
   onSearch(): void {
@@ -91,4 +121,44 @@ export class ContactProffesionalComponent {
     this.allSelected = false;
   }
 
+  selectedStateContactProffesional(message:any){
+    this.selectedContactProffesional = {
+      id_contact: message.id_contact,
+      state: message.state
+    };
+  }
+
+  UpdateStateContactProffesional(){
+    this.contactProffesionalService.updateStateContactProffesional(this.selectedContactProffesional.id_contact,this.selectedContactProffesional.state).subscribe({
+      next: () => {
+
+        this.loadAllContactProffesionalMenssage(this.currentPage);
+        this.allSelected = false;
+        this.toastr.success('Estado actualizado con éxito');
+        
+      },
+      error: (err) => {
+        console.error('Error updating contact state', err);
+        this.toastr.error('Error al actualizar el estado del contacto profesional');
+      }
+    });
+  }
+  
+  sendReplyContact() {
+    const to = this.selectedMessage.email;
+    const subject = this.replySubject;
+    const message = this.replyMessage;
+  
+
+    this.contactProffesionalService.sendEmailContact(to, subject, message).subscribe(
+      (response) => {
+        this.toastr.success('Correo enviado con éxito');
+        // Cerrar el modal después de enviar el correo
+      },
+      (error) => {
+        this.toastr.error('Error al enviar el correo');
+        console.error(error);
+      }
+    );
+  }
 }

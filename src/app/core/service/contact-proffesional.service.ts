@@ -25,5 +25,18 @@ export class ContactProffesionalService {
     return this.http.get<any>(`${this.baseUrl}/contact-proffesional/getAllMessageContactProffesional`, { params });
   }
 
+  updateStateContactProffesional(id_contact:number,state:string): Observable<any> {
+    const data = {
+      id_contact: id_contact,
+      state: state
+    };
+    console.log(data);
+    return this.http.put<any>(`${this.baseUrl}/contact-proffesional/updateStateContactProffesional`, data);
+  }
+
+  sendEmailContact(to: string, subject: string, message: string): Observable<any> {
+    const emailData = { to, subject, message };
+    return this.http.post<any>(`${this.baseUrl}/contact-proffesional/send-reply-contact`, emailData); // Asegúrate de que esta URL coincida con tu backend
+  }
 
 }

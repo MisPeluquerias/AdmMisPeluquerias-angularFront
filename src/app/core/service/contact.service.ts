@@ -24,4 +24,12 @@ export class ContactService {
 
     return this.http.get<any>(`${this.baseUrl}/contact/getAllMessageContact`, { params });
   }
+
+  updateStateContact(id_contact:number,state:string): Observable<any> {
+    const data = {
+      id_contact: id_contact,
+      state: state
+    };
+    return this.http.put<any>(`${this.baseUrl}/contact/updateStateContact`, data);
+  }
 }

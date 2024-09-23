@@ -128,7 +128,7 @@
 
             <form>
               <div class="row mb-3 align-items-center">
-                <div class="col-md-2">
+                <div class="col-md-2" *ngIf="userPermiso === 'admin'">
                   <label for="estado" class="form-label">Estado</label>
                   <select
                     class="form-select"
@@ -168,7 +168,7 @@
                   </div>
                 </div>
               </div>
-
+              
               <div class="row mb-3">
                 <div class="col-md-6">
                   <label for="nombre" class="form-label">Nombre</label>

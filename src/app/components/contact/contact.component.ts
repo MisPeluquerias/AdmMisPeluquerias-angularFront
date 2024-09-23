@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ContactService } from '../../core/service/contact.service';
+import { state } from '@angular/animations';
 
 @Component({
   selector: 'app-contact',
@@ -16,6 +17,7 @@ export class ContactComponent {
   Math = Math;  // Exponer Math al contexto de la plantilla
   allSelected: boolean = false;
   searchText : string = '';
+  selectStateContact:any={};
 
   constructor(private contactService: ContactService) { }
 
@@ -88,5 +90,24 @@ export class ContactComponent {
   deleteSelected() {
     this.AllContactMenssage = this.AllContactMenssage.filter(contact => !contact.selected);
     this.allSelected = false;
+  }
+
+  selectedStateContact(message:any){
+    this.selectStateContact = {
+      id_contact: message.id_contact,
+      state: message.state
+    };
+  }
+  confirUpdateStateContact(){
+    this.contactService.updateStateContact(this.selectStateContact.id_contact,this.selectStateContact.state).subscribe({
+      next: () => {
+        this.loadAllContactMenssage(this.currentPage);
+        this.allSelected = false;
+        
+      },
+      error: (err) => {
+        console.error('Error updating contact state', err);
+      }
+    });
   }
 }

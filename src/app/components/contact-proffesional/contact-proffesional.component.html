@@ -51,13 +51,14 @@
                     <td>{{ message.email }}</td>
                     <td>{{ message.phone }}</td>
                     <td>{{ message.text }}</td>
-                    <td>{{ message.status }}</td>
+                    <td>{{ message.state }}</td>
                     <td>
                       <!-- Botón para cambiar el estado -->
                       <button
                         class="btn btn-dark btn-icon"
-                       
+                        (click)="selectedStateContactProffesional(message)"
                         title="Cambiar estado"
+                        data-bs-toggle="modal" data-bs-target="#changeStateModal"
                       >
                         <i class="fas fa-sync-alt"></i> <!-- Puedes usar un icono de actualización -->
                       </button>
@@ -66,6 +67,10 @@
                       <!-- Botón para contestar -->
                       <button
                         class="btn btn-dark btn-icon"
+                       
+                        data-bs-toggle="modal"
+                        data-bs-target="#replyModal"
+                        (click)="selectMessageToReply(message)"
                        
                         title="Contestar"
                       >
@@ -114,5 +119,105 @@
       </div>
     </main>
     <app-footer></app-footer>
+  </div>
+</div>
+
+
+<div class="modal fade" id="changeStateModal" tabindex="-1" aria-labelledby="changeStateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="changeStateModalLabel">Cambiar estado email contacto profesional</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-4">
+          <img src="../../../assets/img/sello.jpg" alt="sello" width="120" class="img-fluid rounded-circle shadow">
+        </div>
+        <form>
+          <div class="mb-3">
+            <label for="state" class="form-label">Estado del mail de contacto profesional</label>
+            <select 
+              class="form-select form-select-lg mb-3" 
+              name="state"
+              [(ngModel)]="selectedContactProffesional.state" 
+              id="state"
+              aria-label="Large select example"> 
+              <option value="Pendiente">Pendiente</option>
+              <option value="En revisión">En revisión</option>
+              <option value="Contestado">Contestado</option>
+            </select>
+          </div> 
+          <div class="text-end">
+            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-danger" data-bs-dismiss="modal" (click)="UpdateStateContactProffesional()">Guardar cambios</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal para contestar el mensaje -->
+<div class="modal fade" id="replyModal" tabindex="-1" aria-labelledby="replyModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="replyModalLabel">Responder al Mensaje</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-4">
+          <img src="../../../assets/img/sello.jpg" alt="sello" width="120" class="img-fluid rounded-circle shadow">
+        </div>
+        <form (ngSubmit)="sendReply()">
+          <div class="mb-3">
+            <label for="replyEmail" class="form-label">Para:</label>
+            <input 
+              type="email" 
+              class="form-control" 
+              id="replyEmail" 
+              [(ngModel)]="selectedMessage.email" 
+              name="replyEmail" 
+              readonly>
+          </div>
+          <div class="mb-3">
+            <label for="replySubject" class="form-label">Asunto:</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="replySubject" 
+              [(ngModel)]="replySubject" 
+              name="replySubject" 
+              placeholder="Escribe el asunto...">
+          </div>
+          <div class="mb-3">
+            <label for="originalMessage" class="form-label">Mensaje Original:</label>
+            <textarea 
+              class="form-control" 
+              id="originalMessage" 
+              [(ngModel)]="selectedMessage.text" 
+              name="originalMessage" 
+              readonly
+              rows="5"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="replyMessage" class="form-label">Respuesta:</label>
+            <textarea 
+              class="form-control" 
+              id="replyMessage" 
+              [(ngModel)]="replyMessage" 
+              name="replyMessage" 
+              rows="5" 
+              placeholder="Escribe tu respuesta..."></textarea>
+          </div>
+          <div class="text-end">
+            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-danger" data-bs-dismiss="modal" (click)="sendReplyContact()">Enviar Respuesta</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </div>

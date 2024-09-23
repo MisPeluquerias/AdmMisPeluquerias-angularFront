@@ -23,4 +23,16 @@ export class ReclamationService {
   }
     return this.http.get<any>(`${this.baseUrl}/reclamations/getAllReclamations`, { params });
   }
+  
+  updateStateReclamation(id_salon_reclamacion:number,id_user:string,salon_name:string,state:string,email:string): Observable<any> {    
+    const data = {
+      id_salon_reclamacion: id_salon_reclamacion,
+      id_user :id_user,
+      salon_name: salon_name,
+      state: state,
+      email: email
+    };
+    return this.http.put<any>(`${this.baseUrl}/reclamations/updateStateReclamation`, data);
+  }
+  
 }

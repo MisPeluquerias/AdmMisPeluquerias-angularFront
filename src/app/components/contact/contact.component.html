@@ -52,13 +52,15 @@
                     <td>{{ message.email }}</td>
                     <td>{{ message.phone }}</td>
                     <td>{{ message.text }}</td>
-                    <td>{{ message.status }}</td>
+                    <td>{{ message.state }}</td>
                     <td>
                       <!-- Botón para cambiar el estado -->
                       <button
                         class="btn btn-dark btn-icon"
                        
                         title="Cambiar estado"
+                        data-bs-toggle="modal" data-bs-target="#changeStateModal"
+                        (click)="selectedStateContact(message)"
                       >
                         <i class="fas fa-sync-alt"></i> <!-- Puedes usar un icono de actualización -->
                       </button>
@@ -69,6 +71,7 @@
                         class="btn btn-dark btn-icon"
                        
                         title="Contestar"
+                        
                       >
                         <i class="fas fa-reply"></i> <!-- Puedes usar un icono de respuesta -->
                       </button>
@@ -115,5 +118,41 @@
       </div>
     </main>
     <app-footer></app-footer>
+  </div>
+</div>
+
+
+<div class="modal fade" id="changeStateModal" tabindex="-1" aria-labelledby="changeStateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="changeStateModalLabel">Cambiar estado email contacto</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-4">
+          <img src="../../../assets/img/sello.jpg" alt="sello" width="120" class="img-fluid rounded-circle shadow">
+        </div>
+        <form>
+          <div class="mb-3">
+            <label for="state" class="form-label">Estado del mail de contacto</label>
+            <select 
+              class="form-select form-select-lg mb-3" 
+              name="state" 
+              [(ngModel)]="selectStateContact.state"
+              id="state"
+              aria-label="Large select example"> 
+              <option value="Pendiente">Pendiente</option>
+              <option value="En revisión">En revisión</option>
+              <option value="Contestado">Contestado</option>
+            </select>
+          </div> 
+          <div class="text-end">
+            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-danger" data-bs-dismiss="modal" (click)="confirUpdateStateContact()">Guardar cambios</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </div>

@@ -87,6 +87,7 @@ export class EditHomeComponent implements OnInit {
   oldCategory: string = '';
   idCategoryToDelete: any;
   idServiceToDelete: any;
+  userPermiso: string = '';
   
   constructor(
     private route: ActivatedRoute,
@@ -109,6 +110,22 @@ export class EditHomeComponent implements OnInit {
       this.getReviewsById();
       this.getCategoriesModal();
       this.selectedCategory='';
+    }); 
+    this.getUserPermiso();
+  }
+
+  getUserPermiso(): void {
+    // Llama al método del servicio para obtener el permiso del usuario
+    this.editHomeService.getUserPermiso().subscribe({
+      next: (response) => {
+        // Asigna el permiso obtenido a la variable userPermission
+        this.userPermiso = response.permiso;
+        console.log('Permiso de usuario',this.userPermiso); // Ajusta esto según la estructura del objeto recibido
+      },
+      error: (error) => {
+        console.error('Error al obtener el permiso del usuario:', error);
+        // Manejo de errores si es necesario
+      }
     });
   }
 
@@ -140,34 +157,29 @@ export class EditHomeComponent implements OnInit {
     this.editHomeService.getSalonById(id_salon).subscribe(
       (response: any) => {
         this.salonData = response.data;
-        console.log('Salon Data', this.salonData);
   
-        // Asegura que las categorías se parseen correctamente como un array de objetos JSON
-        if (this.salonData.categories) {
-          try {
-            // Parsear y filtrar categorías válidas
-            this.salonData.categoriesArray = JSON.parse(`[${this.salonData.categories}]`).filter(
-              (category: any) => category && category.id_category !== null && category.category !== null
-            );
-          } catch (error) {
-            console.error('Error parsing categories:', error);
-            this.salonData.categoriesArray = [];
-          }
-        } else {
-          this.salonData.categoriesArray = []; // Asegura que sea un array vacío si no hay categorías
-        }
-
-
         if (this.salonData.hours_old) {
           try {
-            this.salonData.hours = JSON.parse(this.salonData.hours_old);
+            // Divide el texto por día y luego por horarios
+            const hoursArray = this.salonData.hours_old.split('; ').map((dayText: string) => {
+              const [day, hours] = dayText.split(': ');
+              return {
+                day: day.trim(),
+                hours: hours
+                  ? hours.split(', ').map((hour: string) => {
+                      const [open, close] = hour.split('-');
+                      return { open: open.trim(), close: close.trim() };
+                    })
+                  : []
+              };
+            });
+  
+            this.salonData.hours = hoursArray;
             console.log('Parsed hours:', this.salonData.hours);
-        
-            // Mapear los horarios a los días de la tabla
-            this.days.forEach((day) => {
-              const matchingHours = this.salonData.hours.find(
-                (h: any) => h.day === day.name
-              );
+  
+            // Asigna los horarios parseados a los días
+            this.days.forEach(day => {
+              const matchingHours = hoursArray.find((h: { day: string; hours: { open: string; close: string }[] }) => h.day === day.name);
               day.hours = matchingHours ? matchingHours.hours : [];
             });
           } catch (error) {
@@ -181,6 +193,8 @@ export class EditHomeComponent implements OnInit {
       }
     );
   }
+  
+  
 
 
   days = [
@@ -207,21 +221,26 @@ export class EditHomeComponent implements OnInit {
   }
 
 
-  saveHours() {
-    const hoursToSave = this.days.map(day => ({
-      day: day.name,
-      hours: day.hours.filter(hour => hour.open && hour.close) 
-    }));
-    const hours_old = JSON.stringify(hoursToSave);
-    this.editHomeService.updateSalonHours(this.salonId, hours_old).subscribe(response => {
-      this.toastr.success('Horarios guardados correctamente');
-      
-      console.log('Horas guardadas:', hours_old);
-    }, error => {
-      this.toastr.error('Error al guardar los horarios');
-      console.error('Error al guardar los horarios:', error);
-    });
-  }
+ saveHours() {
+  const hoursToSave = this.days.map(day => ({
+    day: day.name,
+    // Especifica el tipo de `hour` como `{ open: string; close: string }`
+    hours: day.hours.filter((hour: { open: string; close: string }) => hour.open && hour.close)
+  }));
+  
+  const hours_old = hoursToSave
+    .map(day => `${day.day}: ${day.hours.map(hour => `${hour.open}-${hour.close}`).join(', ')}`)
+    .join('; '); // Convierte los horarios a texto plano
+
+  this.editHomeService.updateSalonHours(this.salonId, hours_old).subscribe(response => {
+    this.toastr.success('Horarios guardados correctamente');
+    console.log('Horas guardadas:', hours_old);
+  }, error => {
+    this.toastr.error('Error al guardar los horarios');
+    console.error('Error al guardar los horarios:', error);
+  });
+}
+
 
 
   updateSalon(): void {

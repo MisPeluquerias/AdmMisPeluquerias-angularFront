@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { ReclamationService } from '../../core/service/reclamation.service';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-reclamations',
@@ -13,8 +15,9 @@ export class ReclamationsComponent {
   totalItems: number = 0;
   allSelected: boolean = false;
   searchText: string = '';
+  selectedReclamation:any={};
 
-  constructor(private reclamationService: ReclamationService) { }
+  constructor(private reclamationService: ReclamationService,private toastr : ToastrService) { }
 
   ngOnInit(): void {
     this.loadAllReclamations();
@@ -95,5 +98,31 @@ export class ReclamationsComponent {
       });
     }
       */
+  }
+
+  selectedReclamationUpdate(reclamation: any) {
+    this.selectedReclamation = {
+      id_salon_reclamacion: reclamation.id_salon_reclamacion,
+      id_user:reclamation.id_user,
+      salon_name: reclamation.salon_name,
+      state: reclamation.state,
+      email: reclamation.email,
+    };
+    console.log('selectedReclamation:', this.selectedReclamation);
+  }
+  
+  cofirmUpdateState(){
+    this.reclamationService.updateStateReclamation(this.selectedReclamation.id_salon_reclamacion,this.selectedReclamation.id_user,this.selectedReclamation.salon_name,this.selectedReclamation.state,this.selectedReclamation.email).subscribe({
+      next: () => {
+        this.loadAllReclamations();
+        this.allSelected = false;
+        this.toastr.success('Estado actualizado con éxito');
+        
+      },
+      error: (err) => {
+        this.toastr.error('Error al actualizar el estado del reclamación');
+        console.error('Error updating reclamation state', err);
+      }
+    });
   }
 }

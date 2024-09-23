@@ -24,7 +24,12 @@ export class EditHomeService {
       },
     });;
   }
-
+  getUserPermiso(): Observable<any> {
+    const permiso = localStorage.getItem('permiso');
+    return this.http.get(`${this.baseUrl}/decode-permiso/permiso-aside`, {
+      params: { permiso: permiso || ''}
+    });
+  }
   
   updateSalon(salonData: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/edithome/updateSalon`, salonData);
