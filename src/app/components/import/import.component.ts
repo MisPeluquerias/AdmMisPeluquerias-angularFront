@@ -102,6 +102,7 @@ export class ImportComponent {
           );
           setTimeout(() => {
             this.isLoading = false;
+            window.location.reload();
           }, 2000); // 2000 milisegundos = 2 segundos
         }
       );

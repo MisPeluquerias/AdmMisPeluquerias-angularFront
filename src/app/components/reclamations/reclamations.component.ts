@@ -16,15 +16,21 @@ export class ReclamationsComponent {
   allSelected: boolean = false;
   searchText: string = '';
   selectedReclamation:any={};
+  filterState: string = '';
 
   constructor(private reclamationService: ReclamationService,private toastr : ToastrService) { }
 
   ngOnInit(): void {
-    this.loadAllReclamations();
+    this.loadAllReclamations(this.currentPage);
   }
 
-  loadAllReclamations(): void {
-    this.reclamationService.loadAllReclamation(this.currentPage, this.pageSize, this.searchText).subscribe({
+  onFilterChange(): void {
+    this.currentPage = 1; // Resetea la página actual a 1 cuando cambia el filtro
+    this.loadAllReclamations(this.currentPage);
+  }
+
+  loadAllReclamations(page: number): void {
+    this.reclamationService.loadAllReclamation(this.currentPage, this.pageSize, this.searchText,this.filterState).subscribe({
       next: (response: any) => {
         this.AllReclamations = response.data;
         this.totalItems = response.pagination.totalItems;
@@ -37,13 +43,13 @@ export class ReclamationsComponent {
 
   onSearch(): void {
     this.currentPage = 1; // Resetea la página actual a 1 cuando buscas
-    this.loadAllReclamations();
+    this.loadAllReclamations(this.currentPage);
   }
 
   onPageChange(page: number): void {
     if (page > 0 && page <= this.pageCount) {
       this.currentPage = page;
-      this.loadAllReclamations();
+      this.loadAllReclamations(this.currentPage);
     }
   }
 
@@ -114,7 +120,7 @@ export class ReclamationsComponent {
   cofirmUpdateState(){
     this.reclamationService.updateStateReclamation(this.selectedReclamation.id_salon_reclamacion,this.selectedReclamation.id_user,this.selectedReclamation.salon_name,this.selectedReclamation.state,this.selectedReclamation.email).subscribe({
       next: () => {
-        this.loadAllReclamations();
+        this.loadAllReclamations(this.currentPage);
         this.allSelected = false;
         this.toastr.success('Estado actualizado con éxito');
         

@@ -58,8 +58,10 @@ export class HomeComponent implements OnInit {
       }
     });
   }
+  
 
   onFilterChange(): void {
+    this.currentPage = 1; // Resetea la página actual a 1 cuando cambia el filtro
     this.loadAllSalon(this.currentPage);
   }
 

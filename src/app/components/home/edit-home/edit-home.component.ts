@@ -88,6 +88,7 @@ export class EditHomeComponent implements OnInit {
   idCategoryToDelete: any;
   idServiceToDelete: any;
   userPermiso: string = '';
+  brands:any=[];
   
   constructor(
     private route: ActivatedRoute,
@@ -120,7 +121,7 @@ export class EditHomeComponent implements OnInit {
       next: (response) => {
         // Asigna el permiso obtenido a la variable userPermission
         this.userPermiso = response.permiso;
-        console.log('Permiso de usuario',this.userPermiso); // Ajusta esto según la estructura del objeto recibido
+        //console.log('Permiso de usuario',this.userPermiso); // Ajusta esto según la estructura del objeto recibido
       },
       error: (error) => {
         console.error('Error al obtener el permiso del usuario:', error);
@@ -157,10 +158,28 @@ export class EditHomeComponent implements OnInit {
     this.editHomeService.getSalonById(id_salon).subscribe(
       (response: any) => {
         this.salonData = response.data;
+        console.log('salonData', this.salonData);
   
+        // Parsear las categorías si existen y están en formato JSON
+        if (this.salonData.categories) {
+          try {
+            // Convierte la cadena en un formato de array JSON válido
+            const formattedCategories = `[${this.salonData.categories.replace(/\\/g, '')}]`; // Eliminamos los caracteres de escape innecesarios
+            const categoryArray = JSON.parse(formattedCategories);
+            this.salonData.categoriesArray = categoryArray; // Asegúrate de asignarlo correctamente
+          } catch (error) {
+            console.error('Error parsing categories:', error);
+            this.salonData.categoriesArray = []; // Asignamos un array vacío en caso de error
+          }
+        }
+
+        if (this.salonData.id_province) {
+          this.onProvinceChange(this.salonData.id_province, true);
+        }
+  
+        // Procesa los horarios antiguos si existen
         if (this.salonData.hours_old) {
           try {
-            // Divide el texto por día y luego por horarios
             const hoursArray = this.salonData.hours_old.split('; ').map((dayText: string) => {
               const [day, hours] = dayText.split(': ');
               return {
@@ -170,16 +189,17 @@ export class EditHomeComponent implements OnInit {
                       const [open, close] = hour.split('-');
                       return { open: open.trim(), close: close.trim() };
                     })
-                  : []
+                  : [],
               };
             });
   
             this.salonData.hours = hoursArray;
-            console.log('Parsed hours:', this.salonData.hours);
   
-            // Asigna los horarios parseados a los días
-            this.days.forEach(day => {
-              const matchingHours = hoursArray.find((h: { day: string; hours: { open: string; close: string }[] }) => h.day === day.name);
+            this.days.forEach((day) => {
+              const matchingHours = hoursArray.find(
+                (h: { day: string; hours: { open: string; close: string }[] }) =>
+                  h.day === day.name
+              );
               day.hours = matchingHours ? matchingHours.hours : [];
             });
           } catch (error) {
@@ -193,6 +213,7 @@ export class EditHomeComponent implements OnInit {
       }
     );
   }
+  
   
   
 
@@ -335,6 +356,7 @@ export class EditHomeComponent implements OnInit {
     }
   }
 
+
   toggleManana(dia: any): void {
     if (dia.cerradoManana) {
       dia.mananaInicio = '';
@@ -358,8 +380,6 @@ export class EditHomeComponent implements OnInit {
       this.toastr.error('<i class="las la-info-circle">Por favor, seleccione una imagen primero.</i>');
       return;
     }
-
-
 
     const formData = new FormData();
     formData.append('image', this.selectedFile);
@@ -441,7 +461,7 @@ export class EditHomeComponent implements OnInit {
       (response) => {
         if (response.success) {
           this.getSalonDataSelect = response.data;
-          console.log('Servicios cargados',this.getSalonServices); // Usa este valor para gestionar la paginación en el frontend
+          //console.log('Servicios cargados',this.getSalonServices); // Usa este valor para gestionar la paginación en el frontend
         } else {
           console.error('Error fetching services', response);
 
@@ -526,7 +546,7 @@ getServicesWithSubservices() {
       if (response.data) {
         // Asignar los datos, incluso si están vacíos
         this.getSalonServices = response.data;
-        console.log('Servicios actualizados:', this.getSalonServices);
+        //console.log('Servicios actualizados:', this.getSalonServices);
 
         // Maneja el caso de array vacío
         if (this.getSalonServices.length === 0) {
@@ -603,7 +623,7 @@ getServicesWithSubservices() {
           this.faqByIdSalon = response.data;
           this.totalItems = response.total;
           this.totalPages = Math.ceil(this.totalItems / this.pageSize);
-          console.log('FAQs loaded successfully', this.faqByIdSalon);
+          //console.log('FAQs loaded successfully', this.faqByIdSalon);
         } else {
           console.error('Error fetching FAQs', response);
         }
@@ -643,12 +663,12 @@ getServicesWithSubservices() {
       reviews => {
         this.reviews = reviews;
         this.calculateAverageRating();
-        console.log('Reseñas cargadas:', reviews);
+        //console.log('Reseñas cargadas:', reviews);
       },
       error => console.error('Error loading reviews', error)
 
     );
-    console.log('id_salon reviews: ',this.salonId);
+    //console.log('id_salon reviews: ',this.salonId);
   }
 
   updateReview(): void {
@@ -850,7 +870,6 @@ getServicesWithSubservices() {
       }
     );
   }
-  
   onEditCategory(category: any): void {
     // Hacer una copia de la categoría seleccionada
     this.selectedCategory = { ...category };

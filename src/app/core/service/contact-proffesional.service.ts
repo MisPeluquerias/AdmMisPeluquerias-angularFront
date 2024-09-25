@@ -12,7 +12,7 @@ export class ContactProffesionalService {
 
   constructor(private http:HttpClient) { }
 
-  loadContacProffesionaltMenssage(page: number, pageSize: number, searchText:string): Observable<any> {
+  loadContacProffesionaltMenssage(page: number, pageSize: number, searchText:string,filterState: string = ''): Observable<any> {
     
     let params = new HttpParams()
     .set('page', page.toString())
@@ -20,6 +20,10 @@ export class ContactProffesionalService {
 
   if (searchText) {
     params = params.set('search', searchText);
+  }
+
+  if (filterState) {
+    params = params.set('filterState', filterState);
   }
 
     return this.http.get<any>(`${this.baseUrl}/contact-proffesional/getAllMessageContactProffesional`, { params });
@@ -34,9 +38,8 @@ export class ContactProffesionalService {
     return this.http.put<any>(`${this.baseUrl}/contact-proffesional/updateStateContactProffesional`, data);
   }
 
-  sendEmailContact(to: string, subject: string, message: string): Observable<any> {
+  sendEmailContactProffesional(to: string, subject: string, message: string): Observable<any> {
     const emailData = { to, subject, message };
-    return this.http.post<any>(`${this.baseUrl}/contact-proffesional/send-reply-contact`, emailData); // Asegúrate de que esta URL coincida con tu backend
+    return this.http.post<any>(`${this.baseUrl}/contact-proffesional/send-reply-contactProffesional`, emailData); // Asegúrate de que esta URL coincida con tu backend
   }
-
 }

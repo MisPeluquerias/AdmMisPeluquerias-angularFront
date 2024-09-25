@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ContactService } from '../../core/service/contact.service';
-import { state } from '@angular/animations';
+import { ToastrService } from 'ngx-toastr';
+
+
 
 @Component({
   selector: 'app-contact',
@@ -18,17 +20,27 @@ export class ContactComponent {
   allSelected: boolean = false;
   searchText : string = '';
   selectStateContact:any={};
+  selectedMessage: any = {};
+  replySubject: string = '';
+  replyMessage: string = '';
+  filterState: string = '';
 
-  constructor(private contactService: ContactService) { }
+  constructor(private contactService: ContactService,private toastr:ToastrService) { }
 
   ngOnInit(): void {
     this.loadAllContactMenssage(this.currentPage);
   }
 
+
+  onFilterChange(): void {
+    this.currentPage = 1; // Resetea la página actual a 1 cuando cambia el filtro
+    this.loadAllContactMenssage(this.currentPage);
+
+  }
+
   loadAllContactMenssage(page: number): void {
 
-
-    this.contactService.loadContactMenssage(page, this.pageSize,this.searchText).subscribe({
+    this.contactService.loadContactMenssage(page, this.pageSize,this.searchText,this.filterState).subscribe({
       next: (response: any) => {
         this.AllContactMenssage = response.data;
         this.totalItems = response.totalItems;
@@ -39,6 +51,20 @@ export class ContactComponent {
     });
   }
 
+
+  sendReply() {
+    if (!this.replyMessage.trim()) {
+      alert('El mensaje no puede estar vacío.');
+      return;
+    }
+  }
+
+  selectMessageToReply(message: any) {
+    this.selectedMessage = message;
+    this.replySubject = ''; 
+    this.replyMessage = '';
+  }
+  
   onSearch(): void {
     this.loadAllContactMenssage(this.currentPage);
     if (this.searchText.trim() === '') {
@@ -55,6 +81,7 @@ export class ContactComponent {
     return Math.ceil(this.totalItems / this.pageSize);
   }
 
+  
   get pages(): number[] {
     const maxPagesToShow = 5;
     const pages = [];
@@ -109,5 +136,23 @@ export class ContactComponent {
         console.error('Error updating contact state', err);
       }
     });
+  }
+
+  sendReplyContact() {
+    const to = this.selectedMessage.email;
+    const subject = this.replySubject;
+    const message = this.replyMessage;
+  
+
+    this.contactService.sendEmailContact(to, subject, message).subscribe(
+      (response) => {
+        this.toastr.success('Correo enviado con éxito');
+        // Cerrar el modal después de enviar el correo
+      },
+      (error) => {
+        this.toastr.error('Error al enviar el correo');
+        console.error(error);
+      }
+    );
   }
 }

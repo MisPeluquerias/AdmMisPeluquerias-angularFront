@@ -24,18 +24,24 @@ export class ContactProffesionalComponent {
   selectedContactProffesional:any={}
   selectedMessage: any = {};
   replySubject: string = '';
+  filterState: string = '';
+ 
+
   constructor(private contactProffesionalService: ContactProffesionalService,private toastr:ToastrService) { }
 ;
-
-
 
   ngOnInit(): void {
     this.loadAllContactProffesionalMenssage(this.currentPage);
   }
 
+  onFilterChange(): void {
+    this.currentPage = 1; // Resetea la página actual a 1 cuando cambia el filtro
+    this.loadAllContactProffesionalMenssage(this.currentPage);
+  }
+
   loadAllContactProffesionalMenssage(page: number): void {
 
-    this.contactProffesionalService.loadContacProffesionaltMenssage(page, this.pageSize,this.searchText).subscribe({
+    this.contactProffesionalService.loadContacProffesionaltMenssage(page, this.pageSize,this.searchText,this.filterState).subscribe({
       next: (response: any) => {
         this.AllContactMenssage = response.data;
         this.totalItems = response.totalItems;
@@ -48,7 +54,7 @@ export class ContactProffesionalComponent {
 
   selectMessageToReply(message: any) {
     this.selectedMessage = message;
-    this.replySubject = ''; // Ajusta el asunto según lo necesites
+    this.replySubject = ''; 
     this.replyMessage = '';
   }
 
@@ -144,13 +150,13 @@ export class ContactProffesionalComponent {
     });
   }
   
-  sendReplyContact() {
+  sendReplyContactProffesional() {
     const to = this.selectedMessage.email;
     const subject = this.replySubject;
     const message = this.replyMessage;
   
 
-    this.contactProffesionalService.sendEmailContact(to, subject, message).subscribe(
+    this.contactProffesionalService.sendEmailContactProffesional(to, subject, message).subscribe(
       (response) => {
         this.toastr.success('Correo enviado con éxito');
         // Cerrar el modal después de enviar el correo

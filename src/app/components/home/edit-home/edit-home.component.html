@@ -69,21 +69,18 @@
             </button>
           </li>
           <li class="nav-item" role="presentation">
-            <!--
             <button
               class="nav-link"
               id="permisos-tab"
               data-bs-toggle="tab"
-              data-bs-target="#permisos"
+              data-bs-target="#marcas"
               type="button"
               role="tab"
-              aria-controls="permisos"
+              aria-controls="marcas"
               aria-selected="false"
             >
-           
-              <i class="fa-solid fa-lock me-2"></i>Permisos
+              <i class="fa-solid fa-copyright"></i> Marcas
             </button>
-            -->
           </li>
           <li class="nav-item" role="presentation">
             <button
@@ -168,7 +165,7 @@
                   </div>
                 </div>
               </div>
-              
+
               <div class="row mb-3">
                 <div class="col-md-6">
                   <label for="nombre" class="form-label">Nombre</label>
@@ -718,48 +715,246 @@
                   </table>
                 </div>
               </div>
-              <!-- Paginación -->
-              <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                  <li class="page-item" [class.disabled]="currentPage === 1">
-                    <a
-                      class="page-link"
-                      href="#"
-                      aria-label="Previous"
-                      (click)="changePage(currentPage - 1)"
-                    >
-                      <span aria-hidden="true">&laquo;</span>
-                    </a>
-                  </li>
-
-                  <li
-                    class="page-item"
-                    *ngFor="let page of getPagesArray()"
-                    [class.active]="page === currentPage"
-                  >
-                    <!--Falta href-->
-                    <a class="page-link" (click)="changePage(page)">{{
-                      page
-                    }}</a>
-                  </li>
-
-                  <li
-                    class="page-item"
-                    [class.disabled]="currentPage === totalPages"
-                  >
-                    <a
-                      class="page-link"
-                      href="#"
-                      aria-label="Next"
-                      (click)="changePage(currentPage + 1)"
-                    >
-                      <span aria-hidden="true">&raquo;</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
             </div>
           </div>
+          <!-- Contenido de la pestaña Marcas -->
+           
+          <div
+            class="tab-pane fade"
+            id="marcas"
+            role="tabpanel"
+            aria-labelledby="marcas-tab"
+          >
+            <!-- Filtros de Marcas -->
+            <div class="row mb-3">
+              <div class="col-md-2">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Buscar Marca"
+                />
+              </div>
+              <div class="col-md-4 ms-auto d-flex justify-content-end">
+                <button
+                  class="btn btn-danger ms-auto"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modalNuevaMarca"
+                >
+                  Nueva
+                </button>
+              </div>
+            </div>
+
+            <!-- Tabla de Marcas -->
+            <div
+            class="card-body d-flex align-items-center justify-content-center"
+          >
+            <div class="card mb-4">
+              <div class="card-header">
+                <img
+                  src="../../../favicon.ico"
+                  width="30"
+                  class="img-fluid me-2"
+                  alt=""
+                />
+                Lista de Marcas
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover table-light"  style="min-width: 600px;">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th>Marca</th>
+                        <th class="col-1" colspan="2">Editar/Eliminar</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let marca of brands">
+                        <td>{{ marca.name }}</td>
+                        <td>
+                          <button
+                            class="btn btn-dark"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalEditMarca"
+                          >
+                            <i class="fas fa-edit"></i>
+                          </button>
+                          <button
+                            class="btn btn-danger ms-2"
+                            data-bs-toggle="modal"
+                            data-bs-target="#deleteMarcaModal"
+                          >
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            </div>
+
+            <!-- Modales para agregar y editar marcas -->
+            <div
+              class="modal fade"
+              id="modalNuevaMarca"
+              tabindex="-1"
+              aria-labelledby="modalNuevaMarcaLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="modalNuevaMarcaLabel">
+                      Nueva Marca
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="mb-3">
+                        <label for="nombreMarca" class="form-label"
+                          >Nombre de la Marca</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="nombreMarca"
+                          name="nombreMarca"
+                          required
+                        />
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      Cancelar
+                    </button>
+                    <button type="button" class="btn btn-danger">
+                      Guardar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal para editar marca -->
+            <div
+              class="modal fade"
+              id="modalEditMarca"
+              tabindex="-1"
+              aria-labelledby="modalEditMarcaLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="modalEditMarcaLabel">
+                      Editar Marca
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    <form>
+                      <div class="mb-3">
+                        <label for="editNombreMarca" class="form-label"
+                          >Nombre de la Marca</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="editNombreMarca"
+                          name="editNombreMarca"
+                          required
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label for="editLogoMarca" class="form-label"
+                          >Logo de la Marca</label
+                        >
+                        <input
+                          type="file"
+                          class="form-control"
+                          id="editLogoMarca"
+                          (change)="onFileSelected($event)"
+                        />
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      Cancelar
+                    </button>
+                    <button type="button" class="btn btn-danger">
+                      Guardar Cambios
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal para eliminar marca -->
+            <div
+              class="modal fade"
+              id="deleteMarcaModal"
+              tabindex="-1"
+              aria-labelledby="deleteMarcaModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="deleteMarcaModalLabel">
+                      Eliminar Marca
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    <p>¿Estás seguro de que deseas eliminar esta marca?</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      data-bs-dismiss="modal"
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div
             class="tab-pane fade"
             id="permisos"
@@ -820,30 +1015,6 @@
                     </tbody>
                   </table>
                 </div>
-                <!-- Paginación -->
-                <nav aria-label="Page navigation example">
-                  <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                      <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                      </a>
-                    </li>
-                    <li class="page-item active">
-                      <a class="page-link" href="#">1</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">3</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
               </div>
             </div>
           </div>
@@ -898,49 +1069,6 @@
                     </tbody>
                   </table>
                 </div>
-                <!-- Paginación -->
-                <nav aria-label="Page navigation example">
-                  <ul class="pagination justify-content-center">
-                    <!-- Botón de "Anterior" -->
-                    <li class="page-item" [class.disabled]="currentPage === 1">
-                      <a
-                        class="page-link"
-                        href="#"
-                        aria-label="Previous"
-                        (click)="changePage(currentPage - 1)"
-                      >
-                        <span aria-hidden="true">&laquo;</span>
-                      </a>
-                    </li>
-
-                    <!-- Números de página -->
-                    <li
-                      *ngFor="let page of getPagesArray()"
-                      class="page-item"
-                      [class.active]="page === currentPage"
-                    >
-                      <!--Fatla href-->
-                      <a class="page-link" (click)="changePage(page)">{{
-                        page
-                      }}</a>
-                    </li>
-
-                    <!-- Botón de "Siguiente" -->
-                    <li
-                      class="page-item"
-                      [class.disabled]="currentPage === totalPages"
-                    >
-                      <a
-                        class="page-link"
-                        href="#"
-                        aria-label="Next"
-                        (click)="changePage(currentPage + 1)"
-                      >
-                        <span aria-hidden="true">&raquo;</span>
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
               </div>
             </div>
           </div>
@@ -1046,49 +1174,6 @@
                     </tbody>
                   </table>
                 </div>
-                <!-- Paginación -->
-                <nav aria-label="Page navigation example">
-                  <ul class="pagination justify-content-center">
-                    <!-- Botón de "Anterior" -->
-                    <li class="page-item" [class.disabled]="currentPage === 1">
-                      <a
-                        class="page-link"
-                        href="#"
-                        aria-label="Previous"
-                        (click)="changePage(currentPage - 1)"
-                      >
-                        <span aria-hidden="true">&laquo;</span>
-                      </a>
-                    </li>
-
-                    <!-- Números de página -->
-                    <li
-                      *ngFor="let page of getPagesArray()"
-                      class="page-item"
-                      [class.active]="page === currentPage"
-                    >
-                      <!--Fatla href-->
-                      <a class="page-link" (click)="changePage(page)">{{
-                        page
-                      }}</a>
-                    </li>
-
-                    <!-- Botón de "Siguiente" -->
-                    <li
-                      class="page-item"
-                      [class.disabled]="currentPage === totalPages"
-                    >
-                      <a
-                        class="page-link"
-                        href="#"
-                        aria-label="Next"
-                        (click)="changePage(currentPage + 1)"
-                      >
-                        <span aria-hidden="true">&raquo;</span>
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
               </div>
             </div>
           </div>

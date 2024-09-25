@@ -13,7 +13,7 @@ export class ContactService {
 
   constructor(private http:HttpClient) { }
 
-  loadContactMenssage(page: number, pageSize: number,searchText:string): Observable<any> {
+  loadContactMenssage(page: number, pageSize: number,searchText:string,filterState: string = ''): Observable<any> {
     let params = new HttpParams()
     .set('page', page.toString())
     .set('pageSize', pageSize.toString());
@@ -22,6 +22,10 @@ export class ContactService {
     params = params.set('search', searchText);
   }
 
+  if (filterState) {
+    params = params.set('filterState', filterState);
+  }
+  
     return this.http.get<any>(`${this.baseUrl}/contact/getAllMessageContact`, { params });
   }
 
@@ -31,5 +35,10 @@ export class ContactService {
       state: state
     };
     return this.http.put<any>(`${this.baseUrl}/contact/updateStateContact`, data);
+  }
+
+  sendEmailContact(to: string, subject: string, message: string): Observable<any> {
+    const emailData = { to, subject, message };
+    return this.http.post<any>(`${this.baseUrl}/contact/send-reply-contact`, emailData); // Asegúrate de que esta URL coincida con tu backend
   }
 }

@@ -22,6 +22,7 @@ import { EditAdministratorsComponent } from './components/administrators/edit-ad
 import { OwnerSalonComponent } from './components/owner-salon/owner-salon.component';
 import { EditOwnerComponent } from './components/owner-salon/edit-owner/edit-owner.component';
 import { EditCityComponent } from './components/cities/edit-city/edit-city.component';
+import { BrandsComponent } from './components/brands/brands.component';
 
 
 
@@ -150,15 +151,21 @@ const routes: Routes = [
     title: 'Adm | Mis Peluquerias',
   },
   {
+    path: 'brands',
+    component: BrandsComponent,
+    canActivate: [AuthGuard],
+    title: 'Adm | Mis Peluquerias',
+  },
+  {
     path: '',
     component: ProfileComponent,
     canActivate: [AuthGuard],
     title: 'Adm | Mis Peluquerias',
   },
+  
 
   { path: '**', component: LoginComponent },
 ];
-
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

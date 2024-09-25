@@ -13,14 +13,20 @@ export class ReclamationService {
   constructor(private http:HttpClient) { }
 
 
-  loadAllReclamation(page: number, pageSize: number, searchText:string): Observable<any> {
+  loadAllReclamation(page: number, pageSize: number, searchText:string,filterState: string = ''): Observable<any> {
     let params = new HttpParams()
     .set('page', page.toString())
     .set('pageSize', pageSize.toString());
 
   if (searchText) {
     params = params.set('search', searchText);
+
   }
+
+  if (filterState) {
+    params = params.set('filterState', filterState);
+  }
+  
     return this.http.get<any>(`${this.baseUrl}/reclamations/getAllReclamations`, { params });
   }
   
@@ -34,5 +40,4 @@ export class ReclamationService {
     };
     return this.http.put<any>(`${this.baseUrl}/reclamations/updateStateReclamation`, data);
   }
-  
 }

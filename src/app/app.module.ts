@@ -38,6 +38,7 @@ import { EditAdministratorsComponent } from './components/administrators/edit-ad
 import { OwnerSalonComponent } from './components/owner-salon/owner-salon.component';
 import { EditOwnerComponent } from './components/owner-salon/edit-owner/edit-owner.component';
 import { EditCityComponent } from './components/cities/edit-city/edit-city.component';
+import { BrandsComponent } from './components/brands/brands.component';
 
 
 
@@ -71,6 +72,7 @@ import { EditCityComponent } from './components/cities/edit-city/edit-city.compo
     OwnerSalonComponent,
     EditOwnerComponent,
     EditCityComponent,
+    BrandsComponent,
   ],
   imports: [
     BrowserModule,
