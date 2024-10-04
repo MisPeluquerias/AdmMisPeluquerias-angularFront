@@ -376,6 +376,11 @@ th {
   border-color: inherit;
   border-style: solid;
   border-width: 0;
+  
+}
+
+tr,td{
+  background-color: #fff !important;
 }
 
 label {
@@ -11294,8 +11299,9 @@ body {
 
 /* styles.css */
 .thead-dark th {
-  background-color: #B91622;
-  color: white;
+  background-color: #eeeeee;
+  color: black;
+  
 }
 
 .pagination .page-item.active .page-link {
@@ -11314,11 +11320,11 @@ body {
 }
 
 .card-body{
-  background-color: #F5F5F9;
+  background-color: #fff
 }
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: white;}
 
 
 .toast-center-center {

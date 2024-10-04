@@ -98,6 +98,7 @@
                     <th>DNI Frontal</th>
                     <th>DNI Trasero</th>
                     <th>Documentos</th>
+                    <th>Facturas</th>
                     <th>Estado</th>
                     <th class="col-1">Cambiar Estado</th>
                   </tr>
@@ -139,6 +140,15 @@
                       <a [href]="reclamation.file_path" target="_blank">
                         <img
                           [src]="reclamation.file_path"
+                          alt="Documentos"
+                          class="fixed-size-img"
+                        />
+                      </a>
+                    </td>
+                    <td>
+                      <a [href]="reclamation.invoice_path" target="_blank">
+                        <img
+                          [src]="reclamation.invoice_path"
                           alt="Documentos"
                           class="fixed-size-img"
                         />

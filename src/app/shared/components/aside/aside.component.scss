@@ -1,0 +1,11 @@
+nav{
+    background-color: #fff !important;
+}
+
+a {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+a:hover {
+    transform: scale(1.1);
+}

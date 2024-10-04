@@ -46,7 +46,9 @@ export class EditHomeService {
     return this.http.get(`${this.baseUrl}/edithome/getProvinces`);
   }
 
-
+  responseReview(responseReview: any): Observable<any[]> {
+    return this.http.put<any[]>(`${this.baseUrl}/edithome/responseReview`, responseReview);
+  }
 
   updateSalonHours(id: number, hours_old: string): Observable<any> {
     const url = `${this.baseUrl}/edithome/updateSalonHours/${id}`;
@@ -176,6 +178,8 @@ export class EditHomeService {
       },
     });
   }
+
+
   updateReview(review: any): Observable<any[]> {
     return this.http.post<any[]>(`${this.baseUrl}/edithome/updateReview`, review);
   }

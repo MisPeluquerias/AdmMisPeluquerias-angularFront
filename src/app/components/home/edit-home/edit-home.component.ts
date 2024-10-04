@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EditHomeService } from '../../../core/service/edit-home.service';
@@ -48,6 +49,7 @@ export class EditHomeComponent implements OnInit {
 
   provinces: any[] = [];
   cities: any[] = [];
+  additionalComments: string = '';
   dias: any[] = [];
   getSalonServices:any[]=[];
   totalItems: number = 0;
@@ -55,6 +57,12 @@ export class EditHomeComponent implements OnInit {
   pageSize: number = 10;
   selectedFile: File | null = null;
   images: any[] = [];
+  ratings = {
+    service: [false, false, false, false, false],
+    quality: [false, false, false, false, false],
+    cleanliness: [false, false, false, false, false],
+    speed: [false, false, false, false, false]
+  };
   fileDescription = '';
   fileGroup = '';
   filePrincipal = false;
@@ -78,7 +86,9 @@ export class EditHomeComponent implements OnInit {
   reviewToEdit: any;
   editRating: string = '';
   editReviewText: string = '';
+  responseReviewText: string = '';
   averageRating: number = 0;
+  averageRatingStart: number = 0;
   getSalonSubservices:any[]=['Seleccione una opción'];
   selectedServiceId: number | null = null;
   selectedServiceName: string | null = null;
@@ -130,6 +140,22 @@ export class EditHomeComponent implements OnInit {
     });
   }
 
+
+
+
+  generateStars(rating: number): string[] {
+  return Array(5).fill(0).map((_, i) => {
+    if (i < Math.floor(rating)) {
+      return 'fas fa-star'; // Estrella llena
+    } else if (i === Math.floor(rating) && rating % 1 !== 0) {
+      return 'fas fa-star-half-alt'; // Media estrella
+    } else {
+      return 'far fa-star'; // Estrella vacía
+    }
+  }).reverse();
+}
+
+
   openImage(url: string, alt: string): void {
     this.currentImageUrl = url;
     this.currentImageAlt = alt;
@@ -154,11 +180,26 @@ export class EditHomeComponent implements OnInit {
     );
   }
 
+  generateStarRatingArray(rating: number): number[] {
+    const totalStars = 5;
+    const fullStars = Math.floor(rating);  // Número de estrellas completas
+    const halfStar = rating % 1 >= 0.5 ? 1 : 0;  // Media estrella si corresponde
+    const emptyStars = totalStars - fullStars - halfStar;  // Estrellas vacías
+  
+    return [
+      ...Array(fullStars).fill(1),  // Estrellas completas
+      ...Array(halfStar).fill(0.5),  // Media estrella
+      ...Array(emptyStars).fill(0)  // Estrellas vacías
+    ];
+  }
+
+
   getSalonData(id_salon: number): void {
     this.editHomeService.getSalonById(id_salon).subscribe(
       (response: any) => {
         this.salonData = response.data;
-        console.log('salonData', this.salonData);
+        this.averageRatingStart = this.salonData.average_rating || 0;
+        //console.log('salonData', this.salonData);
   
         // Parsear las categorías si existen y están en formato JSON
         if (this.salonData.categories) {
@@ -214,7 +255,20 @@ export class EditHomeComponent implements OnInit {
     );
   }
   
-  
+
+  updateRatings(ratingArray: boolean[], index: number): void {
+    // Marca los checkboxes anteriores si uno es seleccionado
+    if (ratingArray[index]) {
+      for (let i = 0; i <= index; i++) {
+        ratingArray[i] = true;
+      }
+    } else {
+      // Desmarca los checkboxes siguientes si uno es deseleccionado
+      for (let i = index + 1; i < ratingArray.length; i++) {
+        ratingArray[i] = false;
+      }
+    }
+  }
   
 
 
@@ -305,7 +359,7 @@ export class EditHomeComponent implements OnInit {
       return;
     }
     
-    console.log(this.salonData);
+    //console.log(this.salonData);
 
     this.editHomeService.updateSalon(this.salonData).subscribe(
       (response) => {
@@ -658,34 +712,44 @@ getServicesWithSubservices() {
 
 
 
-  getReviewsById(){
+  getReviewsById(): void {
     this.editHomeService.loadReview(this.salonId).subscribe(
       reviews => {
-        this.reviews = reviews;
-        this.calculateAverageRating();
-        //console.log('Reseñas cargadas:', reviews);
+        this.reviews = reviews.map(review => {
+          review.stars = this.generateStars(review.qualification); // Generar las estrellas para cada reseña
+          return review;
+        });
       },
       error => console.error('Error loading reviews', error)
-
     );
-    //console.log('id_salon reviews: ',this.salonId);
   }
 
   updateReview(): void {
     const updatedReview = {
-      ...this.reviewToEdit,
-      observacion: this.editReviewText,
-      qualification: this.editRating
+      ...this.reviewToEdit, // Mantener otros datos de la reseña
+      observacion: this.additionalComments,
+      qualification: {
+        service: this.countSelectedRatings(this.ratings.service),
+        quality: this.countSelectedRatings(this.ratings.quality),
+        cleanliness: this.countSelectedRatings(this.ratings.cleanliness),
+        speed: this.countSelectedRatings(this.ratings.speed),
+      }
     };
 
-    this.editHomeService.updateReview(updatedReview).subscribe(
-      response => {
-        this.toastr.success('Reseña acutalizada con éxito')
-        console.log('Reseña actualizada:', response);
-        this.getReviewsById();
+    // Llamada al servicio para actualizar la reseña en el backend
+    this.editHomeService.updateReview(updatedReview).subscribe({
+      next: () => {
+        this.toastr.success('Reseña actualizada con éxito');
       },
-      error => console.error('Error actualizando la reseña', error)
-    );
+      error: (error) => {
+        //console.error('Error al actualizar la reseña:', error);
+        this.toastr.error('No se pudo actualizar la reseña.');
+      }
+    });
+  }
+
+  countSelectedRatings(ratingArray: boolean[]): number {
+    return ratingArray.filter(Boolean).length;
   }
 
   openEditModal(service: any): void {
@@ -784,6 +848,40 @@ getServicesWithSubservices() {
     this.editRating = review.qualification;
   }
 
+
+
+  responseReview(review: any): void {
+    this.reviewToEdit = review; // Aquí aseguramos que toda la reseña se asigne correctamente
+    this.editReviewText = review.observacion;
+    this.responseReview = review.respuesta;
+  }
+  
+  confirmResponseReview(): void {
+    if (this.reviewToEdit && this.responseReview) {
+      const responseReview = {
+        id_review: this.reviewToEdit.id_review, // Asegúrate de que reviewToEdit contiene id_review
+        respuesta: this.responseReview
+      };
+  
+      this.editHomeService.responseReview(responseReview).subscribe(
+        response => {
+          console.log('Reseña actualizada:', response);
+           this.getReviewsById();
+        },
+        error => {
+          console.error('Error actualizando la reseña', error);
+          console.log('responseReview id:', this.reviewToEdit?.id_review);
+          console.log('responseReview respuesta:', this.responseReview);
+        }
+      );
+    } else {
+      console.log('No se ha respondido a la reseña.');
+    }
+  }
+  
+
+
+
   deleteReview(reviewId: string): void {
     if (confirm('¿Estás seguro de que quieres eliminar esta reseña?')) {
     if (this.salonId) {
@@ -799,36 +897,7 @@ getServicesWithSubservices() {
     }
   }
   }
-  getFilledStars(qualification: number): number[] {
-    return Array(qualification).fill(0).map((x, i) => i + 1);
-  }
-
-  getEmptyStars(qualification: number): number[] {
-    const totalStars = 5;
-    return Array(totalStars - qualification).fill(0).map((x, i) => i + 1);
-  }
-  calculateAverageRating(): void {
-    if (this.reviews.length > 0) {
-      const total = this.reviews.reduce((sum, review) => sum + review.qualification, 0);
-      this.averageRating = total / this.reviews.length;
-    } else {
-      this.averageRating = 0;  // Si no hay reseñas, la media es 0
-    }
-  }
-
-  generateStarRatingArray(rating: number): number[] {
-    const totalStars = 5;
-    const fullStars = Math.floor(rating);  // Número de estrellas completas
-    const halfStar = rating % 1 >= 0.5 ? 1 : 0;  // Determina si hay media estrella
-    const emptyStars = totalStars - fullStars - halfStar;  // Estrellas vacías
-
-    // Genera un array que representa las estrellas: llenas, medias y vacías
-    return [
-      ...Array(fullStars).fill(1),  // Estrellas completas
-      ...Array(halfStar).fill(0.5),  // Media estrella, si corresponde
-      ...Array(emptyStars).fill(0),  // Estrellas vacías
-    ];
-  }
+  
 
 
   addCategorySalon() {

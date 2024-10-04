@@ -20,6 +20,31 @@
   color: #000;
 }
 
+.circle-input-group {
+  display: flex;
+  gap: 5px; /* Espacio entre los círculos */
+}
+
+.circle-input-group input {
+  display: none; /* Oculta los radio buttons */
+}
+
+.circle-label {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ddd; /* Borde gris */
+  border-radius: 50%;
+  display: inline-block;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* Estilo del círculo cuando está seleccionado */
+.circle-input-group input:checked + .circle-label {
+  background-color:#b71622;
+  border: 1px solid gray;
+}
+
 /* Estilo para el botón de guardar */
 .btn-danger {
   background-color: #B91622;
