@@ -23,15 +23,15 @@ export class BrandsService {
     return this.http.get<any>(`${this.baseUrl}/brands/getAllBrands`, { params });
   }
 
-  addBrand(name: string): Observable<any> {
-    const body = {name};
-    return this.http.post<any>(`${this.baseUrl}/brands/addBrand`, body);
-  }
 
-  updateBrand(id_brand:number,name:string):Observable<any>{
-    const body = {id_brand,name}
-    return this.http.put<any>(`${this.baseUrl}/brands/updateBrand`, body);
+  addBrand(formData: FormData): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/brands/addBrand`, formData);
   }
+  
+  
+  updateBrand(data: FormData): Observable<any> {
+    return this.http.put(`${this.baseUrl}/brands/updateBrand`, data);
+}
 
   deleteBrand(id_brand: string[]): Observable<any> {
     return this.http.post(`${this.baseUrl}/brands/deleteBrand`, { id_brand: id_brand });

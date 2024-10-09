@@ -45,8 +45,8 @@ export class CategoriesComponent {
   }
 
   selectCategory(category: any): void {
-    this.oldCategory = category.category;  // Guardamos el nombre original de la categoría
-    this.selectedCategory = category.category;  // Guardamos el nombre seleccionado para su edición
+    this.oldCategory = category.category;  
+    this.selectedCategory = category.category;
     this.category = category;
     console.log('nombre de categoria antigua',this.oldCategory);
   }

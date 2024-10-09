@@ -3,6 +3,7 @@ import { environment } from '../../../environments/environment.development';
 import { Observable,throwError } from 'rxjs';
 import { HttpClient,HttpHeaders,HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
+import { HttpParams } from '@angular/common/http';
 
 
 
@@ -152,7 +153,7 @@ export class EditHomeService {
   }
 
   updateFaq(id_faq: string, answer: string): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/edithome/updateQuestion`, { id_faq, answer });
+    return this.http.put<any>(`${this.baseUrl}/edithome/updateQuestion`, { id_faq, answer });
   }
   deleteFaq(id_faq: string): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/edithome/deleteQuestion`, { id_faq });
@@ -181,17 +182,43 @@ export class EditHomeService {
 
 
   updateReview(review: any): Observable<any[]> {
-    return this.http.post<any[]>(`${this.baseUrl}/edithome/updateReview`, review);
+    return this.http.put<any[]>(`${this.baseUrl}/edithome/updateReview`, review);
   }
 
-  deleteReview(id_review:string){
-    const body = {
-      id_review
-    };
-    return this.http.post<any[]>(`${this.baseUrl}/edithome/deleteReview`, body);
+
+
+  deleteReview(id_review: string) {
+    return this.http.delete<any[]>(`${this.baseUrl}/edithome/deleteReview`, {
+      params: { id_review: id_review },
+    });
+  }
+
+  getBrands(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/edithome/getAllBrands`);
   }
 
   getCategories(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/edithome/getAllCategoriesSalon`);
+  }
+  getBrandByIdSalon(id_salon: number) {
+    const params = new HttpParams().set('id_salon', id_salon.toString());
+    return this.http.get<any[]>(`${this.baseUrl}/edithome/getBrandsBySalon`, { params });
+  }
+
+  addBrandToSalon(salonId:number,brandId:number): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/edithome/addBrandToSalon`, { salonId, brandId });
+  }
+
+  deleteBrandById(id_brand: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/edithome/deleteBrandById`, {
+      body: { id_brand }
+    });
+  }
+
+  UpdateBrandsalon(id_brand_salon: number, id_brand: number) {
+    return this.http.put(`${this.baseUrl}/edithome/UpdateBrandById`, {
+      id_brand_salon,
+      id_brand,
+    });
   }
 }
