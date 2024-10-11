@@ -29,7 +29,7 @@ export class CategoriesService {
     const body = {category };
     return this.http.post<any>(`${this.baseUrl}/categories/addCategory`, body);
   }
-
+  
   updateCategoryName(newCategory:string, OldCategory:string):Observable<any>{
     const body = {newCategory,OldCategory}
     return this.http.put<any>(`${this.baseUrl}/categories/updateCategory`, body);

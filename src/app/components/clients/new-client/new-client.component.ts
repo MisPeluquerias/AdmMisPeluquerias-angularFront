@@ -10,6 +10,14 @@ import { ToastrService } from 'ngx-toastr';
 export class NewClientComponent {
 
   password: string = '';
+  name:string ="";
+  lastname:string="";
+  email:string="";
+  phone:string=""
+  address:string="";
+  id_province:string="";
+  id_city:string="";
+  dni:string="";
   confirmPassword: string = '';
   errorMessage: string = '';
   userData: any = [];
@@ -26,107 +34,19 @@ export class NewClientComponent {
 
 
   addNewClient(): void {
-    this.errors = {};
-    let hasError = false;
-
-    if (!this.userData.name) {
-      this.errors['name'] = 'El nombre es obligatorio';
-      console.log('nombre requerido');
-      hasError = true;
-    }
-
-    if (!this.userData.lastname) {
-      this.errors['lastname'] = 'Los apellidos son obligatorios';
-      console.log('Apellidos requeridos');
-      hasError = true;
-    }
-
-    if (!this.userData.email || !this.validateEmail(this.userData.email)) {
-      this.errors['email'] = 'El correo electrónico no es válido';
-      console.log('Email requerido');
-      hasError = true;
-    }
-
-    if (!this.userData.phone || !this.validatePhone(this.userData.phone)) {
-      this.errors['phone'] = 'El número de teléfono no es válido';
-      console.log('Telefono requerido');
-      hasError = true;
-    }
-
-    if (!this.userData.address) {
-      this.errors['address'] = 'La dirección es obligatoria';
-      console.log('Direccion requerida');
-      hasError = true;
-    }
-
-    if (!this.userData.id_province) {
-      this.errors['id_province'] = 'Debe seleccionar una provincia';
-      console.log('id_province requerida');
-      hasError = true;
-    }
-
-    if (!this.userData.id_city) {
-      this.errors['id_city'] = 'Debe seleccionar una población';
-      console.log('id_city requerida');
-      hasError = true;
-    }
-
-    if (!this.userData.dni || !this.validateDNI(this.userData.dni)) {
-      this.errors['dni'] = 'El NIF no es válido';
-      console.log('Nif requerido');
-      hasError = true;
-    }
-
-    if (this.userData.password !== this.userData.confirmPassword) {
-      this.errors['confirmPassword'] = 'Las contraseñas no coinciden';
-      console.log('Contraseña requerida');
-      hasError = true;
-    }
-
-    if (!this.userData.password || this.userData.password.length < 6) {
-      this.errors['password'] = 'La contraseña debe tener al menos 6 caracteres';
-      console.log('Confirmacion de contraseña requerida');
-      hasError = true;
-    }
-
-    console.log('Password:', this.userData.password);
-    this.userData.permiso = 'client';
-    this.userData.id_user = "";
-
-    if (hasError) {
-      return;
-    }
-
-    this.newClientService.addNewClient(this.userData).subscribe(
+   console.log('Contraseña',this.password);
+    this.newClientService.addNewClient(this.name,this.lastname,this.email,this.phone,this.id_province,this.id_city,this.address,this.dni,this.password).subscribe(
       response => {
         //console.log('Cliente creado con éxito:', response);
         this.toastr.success('<i class="las la-info-circle"> Cliente creado con éxito</i>');
-        setTimeout(() => {
-          window.location.reload();
-        }, 3000);
       },
       error => {
         console.error('Error al crear el cliente:', error);
-        this.toastr.error('<i class="las la-info-circle"> Ya existe un usuario con este email</i>');
+        this.toastr.error('<i class="las la-info-circle">Error al crear cliente</i>');
 
       }
     );
-    //console.log(this.userData.id_user);
-  }
-
-  validateEmail(email: string): boolean {
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    return emailPattern.test(email);
-  }
-
-  validatePhone(phone: string): boolean {
-    const phonePattern = /^[0-9]{9}$/; // Ajustar el patrón según el formato de teléfono deseado
-    return phonePattern.test(phone);
-  }
-
-  validateDNI(dni: string): boolean {
-    const dniPattern = /^[0-9]{8}[A-Z]$/; // Patrón básico para NIF
-    return dniPattern.test(dni);
+    
   }
 
   getProvinces(): void {

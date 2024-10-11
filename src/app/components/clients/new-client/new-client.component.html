@@ -54,7 +54,7 @@
                       class="form-control"
                       id="name"
                       name="name"
-                      [(ngModel)]="userData.name"
+                      [(ngModel)]="name"
                     />
                   </div>
                   <div class="col-md-6">
@@ -64,7 +64,7 @@
                       class="form-control"
                       id="lastname"
                       name="lastname"
-                      [(ngModel)]="userData.lastname"
+                      [(ngModel)]="lastname"
                     />
                   </div>
                 </div>
@@ -76,7 +76,7 @@
                       class="form-control"
                       id="email"
                       name="email"
-                      [(ngModel)]="userData.email"
+                      [(ngModel)]="email"
                     />
                   </div>
                   <div class="col-md-6">
@@ -86,7 +86,7 @@
                       class="form-control"
                       id="phone"
                       name="phone"
-                      [(ngModel)]="userData.phone"
+                      [(ngModel)]="phone"
                     />
                   </div>
                 </div>
@@ -98,7 +98,7 @@
                       class="form-control"
                       id="address"
                       name="address"
-                      [(ngModel)]="userData.address"
+                      [(ngModel)]="address"
                     />
                   </div>
                   <div class="col-md-3">
@@ -107,7 +107,7 @@
                       class="form-select"
                       id="id_province"
                       name="id_province"
-                      [(ngModel)]="userData.id_province"
+                      [(ngModel)]="id_province"
                       (change)="onProvinceChange($event)"
                     >
                       <option
@@ -124,7 +124,7 @@
                       class="form-select"
                       id="id_city"
                       name="id_city"
-                      [(ngModel)]="userData.id_city"
+                      [(ngModel)]="id_city"
                       (change)="onCityChange(userData.id_city)"
                       required
                     >
@@ -142,7 +142,7 @@
                     class="form-control"
                     id="dni"
                     name="dni"
-                    [(ngModel)]="userData.dni"
+                    [(ngModel)]="dni"
                   />
                   </div>
                 </div>
@@ -160,7 +160,7 @@
                         id="password"
                         name="password"
                         placeholder="Introduce nueva contraseña..."
-                        [(ngModel)]="userData.password"
+                        [(ngModel)]="password"
                       />
                     </div>
                     <div class="col-md-6">
@@ -171,7 +171,7 @@
                         id="confirmPassword"
                         placeholder="Repetir contraseña..."
                         name="confirmPassword"
-                        [(ngModel)]="userData.confirmPassword"
+                        [(ngModel)]="confirmPassword"
                       />
                     </div>
                   </div>

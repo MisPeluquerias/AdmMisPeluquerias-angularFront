@@ -35,11 +35,23 @@ export class NewClientService {
     return this.http.put(`${this.baseUrl}/new-client/uploadProfilePicture/${id_user}`, formData);
   }
 
-  addNewClient(userData: any): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post(`${this.baseUrl}/new-client/addNewUser`, userData, { headers });  }
+  addNewClient(name: string,lastname:string,email:string,phone:string,address:string,id_province:string,id_city:string,dni:string,password:string): Observable<any> {
+    console.log('Datos enviados al backend:', name);
+    const body = {
+      name: name,
+      lastname:lastname,
+      email:email,
+      phone:phone,
+      address:address,
+      id_province:id_province,
+      id_city:id_city,
+      dni:dni,
+      password:password
+    };
+    console.log('datos enviados al backend:',body);
+    return this.http.post(`${this.baseUrl}/new-client/addNewClient`, body);
 }
-
+}
 
 
 

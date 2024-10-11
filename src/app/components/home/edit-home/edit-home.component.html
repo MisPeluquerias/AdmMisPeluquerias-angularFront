@@ -10,7 +10,6 @@
             Administración / <b>Negocios / </b> <b>{{ salonData.name }}</b>
           </li>
         </ol>
-
         <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
           <li class="nav-item" role="presentation">
             <button
@@ -52,6 +51,20 @@
               aria-selected="false"
             >
               <i class="fa-solid fa-image me-2"></i>Imágenes
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="categorias-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#categorias"
+              type="button"
+              role="tab"
+              aria-controls="categorias"
+              aria-selected="false"
+            >
+              <i class="fa-solid fa-tag me-2"></i>Categorias
             </button>
           </li>
           <li class="nav-item" role="presentation">
@@ -174,6 +187,7 @@
                     class="form-control"
                     id="name"
                     name="name"
+                    maxlength="250"
                     [(ngModel)]="salonData.name"
                     required
                     #name="ngModel"
@@ -188,6 +202,7 @@
                     type="email"
                     class="form-control"
                     id="email"
+                    maxlength="100"
                     name="email"
                     [(ngModel)]="salonData.email"
                     required
@@ -231,6 +246,7 @@
                     class="form-control"
                     id="phone"
                     name="phone"
+                    maxlength="9"
                     [(ngModel)]="salonData.phone"
                     required
                     pattern="^\d{9}$"
@@ -350,6 +366,7 @@
                   <input
                     type="text"
                     class="form-control"
+                    maxlength="1000"
                     id="map"
                     name="map"
                     [(ngModel)]="salonData.map"
@@ -364,6 +381,7 @@
                     class="form-control"
                     id="url"
                     name="url"
+                    maxlength="1000"
                     value=""
                     [(ngModel)]="salonData.url"
                   />
@@ -402,6 +420,8 @@
                 Cancelar
               </button>
             </form>
+<<<<<<< HEAD
+=======
             <div class="card mb-4 mt-3">
               <div class="card-header">
                 <img
@@ -431,45 +451,47 @@
                       <thead class="thead-dark">
                         <tr>
                           <th class="text-center">Categoría</th>
-                          <th colspan="2" class="col-1">Editar/Eliminar</th>
+                          <th colspan="2" class="col-1 text-center">Editar/Eliminar</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        <tr
-                          *ngFor="let category of salonData.categoriesArray"
-                          class="text-center"
-                        >
+                      <tbody *ngIf="salonData.categoriesArray && salonData.categoriesArray.length > 0">
+                        <tr *ngFor="let category of salonData.categoriesArray" class="text-center">
                           <td>{{ category.category }}</td>
-                          <!-- Muestra solo el nombre de la categoría -->
                           <td>
-                            <!-- Botón para abrir el modal de edición -->
-                            <button
-                              class="btn btn-dark"
-                              data-bs-toggle="modal"
-                              data-bs-target="#editCategoryModal"
-                              (click)="onEditCategory(category)"
-                            >
-                              <i class="fas fa-edit"></i>
-                            </button>
+                            <!-- Botones de Editar y Eliminar juntos -->
+                            <div class="d-flex justify-content-center">
+                              <button
+                                class="btn btn-dark me-2"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editCategoryModal"
+                                (click)="onEditCategory(category)"
+                              >
+                                <i class="fas fa-edit"></i>
+                              </button>
+                              <button
+                                class="btn btn-danger"
+                                (click)="openDeleteModal(category.id_category)"
+                                data-bs-toggle="modal"
+                                data-bs-target="#deleteCategoryModal"
+                              >
+                                <i class="fas fa-trash"></i>
+                              </button>
+                            </div>
                           </td>
-                          <td>
-                            <!-- Botón para eliminar la categoría -->
-                            <button
-                              class="btn btn-danger"
-                              (click)="openDeleteModal(category.id_category)"
-                              data-bs-toggle="modal"
-                              data-bs-target="#deleteCategoryModal"
-                            >
-                              <i class="fas fa-trash"></i>
-                            </button>
-                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody *ngIf="!salonData.categoriesArray || salonData.categoriesArray.length === 0">
+                        <tr class="text-center">
+                          <td>No hay categorías disponibles.</td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
                 </div>
+              
               </div>
             </div>
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
           </div>
           <!-- Contenido de la pestaña Horario -->
           <div
@@ -480,7 +502,7 @@
           >
             <!-- Filtros de Horario -->
             <div class="d-flex justify-content-center">
-              <div class="w-75">
+              <div class="w-50">
                 <!-- Tabla de Horarios con Responsive Wrapper -->
                 <div class="table-responsive">
                   <table class="table">
@@ -501,13 +523,15 @@
                           >
                             <input
                               type="time"
-                              class="form-control w-25 me-2"
+                              class="form-control me-2"
+                              style="max-width: 120px"
                               [(ngModel)]="day.hours[i].open"
                               placeholder="Abre"
                             />
                             <input
                               type="time"
-                              class="form-control w-25"
+                              class="form-control"
+                              style="max-width: 120px"
                               [(ngModel)]="day.hours[i].close"
                               placeholder="Cierra"
                             />
@@ -613,7 +637,18 @@
                         </td>
                         <td>
                           <button
-                            (click)="deleteImage(image.file_id)"
+                            (click)="setToDeleteImage(image.file_id)"
+<<<<<<< HEAD
+<<<<<<< HEAD
+                            class="btn btn-danger btn-sm"
+                            data-bs-toggle="modal"
+                            data-bs-target="#deleteImgSalonModal"
+=======
+                            class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteImgSalonModal"
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
+=======
+                            class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteImgSalonModal"
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
                             class="btn btn-danger btn-sm"
                           >
                             <i class="fas fa-trash"></i> Eliminar
@@ -628,6 +663,96 @@
                     (click)="closeImage()"
                   >
                     <img [src]="currentImageUrl" [alt]="currentImageAlt" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="tab-pane fade"
+            id="categorias"
+            role="tabpanel"
+            aria-labelledby="categorias-tab"
+          >
+            <div class="card mb-4 mt-3">
+              <div class="card-header">
+                <img
+                  src="../../../favicon.ico"
+                  width="30"
+                  class="img-fluid me-2"
+                  alt=""
+                />
+                Lista de categorias
+              </div>
+              <div class="card-body">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-3"
+                >
+                  <h4>Categorías</h4>
+                  <button
+                    class="btn btn-danger ms-auto"
+                    data-bs-toggle="modal"
+                    data-bs-target="#newCategoryModal"
+                  >
+                    Nueva
+                  </button>
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                  <div class="table-responsive w-100">
+                    <table class="table table-hover table-light">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th class="text-center">Categoría</th>
+                          <th colspan="2" class="col-1 text-center">
+                            Editar/Eliminar
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody
+                        *ngIf="
+                          salonData.categoriesArray &&
+                          salonData.categoriesArray.length > 0
+                        "
+                      >
+                        <tr
+                          *ngFor="let category of salonData.categoriesArray"
+                          class="text-center"
+                        >
+                          <td>{{ category.category }}</td>
+                          <td>
+                            <!-- Botones de Editar y Eliminar juntos -->
+                            <div class="d-flex justify-content-center">
+                              <button
+                                class="btn btn-dark me-2"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editCategoryModal"
+                                (click)="onEditCategory(category)"
+                              >
+                                <i class="fas fa-edit"></i>
+                              </button>
+                              <button
+                                class="btn btn-danger"
+                                (click)="openDeleteModal(category.id_category)"
+                                data-bs-toggle="modal"
+                                data-bs-target="#deleteCategoryModal"
+                              >
+                                <i class="fas fa-trash"></i>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody
+                        *ngIf="
+                          !salonData.categoriesArray ||
+                          salonData.categoriesArray.length === 0
+                        "
+                      >
+                        <tr class="text-center">
+                          <td>No hay categorías disponibles.</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
@@ -680,6 +805,7 @@
                         <th>Servicio</th>
                         <th>Subservicio</th>
                         <th>Tiempo</th>
+                        <th>Precio</th>
                         <th colspan="2" class="col-1">Editar/Eliminar</th>
                       </tr>
                     </thead>
@@ -688,6 +814,7 @@
                         <td>{{ service.service_name }}</td>
                         <td>{{ service.subservice_name }}</td>
                         <td>{{ service.time }} minutos</td>
+                        <td>{{ service.price || "No definido" }} €</td>
                         <td>
                           <button
                             class="btn btn-dark"
@@ -765,17 +892,34 @@
                       <thead class="thead-dark">
                         <tr>
                           <th>Marca</th>
+                          <th>Logo</th>
                           <th class="col-1" colspan="2">Editar/Eliminar</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let marca of brands">
+                        <tr *ngFor="let marca of brandsBySalon">
                           <td>{{ marca.name }}</td>
+                          <td>
+<<<<<<< HEAD
+<<<<<<< HEAD
+                            <img
+                              [src]="marca.imagePath"
+                              alt="{{ marca.name }}"
+                              width="100"
+                            />
+=======
+                            <img [src]="marca.imagePath" alt="{{ marca.name }}" width="100" />
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
+=======
+                            <img [src]="marca.imagePath" alt="{{ marca.name }}" width="100" />
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
+                          </td>
                           <td>
                             <button
                               class="btn btn-dark"
                               data-bs-toggle="modal"
                               data-bs-target="#modalEditMarca"
+                              (click)="setToUpdateBrand(marca.id_brand_salon)"
                             >
                               <i class="fas fa-edit"></i>
                             </button>
@@ -783,6 +927,7 @@
                               class="btn btn-danger ms-2"
                               data-bs-toggle="modal"
                               data-bs-target="#deleteMarcaModal"
+                              (click)="setToDeleteBrand(marca.id_brand)"
                             >
                               <i class="fas fa-trash"></i>
                             </button>
@@ -797,17 +942,90 @@
 
             <!-- Modales para agregar y editar marcas -->
             <div
+            class="modal fade"
+            id="modalNuevaMarca"
+            tabindex="-1"
+            aria-labelledby="modalNuevaMarcaLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header bg-dark text-white">
+                  <h5 class="modal-title" id="modalNuevaMarcaLabel">
+                    Añadir Marca al salón
+                  </h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  <div class="text-center mb-3">
+                    <img
+                      src="../../../assets/img/sello.jpg"
+                      alt="sello"
+                      width="120"
+                      class="img-fluid"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="nombreMarca" class="form-label">Seleccione Marca</label>
+                    <select
+                      class="form-select"
+                      id="nombreMarca"
+                      name="nombreMarca"
+                      [(ngModel)]="selectedNewBrand"
+                      required
+                    >
+                      <option value="" disabled selected>Seleccione una marca</option>
+                      <option *ngFor="let marca of brands" [value]="marca.id_brand">
+                        {{ marca.name }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger"
+                  data-bs-dismiss="modal" (click)="addBrandSalon()">
+                    Guardar
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+            <!-- Modal para editar marca -->
+            <div
               class="modal fade"
-              id="modalNuevaMarca"
+              id="modalEditMarca"
               tabindex="-1"
-              aria-labelledby="modalNuevaMarcaLabel"
+              aria-labelledby="modalEditMarcaLabel"
               aria-hidden="true"
             >
               <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                   <div class="modal-header bg-dark text-white">
+<<<<<<< HEAD
+<<<<<<< HEAD
                     <h5 class="modal-title" id="modalNuevaMarcaLabel">
-                      Nueva Marca
+                      Añadir Marca al salón
+=======
+                    <h5 class="modal-title" id="modalEditMarcaLabel">
+                      Editar Marca
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
+=======
+                    <h5 class="modal-title" id="modalEditMarcaLabel">
+                      Editar Marca
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
                     </h5>
                     <button
                       type="button"
@@ -825,29 +1043,46 @@
                         class="img-fluid"
                       />
                     </div>
+<<<<<<< HEAD
+<<<<<<< HEAD
                     <div class="mb-3">
                       <label for="nombreMarca" class="form-label"
-                        >Nombre de la Marca</label
+                        >Seleccione Marca</label
                       >
-                      <input
-                        type="text"
-                        class="form-control"
+                      <select
+                        class="form-select"
                         id="nombreMarca"
                         name="nombreMarca"
+                        [(ngModel)]="selectedNewBrand"
                         required
-                      />
+                      >
+                        <option value="" disabled selected>
+                          Seleccione una marca
+                        </option>
+                        <option
+                          *ngFor="let marca of brands"
+                          [value]="marca.id_brand"
+                        >
+                          {{ marca.name }}
+                        </option>
+                      </select>
                     </div>
                   </div>
                   <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      data-bs-dismiss="modal"
+                      (click)="addBrandSalon()"
+                    >
+                      Guardar
+                    </button>
                     <button
                       type="button"
                       class="btn btn-secondary"
                       data-bs-dismiss="modal"
                     >
                       Cancelar
-                    </button>
-                    <button type="button" class="btn btn-danger">
-                      Guardar
                     </button>
                   </div>
                 </div>
@@ -862,9 +1097,9 @@
               aria-labelledby="modalEditMarcaLabel"
               aria-hidden="true"
             >
-              <div class="modal-dialog">
+              <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                  <div class="modal-header">
+                  <div class="modal-header bg-dark text-white">
                     <h5 class="modal-title" id="modalEditMarcaLabel">
                       Editar Marca
                     </h5>
@@ -876,43 +1111,103 @@
                     ></button>
                   </div>
                   <div class="modal-body">
+                    <div class="text-center mb-3">
+                      <img
+                        src="../../../assets/img/sello.jpg"
+                        alt="sello"
+                        width="120"
+                        class="img-fluid"
+                      />
+                    </div>
+=======
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
+=======
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
                     <form>
                       <div class="mb-3">
-                        <label for="editNombreMarca" class="form-label"
-                          >Nombre de la Marca</label
+                        <label for="editarNombreMarca" class="form-label"
+                          >Seleccione nueva marca</label
                         >
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="editNombreMarca"
-                          name="editNombreMarca"
+                        <select
+<<<<<<< HEAD
+<<<<<<< HEAD
+                          class="form-select"
+                          id="editarNombreMarca"
+                          name="editarNombreMarca"
+                          [(ngModel)]="selectedUpdateBrandIdName"
                           required
-                        />
-                      </div>
-                      <div class="mb-3">
-                        <label for="editLogoMarca" class="form-label"
-                          >Logo de la Marca</label
                         >
-                        <input
-                          type="file"
-                          class="form-control"
-                          id="editLogoMarca"
-                          (change)="onFileSelected($event)"
-                        />
+                          <option value="" disabled selected>
+                            Seleccione una marca
+                          </option>
+                          <option
+                            *ngFor="let marca of brands"
+                            [value]="marca.id_brand"
+                          >
+                            {{ marca.name }}
+                          </option>
+                        </select>
+=======
+=======
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
+                        class="form-select"
+                        id="editarNombreMarca"
+                        name="editarNombreMarca"
+                        [(ngModel)]="selectedUpdateBrandIdName"
+                        required
+                      >
+                        <option value="" disabled selected>Seleccione una marca</option>
+                        <option *ngFor="let marca of brands" [value]="marca.id_brand">
+                          {{ marca.name }}
+                        </option>
+                      </select>
+                        
+<<<<<<< HEAD
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
+=======
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
                       </div>
                     </form>
                   </div>
                   <div class="modal-footer">
+                  <button 
+                  type="button" 
+                  class="btn btn-danger"
+                  data-bs-dismiss="modal"
+                  (click)="updateBrandSalon()"
+                  >
+                    Guardar Cambios
+                  </button>
+                  <div class="modal-footer">
                     <button
                       type="button"
-                      class="btn btn-secondary"
+                      class="btn btn-danger"
                       data-bs-dismiss="modal"
+                      (click)="updateBrandSalon()"
                     >
-                      Cancelar
-                    </button>
-                    <button type="button" class="btn btn-danger">
+<<<<<<< HEAD
+<<<<<<< HEAD
                       Guardar Cambios
                     </button>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+=======
+                      Cancelar
+                    </button>
+                  </div>
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
+=======
+                      Cancelar
+                    </button>
+                  </div>
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
                   </div>
                 </div>
               </div>
@@ -926,9 +1221,9 @@
               aria-labelledby="deleteMarcaModalLabel"
               aria-hidden="true"
             >
-              <div class="modal-dialog">
+              <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                  <div class="modal-header">
+                  <div class="modal-header bg-dark text-white">
                     <h5 class="modal-title" id="deleteMarcaModalLabel">
                       Eliminar Marca
                     </h5>
@@ -940,22 +1235,42 @@
                     ></button>
                   </div>
                   <div class="modal-body">
-                    <p>¿Estás seguro de que deseas eliminar esta marca?</p>
+                    <div class="text-center mb-3">
+                      <img
+                        src="../../../assets/img/sello.jpg"
+                        alt="sello"
+                        width="120"
+                        class="img-fluid"
+                      />
+                    </div>
+<<<<<<< HEAD
+<<<<<<< HEAD
+                    <p>
+                      ¿Estás seguro de que deseas eliminar esta marca de su
+                      salón?
+                    </p>
+=======
+                    <p>¿Estás seguro de que deseas eliminar esta marca de su salón?</p>
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
+=======
+                    <p>¿Estás seguro de que deseas eliminar esta marca de su salón?</p>
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
                   </div>
                   <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      data-bs-dismiss="modal"
+                      (click)="confirmDeleteBrand()"
+                    >
+                      Eliminar
+                    </button>
                     <button
                       type="button"
                       class="btn btn-secondary"
                       data-bs-dismiss="modal"
                     >
                       Cancelar
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-danger"
-                      data-bs-dismiss="modal"
-                    >
-                      Eliminar
                     </button>
                   </div>
                 </div>
@@ -1058,6 +1373,28 @@
                         <td>{{ faq.question }}</td>
                         <td>{{ faq.answer || "Sin contestar" }}</td>
                         <td>
+                          <div class="d-flex justify-content-center">
+<<<<<<< HEAD
+<<<<<<< HEAD
+                            <button
+                              class="btn btn-dark me-3"
+                              data-bs-toggle="modal"
+                              data-bs-target="#editQuestionModal"
+                              (click)="editQuestion(faq)"
+                            >
+                              <i class="fas fa-edit"></i>
+                            </button>
+                            <button
+                              class="btn btn-danger"
+                              data-bs-toggle="modal"
+                              data-bs-target="#deleteFaqModal"
+                              (click)="setToDeleteFaq(faq.id_faq)"
+                            >
+                              <i class="fas fa-trash"></i>
+                            </button>
+=======
+=======
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
                           <button
                             class="btn btn-dark me-3"
                             data-bs-toggle="modal"
@@ -1068,10 +1405,17 @@
                           </button>
                           <button
                             class="btn btn-danger"
-                            (click)="deleteQuestion(faq.id_faq)"
+                            data-bs-toggle="modal"
+                            data-bs-target="#deleteFaqModal"
+                            (click)="setToDeleteFaq(faq.id_faq)"
                           >
                             <i class="fas fa-trash"></i>
                           </button>
+<<<<<<< HEAD
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
+=======
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
+                          </div>
                         </td>
                       </tr>
                     </tbody>
@@ -1089,8 +1433,11 @@
             <!-- Calificación promedio -->
             <div class="text-center my-4">
               <div class="text-center my-4">
-                <h2>Valoración media de los usuairos.</h2>
-                <h2>{{ averageRatingStart.toFixed(2).replace('.', ',') }} puntos sobre 5.</h2>
+                <h2 class="h5">Valoración media de los usuairos.</h2>
+                <h2 class="h5">
+                  {{ averageRatingStart.toFixed(2).replace(".", ",") }} puntos
+                  sobre 5.
+                </h2>
                 <div>
                   <!-- Generar estrellas una sola vez -->
                 </div>
@@ -1116,7 +1463,17 @@
                         <th>Usuario</th>
                         <th>Calificación</th>
                         <th>Responder</th>
-                        <th class="col-1">Editar/Eliminar</th>
+<<<<<<< HEAD
+<<<<<<< HEAD
+                        <th class="col-1" *ngIf="userPermiso === 'admin'">
+                          Editar/Eliminar
+                        </th>
+=======
+                        <th class="col-1" *ngIf="userPermiso === 'admin'">Editar/Eliminar</th>
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
+=======
+                        <th class="col-1" *ngIf="userPermiso === 'admin'">Editar/Eliminar</th>
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
                       </tr>
                     </thead>
                     <tbody>
@@ -1148,7 +1505,7 @@
                           <button
                             class="btn btn-dark me-3"
                             data-bs-toggle="modal"
-                            (click)="responseReview(review)"
+                            (click)="openResponseModalReview(review)"
                             data-bs-target="#responseReviewModal"
                           >
                             <i class="fa-solid fa-reply"></i>
@@ -1156,17 +1513,41 @@
                         </td>
 
                         <!-- Botones de Editar/Eliminar -->
-                        <td>
+                        <td *ngIf="userPermiso === 'admin'">
                           <button
                             class="btn btn-dark me-3"
+<<<<<<< HEAD
+<<<<<<< HEAD
                             data-bs-toggle="modal"
-                            data-bs-toggle="modal"  data-bs-target="#modificarValoracionesModal" (click)="openEditModal(review)">
+                            data-bs-target="#modificarValoracionesModal"
+                            (click)="openEditModalToReview(review)"
+                          >
+=======
+              
+                            data-bs-toggle="modal"  data-bs-target="#modificarValoracionesModal" (click)="openEditModalToReview(review)">
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
+=======
+              
+                            data-bs-toggle="modal"  data-bs-target="#modificarValoracionesModal" (click)="openEditModalToReview(review)">
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
                             <i class="fas fa-edit"></i>
                           </button>
                           <button
                             class="btn btn-danger"
-                            (click)="deleteReview(review.id_review)"
+<<<<<<< HEAD
+<<<<<<< HEAD
+                            data-bs-toggle="modal"
+                            data-bs-target="#deleteReviewModal"
+                            (click)="setToDeleteReview(review.id_review)"
                           >
+=======
+                            data-bs-toggle="modal"  data-bs-target="#deleteReviewModal" (click)="setToDeleteReview(review.id_review)">
+                          
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
+=======
+                            data-bs-toggle="modal"  data-bs-target="#deleteReviewModal" (click)="setToDeleteReview(review.id_review)">
+                          
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
                             <i class="fas fa-trash"></i>
                           </button>
                         </td>
@@ -1179,11 +1560,34 @@
           </div>
           <!-- Aquí se agregarían los demás paneles de contenido para Servicios, Permisos, etc. -->
         </div>
-      </div>
+        </div>
     </main>
     <app-footer></app-footer>
   </div>
-</div>
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+  <!-- Modal  para anadir servicio y subservicio -->
+  <div
+    class="modal fade"
+    id="modalNuevoServicio"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title" id="exampleModalLabel">Añadir servicios</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+=======
+=======
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
 <!-- Modal  para anadir servicio y subservicio -->
 <div
   class="modal fade"
@@ -1211,179 +1615,104 @@
             width="120"
             class="img-fluid"
           />
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
         </div>
-        <p class="text-muted mb-4">Complete los detalles del nuevo servicio</p>
-        <form>
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="serviceSelect" class="form-label fw-bold"
-                >Servicio</label
-              >
-              <select
-                id="serviceSelect"
-                class="form-select"
-                aria-label="Selecciona una opción"
-                [(ngModel)]="newServiceName"
-                (change)="onServiceSelect($event)"
-                name="newServiceName"
-              >
-                <option value="" selected>Selecciona una opción</option>
-                <option
-                  *ngFor="let service of getSalonDataSelect"
-                  [value]="service.id_service"
-                >
-                  {{ service.name }}
-                </option>
-              </select>
-            </div>
-            <div class="col-md-6">
-              <label for="timeInput" class="form-label fw-bold"
-                >Tiempo Actividad (Minutos)</label
-              >
-              <input
-                type="number"
-                class="form-control"
-                id="timeInput"
-                placeholder="10"
-                [(ngModel)]="newServiceTime"
-                name="newServiceTime"
-              />
-            </div>
+        <div class="modal-body">
+          <div class="text-center mb-3">
+            <img
+              src="../../../assets/img/sello.jpg"
+              alt="sello"
+              width="120"
+              class="img-fluid"
+            />
           </div>
-
-          <div class="row">
-            <div class="col-md-6 mb-3 row">
-              <label for="subserviceInput" class="form-label fw-bold"
-                >Subservicio</label
-              >
-              <select
-                id="subServiceSelect"
-                class="form-select ms-2"
-                aria-label="Selecciona una opción"
-                [(ngModel)]="newSubservices"
-                name="newSubServiceName"
-              >
-                <option value="" selected>Selecciona una opción</option>
-                <option
-                  *ngFor="let subService of getSalonSubservices"
-                  [value]="subService.id_service_type"
+          <p class="text-muted mb-4">
+            Complete los detalles del nuevo servicio
+          </p>
+          <form>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="serviceSelect" class="form-label fw-bold"
+                  >Servicio</label
                 >
-                  {{ subService.name }}
-                </option>
-              </select>
+                <select
+                  id="serviceSelect"
+                  class="form-select"
+                  aria-label="Selecciona una opción"
+                  [(ngModel)]="newServiceName"
+                  (change)="onServiceSelect($event)"
+                  name="newServiceName"
+                >
+                  <option value="" selected>Selecciona una opción</option>
+                  <option
+                    *ngFor="let service of getSalonDataSelect"
+                    [value]="service.id_service"
+                  >
+                    {{ service.name }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="timeInput" class="form-label fw-bold"
+                  >Tiempo Actividad (Minutos)</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="timeInput"
+                  placeholder="10"
+                  [(ngModel)]="newServiceTime"
+                  name="newServiceTime"
+                  (input)="checkLengthTime($event)"
+                />
+              </div>
             </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-danger me-2"
-          (click)="addService()"
-        >
-          Guardar
-        </button>
 
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Cancelar
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal  para editar servicio y subservicio -->
-
-<div
-  class="modal fade"
-  id="modalEditService"
-  tabindex="-1"
-  aria-labelledby="modalEditService"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-dialog-centered modal-xl">
-    <div class="modal-content">
-      <div class="modal-header bg-dark text-white">
-        <h5 class="modal-title" id="modalEditService">Editar servicios</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <div class="text-center mb-3">
-          <img
-            src="../../../assets/img/sello.jpg"
-            alt="sello"
-            width="120"
-            class="img-fluid"
-          />
+            <div class="row">
+              <div class="col-md-6 mb-3 row">
+                <label for="subserviceInput" class="form-label fw-bold"
+                  >Subservicio</label
+                >
+                <select
+                  id="subServiceSelect"
+                  class="form-select ms-2"
+                  aria-label="Selecciona una opción"
+                  [(ngModel)]="newSubservices"
+                  name="newSubServiceName"
+                >
+                  <option value="" selected>Selecciona una opción</option>
+                  <option
+                    *ngFor="let subService of getSalonSubservices"
+                    [value]="subService.id_service_type"
+                  >
+                    {{ subService.name }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-md-6 ms-4">
+                <label for="timeInput" class="form-label fw-bold"
+                  >Precio (*Opcional)</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="newServicePriceInput"
+                  placeholder="Introduzca los decimales con punto (.)"
+                  [(ngModel)]="newServicePrice"
+                  name="newServicePrice"
+                  (input)="checkLengthPrice($event)"
+                />
+              </div>
+            </div>
+<<<<<<< HEAD
+          </form>
         </div>
-        <p class="text-muted mb-4">
-          Complete los detalles para editar servicio
-        </p>
-        <form>
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="serviceSelect" class="form-label fw-bold"
-                >Servicio</label
-              >
-              <select
-                id="serviceSelect"
-                class="form-select"
-                aria-label="Selecciona una opción"
-                (change)="onServiceSelect($event)"
-                [(ngModel)]="newServiceName"
-                name="newServiceName"
-              >
-                <option value="" selected>Selecciona una opción</option>
-                <option
-                  *ngFor="let service of getSalonDataSelect"
-                  [value]="service.id_service"
-                >
-                  {{ service.name }}
-                </option>
-              </select>
-            </div>
-            <div class="col-md-6">
-              <label for="timeInput" class="form-label fw-bold"
-                >Tiempo Actividad (Minutos)</label
-              >
-              <input
-                type="number"
-                class="form-control"
-                id="timeInput"
-                placeholder="10"
-                [(ngModel)]="newServiceTime"
-                name="newServiceTime"
-              />
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6 mb-3 row">
-              <label for="subserviceInput" class="form-label fw-bold"
-                >Subservicio</label
-              >
-              <select
-                id="subServiceSelect"
-                class="form-select ms-2"
-                aria-label="Selecciona una opción"
-                [(ngModel)]="newSubservices"
-                (change)="onSubserviceSelect($event)"
-                name="newSubServiceName"
-              >
-                <option value="" selected>Selecciona una opción</option>
-                <option
-                  *ngFor="let subService of getSalonSubservices"
-                  [value]="subService.id_service_type"
-                >
-                  {{ subService.name }}
-                </option>
-              </select>
-            </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-danger me-2"
+            (click)="addService()"
+=======
           </div>
         </form>
       </div>
@@ -1402,6 +1731,8 @@
     </div>
   </div>
 </div>
+
+
 
 <div
   class="modal fade"
@@ -1469,7 +1800,9 @@
           </div>
 
           <div class="d-flex justify-content-end">
-            <button type="submit" class="btn btn-danger me-2">
+            
+            <button type="submit" class="btn btn-danger me-2"
+            data-bs-dismiss="modal">
               Guardar Respuesta
             </button>
             <button
@@ -1538,16 +1871,18 @@
               class="form-control"
               id="responseReview"
               rows="4"
-              [(ngModel)]="responseReview"
+              [(ngModel)]="responseText"
               name="responseReview"
             ></textarea>
           </div>
           <div class="d-flex justify-content-end">
-            <button type="submit" class="btn btn-danger me-2">
+            <button type="submit" class="btn btn-danger me-2"
+            data-bs-dismiss="modal">
               Guardar Cambios
             </button>
             <button
               type="button"
+              
               class="btn btn-secondary"
               data-bs-dismiss="modal"
             >
@@ -1594,101 +1929,986 @@
             class="form-select"
             aria-label="Selecciona una opción"
             [(ngModel)]="selectedCategory"
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
           >
-            <option value="">Selecciona una opción</option>
-            <option
-              selected
-              *ngFor="let category of getCategories"
-              [value]="category.category"
-            >
-              {{ category.category }}
-            </option>
-          </select>
+            Guardar
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancelar
+          </button>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-danger"
-          data-bs-dismiss="modal"
-          (click)="addCategorySalon()"
-          data-bs-dismiss="modal"
-        >
-          Guardar
-        </button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Cancelar
-        </button>
       </div>
     </div>
   </div>
-</div>
 
-<div
-  class="modal fade"
-  id="editCategoryModal"
-  tabindex="-1"
-  aria-labelledby="editCategoryLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header bg-dark text-white">
-        <h5 class="modal-title" id="editCategoryLabel">Editar Categoría</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <div class="text-center">
-          <img
-            src="../../../assets/img/sello.jpg"
-            alt="sello"
-            width="120"
-            class="img-fluid"
-          />
+  <!-- Modal  para editar servicio y subservicio -->
+
+  <div
+    class="modal fade"
+    id="modalEditService"
+    tabindex="-1"
+    aria-labelledby="modalEditService"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title" id="modalEditService">Editar servicio</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
-        <form>
-          <div class="mb-3">
-            <label for="editCategorySelect" class="form-label mt-3"
-              >Selecciona la Categoría para Editar</label
-            >
+        <div class="modal-body">
+          <div class="text-center mb-3">
+            <img
+              src="../../../assets/img/sello.jpg"
+              alt="sello"
+              width="120"
+              class="img-fluid"
+            />
+          </div>
+          <p class="text-muted mb-4">
+            Complete los detalles para editar servicio
+          </p>
+          <form>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="serviceSelect" class="form-label fw-bold"
+                  >Servicio</label
+                >
+                <select
+                  id="updateServiceName"
+                  class="form-select"
+                  aria-label="Selecciona una opción"
+                  (change)="onServiceSelect($event)"
+                  [(ngModel)]="updateServiceName"
+                  name="updateServiceName"
+                >
+                  <option value="" selected>Selecciona una opción</option>
+                  <option
+                    *ngFor="let service of getSalonDataSelect"
+                    [value]="service.id_service"
+                  >
+                    {{ service.name }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="timeInput" class="form-label fw-bold"
+                  >Tiempo Actividad (Minutos)</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="timeInput"
+                  placeholder="10"
+                  [(ngModel)]="updateServiceTime"
+                  name="newServiceTime"
+                  (input)="checkLengthTime($event)"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3 row">
+                <label for="subserviceInput" class="form-label fw-bold"
+                  >Subservicio</label
+                >
+                <select
+                  id="subServiceSelect"
+                  class="form-select ms-2"
+                  aria-label="Selecciona una opción"
+                  [(ngModel)]="updateSubservices"
+                  (change)="onSubserviceSelect($event)"
+                  name="newSubServiceName"
+                >
+                  <option value="" selected>Selecciona una opción</option>
+                  <option
+                    *ngFor="let subService of getSalonSubservices"
+                    [value]="subService.id_service_type"
+                  >
+                    {{ subService.name }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-md-6 ms-4">
+                <label for="timeInput" class="form-label fw-bold"
+                  >Precio (*Opcional)</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="priceInput"
+                  placeholder="10"
+                  [(ngModel)]="updateServicePrice"
+                  name="newServicePrice"
+                  (input)="checkLengthPrice($event)"
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button  editReviewText: string = '';"
+            class="btn btn-danger me-2"
+            (click)="updateServiceWithSubservice()"
+          >
+            Guardar
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="editQuestionModal"
+    tabindex="-1"
+    aria-labelledby="editQuestionModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content shadow-lg">
+        <!-- Modal Header -->
+        <div class="modal-header text-white bg-dark">
+          <h5 class="modal-title" id="editQuestionModalLabel">
+            Responder Pregunta
+          </h5>
+          <button
+            type="button"
+            class="btn-close btn-close-white"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="modal-body">
+          <div class="text-center mb-3">
+            <img
+              src="../../../assets/img/sello.jpg"
+              alt="sello"
+              width="120"
+              class="img-fluid"
+            />
+          </div>
+
+          <!-- Formulario -->
+          <form (ngSubmit)="updateQuestion()">
+            <!-- Pregunta -->
+            <div class="mb-3">
+              <label for="editQuestionText" class="form-label fw-bold"
+                >Pregunta</label
+              >
+              <textarea
+                class="form-control border-0 bg-light"
+                id="editQuestionText"
+                rows="2"
+                [(ngModel)]="editQuestionText"
+                name="editQuestionText"
+                readonly
+              ></textarea>
+            </div>
+
+            <!-- Respuesta -->
+            <div class="mb-3">
+              <label for="editAnswerText" class="form-label fw-bold"
+                >Respuesta</label
+              >
+              <textarea
+                class="form-control"
+                id="editAnswerText"
+                rows="4"
+                [(ngModel)]="editAnswerText"
+                name="editAnswerText"
+                required
+              ></textarea>
+            </div>
+
+            <div class="d-flex justify-content-end">
+              <button
+                type="submit"
+                class="btn btn-danger me-2"
+                data-bs-dismiss="modal"
+              >
+                Guardar Respuesta
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Modal para responder a una reseña-->
+  <div
+    class="modal fade"
+    id="responseReviewModal"
+    tabindex="-1"
+    aria-labelledby="responseReviewModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <!-- Clase `modal` eliminada -->
+      <div class="modal-content">
+        <div class="modal-header text-white bg-dark">
+          <h5 class="modal-title" id="responseReviewModalLabel">
+            Responder Reseña
+          </h5>
+          <button
+            type="button"
+            class="btn-close btn-close-white"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-3">
+            <img
+              src="../../../assets/img/sello.jpg"
+              alt="sello"
+              width="120"
+              class="img-fluid"
+            />
+          </div>
+          <form (ngSubmit)="confirmResponseReview()">
+            <div class="mb-3">
+              <label for="userReviewText" class="form-label">Reseña</label>
+              <textarea
+                class="form-control border-0 bg-light"
+                id="editReviewText"
+                rows="4"
+                [(ngModel)]="editReviewText"
+                name="userReviewText"
+                readonly
+              ></textarea>
+            </div>
+            <div class="mb-3 d-flex flex-column">
+              <label for="responseReviewText" class="form-label"
+                >Tu respuesta</label
+              >
+              <textarea
+                class="form-control"
+                id="responseReview"
+                rows="4"
+                [(ngModel)]="responseText"
+                name="responseReview"
+              ></textarea>
+            </div>
+            <div class="d-flex justify-content-end">
+              <button
+                type="submit"
+                class="btn btn-danger me-2"
+                data-bs-dismiss="modal"
+              >
+                Guardar Cambios
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Modal para añadir categoría-->
+  <div
+    class="modal fade"
+    id="newCategoryModal"
+    tabindex="-1"
+    aria-labelledby="newCategoryLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header text-white bg-dark">
+          <h5 class="modal-title" id="newCategoryLabel">Nueva Categoría</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center">
+            <img
+              src="../../../assets/img/sello.jpg"
+              alt="sello"
+              width="120"
+              class="img-fluid"
+            />
+          </div>
+          <div class="row mt-3">
             <select
-              id="editCategorySelect"
+              id="getCategories"
               class="form-select"
-              [(ngModel)]="selectedCategory.category"
-              name="editCategorySelect"
+              aria-label="Selecciona una opción"
+              [(ngModel)]="selectedCategory"
             >
-              <option value="" disabled>Selecciona una categoría</option>
+              <option value="">Selecciona una opción</option>
               <option
+                selected
                 *ngFor="let category of getCategories"
-                [ngValue]="category.category"
+                [value]="category.category"
               >
                 {{ category.category }}
               </option>
             </select>
           </div>
-        </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-bs-dismiss="modal"
+            (click)="addCategorySalon()"
+            data-bs-dismiss="modal"
+          >
+            Guardar
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancelar
+          </button>
+        </div>
       </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-danger"
-          data-bs-dismiss="modal"
-          (click)="updateCategory()"
-        >
-          Guardar
-        </button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Cancelar
-        </button>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="editCategoryModal"
+    tabindex="-1"
+    aria-labelledby="editCategoryLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title" id="editCategoryLabel">Editar Categoría</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center">
+            <img
+              src="../../../assets/img/sello.jpg"
+              alt="sello"
+              width="120"
+              class="img-fluid"
+            />
+          </div>
+          <form>
+            <div class="mb-3">
+              <label for="editCategorySelect" class="form-label mt-3"
+                >Selecciona la Categoría para Editar</label
+              >
+              <select
+                id="editCategorySelect"
+                class="form-select"
+                [(ngModel)]="selectedCategory.category"
+                name="editCategorySelect"
+              >
+                <option value="" disabled>Selecciona una categoría</option>
+                <option
+                  *ngFor="let category of getCategories"
+                  [ngValue]="category.category"
+                >
+                  {{ category.category }}
+                </option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-bs-dismiss="modal"
+            (click)="updateCategory()"
+          >
+            Guardar
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Modal para eliminar categorias-->
+  <div
+    class="modal fade"
+    id="deleteCategoryModal"
+    tabindex="-1"
+    aria-labelledby="deleteCategoryModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content ">
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title" id="deleteCategoryModalLabel">
+            Eliminar Categorías
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-3">
+            <img
+              src="../../../assets/img/sello.jpg"
+              alt="sello"
+              width="120"
+              class="img-fluid"
+            />
+          </div>
+          <p>¿Estás seguro que deseas eliminar la categoría seleccionada?</p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="confirmDeleteCategory()"
+            data-bs-dismiss="modal"
+          >
+            Eliminar
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Modal para eliminar servicios-->
+
+  <div
+    class="modal fade"
+    id="deleteServiceModal"
+    tabindex="-1"
+    aria-labelledby="deleteServiceModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title" id="deleteServiceModalLabel">
+            Eliminar Servicio
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-3">
+            <img
+              src="../../../assets/img/sello.jpg"
+              alt="sello"
+              width="120"
+              class="img-fluid"
+            />
+          </div>
+          <p>¿Estás seguro que deseas eliminar el servicio seleccionado?</p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="confirmDeleteService()"
+            data-bs-dismiss="modal"
+          >
+            Eliminar
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Modal para eliminar preguntas-->
+  <div
+    class="modal fade"
+    id="deleteFaqModal"
+    tabindex="-1"
+    aria-labelledby="deleteFaqModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteFaqModalLabel">
+            Eliminar Pregunta
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-3">
+            <img
+              src="../../../assets/img/sello.jpg"
+              alt="sello"
+              width="120"
+              class="img-fluid"
+            />
+          </div>
+          <p>¿Estás seguro que deseas eliminar la pregunta seleccionada?</p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="confirmDeleteFaq()"
+            data-bs-dismiss="modal"
+          >
+            Eliminar
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Modal para eliminar reseñas-->
+  <div
+    class="modal fade"
+    id="deleteReviewModal"
+    tabindex="-1"
+    aria-labelledby="deleteReviewModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteReviewModalLabel">
+            Eliminar Pregunta
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-3">
+            <img
+              src="../../../assets/img/sello.jpg"
+              alt="sello"
+              width="120"
+              class="img-fluid"
+            />
+          </div>
+          <p>¿Estás seguro que deseas eliminar la reseña seleccionada?</p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="confirmDeleteReview()"
+            data-bs-dismiss="modal"
+          >
+            Eliminar
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Modal para modificar reseña-->
+  <div
+    class="modal fade"
+    id="modificarValoracionesModal"
+    tabindex="-1"
+    aria-labelledby="modificarValoracionesModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title" id="modifcarValoraciones">
+            Modificar tu reseña
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-4 mt-4">
+            <img
+              src="../../../../assets/img/sello.jpg"
+              width="150"
+              alt="logo-mis-peluquerias"
+            />
+          </div>
+
+          <!-- Servicio -->
+          <div class="rating-input d-flex align-items-center mb-3 mt-3">
+            <label class="me-3">Servicio:</label>
+            <div class="circle-input-group">
+              <input
+                type="checkbox"
+                id="service1"
+                [(ngModel)]="ratings.service[0]"
+                (change)="updateRatings(ratings.service, 0)"
+              />
+              <label for="service1" class="circle-label"></label>
+
+              <input
+                type="checkbox"
+                id="service2"
+                [(ngModel)]="ratings.service[1]"
+                (change)="updateRatings(ratings.service, 1)"
+              />
+              <label for="service2" class="circle-label"></label>
+
+              <input
+                type="checkbox"
+                id="service3"
+                [(ngModel)]="ratings.service[2]"
+                (change)="updateRatings(ratings.service, 2)"
+              />
+              <label for="service3" class="circle-label"></label>
+
+              <input
+                type="checkbox"
+                id="service4"
+                [(ngModel)]="ratings.service[3]"
+                (change)="updateRatings(ratings.service, 3)"
+              />
+              <label for="service4" class="circle-label"></label>
+
+              <input
+                type="checkbox"
+                id="service5"
+                [(ngModel)]="ratings.service[4]"
+                (change)="updateRatings(ratings.service, 4)"
+              />
+              <label for="service5" class="circle-label"></label>
+            </div>
+          </div>
+
+          <!-- Calidad/Precio -->
+          <div class="rating-input d-flex align-items-center mb-3">
+            <label class="me-3">Calidad/Precio:</label>
+            <div class="circle-input-group">
+              <input
+                type="checkbox"
+                id="quality1"
+                [(ngModel)]="ratings.quality[0]"
+                (change)="updateRatings(ratings.quality, 0)"
+              />
+              <label for="quality1" class="circle-label"></label>
+
+              <input
+                type="checkbox"
+                id="quality2"
+                [(ngModel)]="ratings.quality[1]"
+                (change)="updateRatings(ratings.quality, 1)"
+              />
+              <label for="quality2" class="circle-label"></label>
+
+              <input
+                type="checkbox"
+                id="quality3"
+                [(ngModel)]="ratings.quality[2]"
+                (change)="updateRatings(ratings.quality, 2)"
+              />
+              <label for="quality3" class="circle-label"></label>
+
+              <input
+                type="checkbox"
+                id="quality4"
+                [(ngModel)]="ratings.quality[3]"
+                (change)="updateRatings(ratings.quality, 3)"
+              />
+              <label for="quality4" class="circle-label"></label>
+
+              <input
+                type="checkbox"
+                id="quality5"
+                [(ngModel)]="ratings.quality[4]"
+                (change)="updateRatings(ratings.quality, 4)"
+              />
+              <label for="quality5" class="circle-label"></label>
+            </div>
+          </div>
+
+          <!-- Limpieza -->
+          <div class="rating-input d-flex align-items-center mb-3">
+            <label class="me-3">Limpieza:</label>
+            <div class="circle-input-group">
+              <input
+                type="checkbox"
+                id="cleanliness1"
+                [(ngModel)]="ratings.cleanliness[0]"
+                (change)="updateRatings(ratings.cleanliness, 0)"
+              />
+              <label for="cleanliness1" class="circle-label"></label>
+
+              <input
+                type="checkbox"
+                id="cleanliness2"
+                [(ngModel)]="ratings.cleanliness[1]"
+                (change)="updateRatings(ratings.cleanliness, 1)"
+              />
+              <label for="cleanliness2" class="circle-label"></label>
+
+              <input
+                type="checkbox"
+                id="cleanliness3"
+                [(ngModel)]="ratings.cleanliness[2]"
+                (change)="updateRatings(ratings.cleanliness, 2)"
+              />
+              <label for="cleanliness3" class="circle-label"></label>
+
+              <input
+                type="checkbox"
+                id="cleanliness4"
+                [(ngModel)]="ratings.cleanliness[3]"
+                (change)="updateRatings(ratings.cleanliness, 3)"
+              />
+              <label for="cleanliness4" class="circle-label"></label>
+
+              <input
+                type="checkbox"
+                id="cleanliness5"
+                [(ngModel)]="ratings.cleanliness[4]"
+                (change)="updateRatings(ratings.cleanliness, 4)"
+              />
+              <label for="cleanliness5" class="circle-label"></label>
+            </div>
+          </div>
+
+          <!-- Rapidez -->
+          <div class="rating-input d-flex align-items-center mb-3">
+            <label class="me-3">Rapidez:</label>
+            <div class="circle-input-group">
+              <input
+                type="checkbox"
+                id="speed1"
+                [(ngModel)]="ratings.speed[0]"
+                (change)="updateRatings(ratings.speed, 0)"
+              />
+              <label for="speed1" class="circle-label"></label>
+
+              <input
+                type="checkbox"
+                id="speed2"
+                [(ngModel)]="ratings.speed[1]"
+                (change)="updateRatings(ratings.speed, 1)"
+              />
+              <label for="speed2" class="circle-label"></label>
+
+              <input
+                type="checkbox"
+                id="speed3"
+                [(ngModel)]="ratings.speed[2]"
+                (change)="updateRatings(ratings.speed, 2)"
+              />
+              <label for="speed3" class="circle-label"></label>
+
+              <input
+                type="checkbox"
+                id="speed4"
+                [(ngModel)]="ratings.speed[3]"
+                (change)="updateRatings(ratings.speed, 3)"
+              />
+              <label for="speed4" class="circle-label"></label>
+
+              <input
+                type="checkbox"
+                id="speed5"
+                [(ngModel)]="ratings.speed[4]"
+                (change)="updateRatings(ratings.speed, 4)"
+              />
+              <label for="speed5" class="circle-label"></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group mt-4 mb-3">
+          <label for="additionalComments" class="form-label ms-3"
+            >Reseña del usuario:</label
+          >
+          <textarea
+            maxlength="300"
+            id="additionalComments"
+            class="form-control rounded-3 shadow-sm p-2 mx-auto"
+            rows="3"
+            [(ngModel)]="additionalComments"
+            placeholder="Escribe tus comentarios aquí..."
+            style="resize: none; max-width: 95%"
+          ></textarea>
+          <label for="additionalComments" class="form-label ms-3 mt-3"
+            >Respuesta del Propietario:</label
+          >
+          <textarea
+            maxlength="300"
+            id="additionalComments"
+            class="form-control rounded-3 shadow-sm p-2 mx-auto"
+            rows="3"
+            [(ngModel)]="responseText"
+            placeholder="Escribe tus comentarios aquí..."
+            style="resize: none; max-width: 95%"
+          ></textarea>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-bs-dismiss="modal"
+            (click)="updateReviewModal()"
+          >
+            Guardar
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="deleteImgSalonModal"
+    tabindex="-1"
+    aria-labelledby="deleteImgSalonModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteImgSalonModalLabel">
+            Eliminar Imagen
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-3">
+            <img
+              src="../../../assets/img/sello.jpg"
+              alt="sello"
+              width="120"
+              class="img-fluid"
+            />
+          </div>
+          <p>
+            ¿Estás seguro que deseas eliminar la imagen del salón seleccionada?
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="confirmDeleteImage()"
+            data-bs-dismiss="modal"
+          >
+            Eliminar
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancelar
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </div>
+<<<<<<< HEAD
+=======
 
 <!--Modal para eliminar categorias-->
 <div
@@ -1723,9 +2943,6 @@
         <p>¿Estás seguro que deseas eliminar la categoría seleccionada?</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Cancelar
-        </button>
         <button
           type="button"
           class="btn btn-danger"
@@ -1734,12 +2951,16 @@
         >
           Eliminar
         </button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
       </div>
     </div>
   </div>
 </div>
 
 <!--Modal para eliminar servicios-->
+
 <div
   class="modal fade"
   id="deleteServiceModal"
@@ -1751,7 +2972,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="deleteServiceModalLabel">
-          Eliminar Categorías
+          Eliminar Servicio
         </h5>
         <button
           type="button"
@@ -1772,9 +2993,6 @@
         <p>¿Estás seguro que deseas eliminar el servicio seleccionado?</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Cancelar
-        </button>
         <button
           type="button"
           class="btn btn-danger"
@@ -1782,6 +3000,110 @@
           data-bs-dismiss="modal"
         >
           Eliminar
+        </button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!--Modal para eliminar preguntas-->
+<div
+  class="modal fade"
+  id="deleteFaqModal"
+  tabindex="-1"
+  aria-labelledby="deleteFaqModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteFaqModalLabel">
+          Eliminar Pregunta
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-3">
+          <img
+            src="../../../assets/img/sello.jpg"
+            alt="sello"
+            width="120"
+            class="img-fluid"
+          />
+        </div>
+        <p>¿Estás seguro que deseas eliminar la pregunta seleccionada?</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="confirmDeleteFaq()"
+          data-bs-dismiss="modal"
+        >
+          Eliminar
+        </button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--Modal para eliminar reseñas-->
+<div
+  class="modal fade"
+  id="deleteReviewModal"
+  tabindex="-1"
+  aria-labelledby="deleteReviewModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteReviewModalLabel">
+          Eliminar Pregunta
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-3">
+          <img
+            src="../../../assets/img/sello.jpg"
+            alt="sello"
+            width="120"
+            class="img-fluid"
+          />
+        </div>
+        <p>¿Estás seguro que deseas eliminar la reseña seleccionada?</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="confirmDeleteReview()"
+          data-bs-dismiss="modal"
+        >
+          Eliminar
+        </button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
         </button>
       </div>
     </div>
@@ -2006,11 +3328,10 @@
         </div>
       </div>
 
-      <div class="separator-line mb-3 w-100"></div>
-      <!-- Textarea para comentarios o notas adicionales -->
       <div class="form-group mt-4 mb-3">
+
         <label for="additionalComments" class="form-label ms-3"
-          >Comentarios Adicionales:</label
+          >Reseña del usuario:</label
         >
         <textarea
           maxlength="300"
@@ -2021,20 +3342,84 @@
           placeholder="Escribe tus comentarios aquí..."
           style="resize: none; max-width: 95%"
         ></textarea>
+
+        <label for="additionalComments" class="form-label ms-3 mt-3"
+        >Respuesta del Propietario:</label
+      >
+        <textarea
+          maxlength="300"
+          id="additionalComments"
+          class="form-control rounded-3 shadow-sm p-2 mx-auto"
+          rows="3"
+          [(ngModel)]="responseText"
+          placeholder="Escribe tus comentarios aquí..."
+          style="resize: none; max-width: 95%"
+        ></textarea>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Cancelar
-        </button>
         <button
           type="button"
           class="btn btn-danger"
           data-bs-dismiss="modal"
-          (click)="updateReview()"
+          (click)="updateReviewModal()"
         >
           Guardar
+        </button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div
+  class="modal fade"
+  id="deleteImgSalonModal"
+  tabindex="-1"
+  aria-labelledby="deleteImgSalonModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteImgSalonModalLabel">
+          Eliminar Imagen
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-3">
+          <img
+            src="../../../assets/img/sello.jpg"
+            alt="sello"
+            width="120"
+            class="img-fluid"
+          />
+        </div>
+        <p>¿Estás seguro que deseas eliminar la imagen del salón seleccionada?</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="confirmDeleteImage()"
+          data-bs-dismiss="modal"
+        >
+          Eliminar
+        </button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
         </button>
       </div>
     </div>
   </div>
 </div>
+>>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
