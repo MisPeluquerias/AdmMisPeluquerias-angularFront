@@ -4,8 +4,6 @@ import { EditHomeService } from '../../../core/service/edit-home.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ChangeDetectorRef } from '@angular/core';
-import { subscribe } from 'diagnostics_channel';
-import { setThrowInvalidWriteToSignalError } from '@angular/core/primitives/signals';
 
 
 @Component({
@@ -115,13 +113,7 @@ export class EditHomeComponent implements OnInit {
   setDeleteBrand:any;
   setUpdateBrand:any;
   selectedUpdateBrandIdName:any="";
-<<<<<<< HEAD
-<<<<<<< HEAD
   selectedUpdateBrandIdNameCheck:any;
-=======
->>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
-=======
->>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
   
   constructor(
     private route: ActivatedRoute,
@@ -921,8 +913,6 @@ getServicesWithSubservices() {
     return [1, 2, 3, 4, 5].map((val) => val <= rating);
   }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 
   checkLengthTime(event: any) {
     const input = event.target as HTMLInputElement;
@@ -957,10 +947,6 @@ getServicesWithSubservices() {
 
   }
 
-=======
->>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
-=======
->>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
   
   confirmResponseReview(): void {
       const responseReview = {
@@ -1176,26 +1162,12 @@ addBrandSalon(): void {
       this.toastr.success('Marca añadida al salón con éxito', 'Éxito');
       console.log('Respuesta del servidor:', response);
       this.getBrandsBySalon();
-<<<<<<< HEAD
-<<<<<<< HEAD
      
-=======
->>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
-=======
->>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
       // Aquí puedes añadir lógica adicional, como recargar la lista de salones o cerrar el modal
     },
     error: (err) => {
       console.error('Error al añadir la marca al salón:', err);
-<<<<<<< HEAD
-<<<<<<< HEAD
       this.toastr.error('Hubo un error al añadir la marca al salón, Por favor compruebe que la marca exista en su lista', 'Error');
-=======
-      this.toastr.error('Hubo un error al añadir la marca al salón', 'Error');
->>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
-=======
-      this.toastr.error('Hubo un error al añadir la marca al salón', 'Error');
->>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
     }
   });
 }
@@ -1231,56 +1203,24 @@ updateBrandSalon(): void {
     console.warn("La marca o el nombre de marca no están seleccionados.");
     return;
   }
-<<<<<<< HEAD
-<<<<<<< HEAD
 
   
-=======
->>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
-=======
->>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
   // Logs para confirmar los valores antes de hacer la llamada
   //console.log('ID enviado para modificar (id_brand_salon):', this.selectedUpdateBrand);
   //console.log('ID brand enviado para modificar (id_brand):', this.selectedUpdateBrandIdName);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   this.editHomeService.UpdateBrandsalon(this.selectedUpdateBrand, this.selectedUpdateBrandIdName,this.salonId).subscribe({
-=======
-  this.editHomeService.UpdateBrandsalon(this.selectedUpdateBrand, this.selectedUpdateBrandIdName).subscribe({
->>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
-=======
-  this.editHomeService.UpdateBrandsalon(this.selectedUpdateBrand, this.selectedUpdateBrandIdName).subscribe({
->>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
     next: (data) => {
       this.toastr.success('La marca del salón ha sido actualizada con éxito');
       this.selectedUpdateBrandIdName="";
       this.getBrandsBySalon();
     },
     error: (error) => {
-<<<<<<< HEAD
-<<<<<<< HEAD
       this.toastr.error('Error, no se pudo actualizar la marca seleccionada, Por favor compruebe que la marca no este en su lista.');
       console.error('Error al actualizar la marca del salón:', error);
       this.selectedUpdateBrandIdName="";
-=======
-      this.toastr.error('Error, no se pudo actualizar la marca seleccionada');
-      console.error('Error al actualizar la marca del salón:', error);
->>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
-=======
-      this.toastr.error('Error, no se pudo actualizar la marca seleccionada');
-      console.error('Error al actualizar la marca del salón:', error);
->>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
     },
     complete: () => console.log("Proceso completado con éxito.")
   });
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
-=======
-
->>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
 }

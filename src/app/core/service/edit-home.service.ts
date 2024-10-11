@@ -217,24 +217,11 @@ export class EditHomeService {
     });
   }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   UpdateBrandsalon(id_brand_salon: number, id_brand: number ,id_salon:number) {
     return this.http.put(`${this.baseUrl}/edithome/UpdateBrandById`, {
       id_brand_salon,
       id_brand,
       id_salon
-=======
-=======
->>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
-  UpdateBrandsalon(id_brand_salon: number, id_brand: number) {
-    return this.http.put(`${this.baseUrl}/edithome/UpdateBrandById`, {
-      id_brand_salon,
-      id_brand,
-<<<<<<< HEAD
->>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
-=======
->>>>>>> 69f29f5b5acc2bafdd3b45d86efaff4ce0af9a03
     });
   }
 }
