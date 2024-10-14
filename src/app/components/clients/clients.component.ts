@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ClientsService } from '../../core/service/clients.service';
 import { Router } from '@angular/router';
-
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-clients',
@@ -19,7 +19,8 @@ export class ClientsComponent {
   allSelected: boolean = false;
 
   constructor(private clientsService: ClientsService,
-    private router:Router
+    private router:Router,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -87,13 +88,33 @@ export class ClientsComponent {
     return this.AllClients.some(client => client.selected);
   }
 
-  deleteSelected() {
-    this.AllClients = this.AllClients.filter(client => !client.selected);
-    this.allSelected = false;
-  }
+
 
   editClient(id: number) {
     this.router.navigate(['edit-client/edit', id]);
+  }
+
+  deleteSelected() {
+    const selectedClients = this.AllClients.filter(client => client.selected).map(client => client.id_user);
+  
+    if (selectedClients.length > 0) {
+      this.clientsService.deleteClients(selectedClients).subscribe({
+        next: () => {
+          // Filtra la lista localmente para eliminar los seleccionados
+          this.AllClients = this.AllClients.filter(client => !client.selected);
+          this.allSelected = false;
+          // Mostrar notificación de éxito
+          this.toastr.success('Clientes eliminados correctamente');
+        },
+        error: (err) => {
+          console.error('Error eliminando clientes', err);
+          // Mostrar notificación de error
+          this.toastr.error('Error al eliminar clientes');
+        }
+      });
+    } else {
+      this.toastr.warning('No hay clientes seleccionados');
+    }
   }
   
 }

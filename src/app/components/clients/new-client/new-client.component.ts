@@ -24,6 +24,7 @@ export class NewClientComponent {
   cities: any[] = [];
   provinces: any[] = [];
   errors: any = {};
+  formValid: boolean = false;
 
   constructor(private toastr: ToastrService, private newClientService: NewClientService) {}
 
@@ -31,23 +32,37 @@ export class NewClientComponent {
     this.getProvinces();
   }
 
-
-
   addNewClient(): void {
-   console.log('Contraseña',this.password);
-    this.newClientService.addNewClient(this.name,this.lastname,this.email,this.phone,this.id_province,this.id_city,this.address,this.dni,this.password).subscribe(
+    this.formValid = true;
+  
+    // Verificar si todos los campos requeridos están llenos
+    if (!this.name || !this.lastname || !this.email || !this.phone || !this.address || !this.id_province || !this.id_city || !this.dni || !this.password || !this.confirmPassword) {
+    
+      return;
+    }
+  
+    console.log('Contraseña', this.address);
+    this.newClientService.addNewClient(this.name, this.lastname, this.email, this.phone,this.address, this.id_province, this.id_city, this.dni, this.password).subscribe(
       response => {
-        //console.log('Cliente creado con éxito:', response);
-        this.toastr.success('<i class="las la-info-circle"> Cliente creado con éxito</i>');
+        // Cliente creado con éxito
+        this.toastr.success('<i class="las la-info-circle"></i> Cliente creado con éxito');
       },
       error => {
         console.error('Error al crear el cliente:', error);
-        this.toastr.error('<i class="las la-info-circle">Error al crear cliente</i>');
-
+  
+        // Verificar si el error tiene un código 409 (conflicto, es decir, duplicado)
+        if (error.status === 409 && error.error && error.error.error === 'User with this email already exists') {
+          this.toastr.error('<i class="las la-exclamation-circle"></i> El correo electrónico ya está registrado.');
+        } else if (error.status === 409 && error.error && error.error.error === 'User with this dni already exists') {
+          this.toastr.error('<i class="las la-exclamation-circle"></i> El DNI ya está registrado.');
+        } else {
+          // Otro tipo de error
+          this.toastr.error('<i class="las la-info-circle"></i> Error al crear cliente');
+        }
       }
     );
-    
   }
+
 
   getProvinces(): void {
     this.newClientService.getProvinces().subscribe(

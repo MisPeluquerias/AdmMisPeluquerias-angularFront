@@ -24,4 +24,10 @@ export class ClientsService {
 
     return this.http.get<any>(`${this.baseUrl}/clients/getAllClients`, { params });
   }
+
+  
+  deleteClients(id_user: string[]): Observable<any> {
+    return this.http.post(`${this.baseUrl}/clients/delete`, { id_user: id_user });
+  }
+  
 }

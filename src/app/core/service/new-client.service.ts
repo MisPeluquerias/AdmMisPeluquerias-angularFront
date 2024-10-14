@@ -36,7 +36,7 @@ export class NewClientService {
   }
 
   addNewClient(name: string,lastname:string,email:string,phone:string,address:string,id_province:string,id_city:string,dni:string,password:string): Observable<any> {
-    console.log('Datos enviados al backend:', name);
+   
     const body = {
       name: name,
       lastname:lastname,

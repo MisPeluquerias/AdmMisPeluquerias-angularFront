@@ -56,6 +56,7 @@
                       name="name"
                       [(ngModel)]="name"
                     />
+                    <div class="text-danger" *ngIf="!name && formValid">El nombre es obligatorio</div>
                   </div>
                   <div class="col-md-6">
                     <label for="apellidos" class="form-label">Apellidos</label>
@@ -66,6 +67,7 @@
                       name="lastname"
                       [(ngModel)]="lastname"
                     />
+                    <div class="text-danger" *ngIf="!lastname && formValid">Los apellidos son obligatorios</div>
                   </div>
                 </div>
                 <div class="row mb-3">
@@ -77,8 +79,16 @@
                       id="email"
                       name="email"
                       [(ngModel)]="email"
+                      pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                      required
+                      #emailInput="ngModel"  
                     />
+                    <div *ngIf="!email && formValid" class="text-danger">El correo electronico es obligatorio</div>
+                    <div *ngIf="emailInput.invalid && emailInput.touched" class="text-danger">
+                      El correo electronico no es válido
+                    </div>
                   </div>
+                               
                   <div class="col-md-6">
                     <label for="telefono" class="form-label">Nº de Teléfono</label>
                     <input
@@ -87,7 +97,13 @@
                       id="phone"
                       name="phone"
                       [(ngModel)]="phone"
+                      min="9"
+                      max="9"
                     />
+                    
+                    <div class="text-danger" *ngIf="formValid && (!phone || phone.length != 9)">
+                      El nº de teléfono es obligatorio y tiene que tener 9 números
+                    </div>
                   </div>
                 </div>
                 <div class="row mb-3">
@@ -100,6 +116,7 @@
                       name="address"
                       [(ngModel)]="address"
                     />
+                    <div class="text-danger" *ngIf="!address && formValid">La dirección es obligatoria</div>
                   </div>
                   <div class="col-md-3">
                     <label for="provincia" class="form-label">Provincia</label>
@@ -110,6 +127,7 @@
                       [(ngModel)]="id_province"
                       (change)="onProvinceChange($event)"
                     >
+                      <option value="" disabled selected>Seleccione una provincia</option>
                       <option
                         *ngFor="let province of provinces"
                         [value]="province.id_province"
@@ -117,6 +135,7 @@
                         {{ province.name }}
                       </option>
                     </select>
+                    <div class="text-danger" *ngIf="!id_province && formValid">La provincia es obligatoria</div>
                   </div>
                   <div class="col-md-3">
                     <label for="poblacion" class="form-label">Población</label>
@@ -126,28 +145,33 @@
                       name="id_city"
                       [(ngModel)]="id_city"
                       (change)="onCityChange(userData.id_city)"
-                      required
-                    >
+                      required>
                       <option *ngFor="let city of cities" [value]="city.id_city">
                         {{ city.city_name }} - {{ city.zip_code }}
                       </option>
                     </select>
+                    <div class="text-danger" *ngIf="!id_city && formValid">La población es obligatoria</div>
                   </div>
                 </div>
                 <div class="row mb-4">
                   <div class="col-md-6">
-                    <label for="permiso" class="form-label">NIF</label>
+                    <label for="dni" class="form-label">NIF</label>
                     <input
-                    type="text"
-                    class="form-control"
-                    id="dni"
-                    name="dni"
-                    [(ngModel)]="dni"
-                  />
+                      type="text"
+                      class="form-control"
+                      id="dni"
+                      name="dni"
+                      [(ngModel)]="dni"
+                      pattern="^[0-9]{8}[A-Z]$"
+                      required
+                      #dniInput="ngModel"
+                    />
+                    <div *ngIf="!dni && formValid" class="text-danger">El DNI es obligatorio</div>
+                    <div *ngIf="dniInput.invalid && dniInput.touched" class="text-danger">
+                      El DNI no es válido
+                    </div>
                   </div>
                 </div>
-
-
               <div class="card mt-4">
                 <div class="card-body">
                   <h5>Nueva Contraseña</h5>
@@ -161,8 +185,12 @@
                         name="password"
                         placeholder="Introduce nueva contraseña..."
                         [(ngModel)]="password"
+                        #passwordInput="ngModel"
                       />
+                      <div class="text-danger" *ngIf="!password && formValid">La contraseña es obligatoria</div>
+                      <div class="text-danger" *ngIf="password && password.length < 6">La contraseña debe tener al menos 6 caracteres</div>
                     </div>
+                    
                     <div class="col-md-6">
                       <label for="confirmPassword" class="form-label">Repetir contraseña</label>
                       <input
@@ -173,6 +201,7 @@
                         name="confirmPassword"
                         [(ngModel)]="confirmPassword"
                       />
+                      <div class="text-danger" *ngIf="confirmPassword !== password">Las contraseñas no coinciden</div>
                     </div>
                   </div>
                 </div>

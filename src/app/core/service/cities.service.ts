@@ -23,4 +23,5 @@ export class CitiesService {
     }
     return this.http.get<any>(`${this.baseUrl}/cities/getAllCities`, { params });
   }
+
 }

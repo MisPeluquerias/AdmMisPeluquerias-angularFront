@@ -57,6 +57,7 @@
                       name="name"
                       [(ngModel)]="clientData.name"
                     />
+                    <div class="text-danger" *ngIf="!clientData.name && formValid">El nombre es obligatorio.</div>
                   </div>
                   <div class="col-md-6">
                     <label for="apellidos" class="form-label">Apellidos</label>
@@ -67,6 +68,7 @@
                       name="lastname"
                       [(ngModel)]="clientData.lastname"
                     />
+                    <div class="text-danger" *ngIf="!clientData.lastname && formValid">Los apellidos son obligatorios.</div>
                   </div>
                 </div>
                 <div class="row mb-3">
@@ -78,7 +80,14 @@
                       id="email"
                       name="email"
                       [(ngModel)]="clientData.email"
+                      pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                      #emailInput="ngModel"
+                      required
                     />
+                    <div *ngIf="!clientData.email && formValid" class="text-danger">El correo electronico es obligatorio</div>
+                    <div *ngIf="emailInput.invalid && emailInput.touched" class="text-danger">
+                      El correo electronico no es válido
+                    </div>
                   </div>
                   <div class="col-md-6">
                     <label for="telefono" class="form-label">Nº de Teléfono</label>
@@ -89,6 +98,9 @@
                       name="phone"
                       [(ngModel)]="clientData.phone"
                     />
+                    <div class="text-danger" *ngIf="formValid && (!clientData.phone || clientData.phone.length != 9)">
+                      El nº de teléfono es obligatorio y tiene que tener 9 números.
+                    </div>
                   </div>
                 </div>
                 <div class="row mb-3">
@@ -101,6 +113,7 @@
                       name="address"
                       [(ngModel)]="clientData.address"
                     />
+                    <div class="text-danger" *ngIf="!clientData.address && formValid">La dirección es obligatoria</div>
                   </div>
                   <div class="col-md-3">
                     <label for="provincia" class="form-label">Provincia</label>
@@ -111,11 +124,12 @@
                     [(ngModel)]="clientData.id_province"
                     (change)="onProvinceChange($event)" 
                   >
+                    <option value="" disabled selected>Seleccione una provincia</option>
                     <option *ngFor="let province of provinces" [value]="province.id_province">
                       {{ province.name }}
                     </option>
                   </select>
-                  
+                  <div class="text-danger" *ngIf="!clientData.id_province && formValid">La provincia es obligatoria</div>
                   </div>
                   <div class="col-md-3">
                     <label for="poblacion" class="form-label">Población</label>
@@ -127,10 +141,13 @@
                       (change)="onCityChange(clientData.id_city)"
                       required
                     >
+                    <div class="text-danger" *ngIf="!clientData.id_city && formValid">La población es obligatoria</div>
+                      <option  disabled selected>Seleccione una población</option>
                       <option *ngFor="let city of cities" [value]="city.id_city">
                         {{ city.city_name }} - {{ city.zip_code }}
                       </option>
                     </select>
+                    <div class="text-danger" *ngIf="!clientData.id_city && formValid">La población es obligatoria</div>
                   </div>
                 </div>
                 <div class="row mb-4">
@@ -142,12 +159,20 @@
                     id="dni"
                     name="dni"
                     [(ngModel)]="clientData.dni"
+                    #dniInput="ngModel"
+                    pattern="^[0-9]{8}[A-Z]$"
+                    required
+
                   />
-                  </div>
+                  <div *ngIf="!clientData.dni && formValid" class="text-danger">El DNI es obligatorio</div>
+                    <div *ngIf="dniInput.invalid && dniInput.touched" class="text-danger">
+                      El DNI no es válido
+                    </div>
                 </div>
+              </div>
               <div class="card mt-4">
                 <div class="card-body">
-                  <h5>Nueva Contraseña</h5>
+                  <h5>Editar Contraseña</h5>
                   <div class="row mb-3">
                     <div class="col-md-6">
                       <label for="password" class="form-label">Contraseña</label>
@@ -159,17 +184,7 @@
                         placeholder="Introduce nueva contraseña..."
                         [(ngModel)]="clientData.password"
                       />
-                    </div>
-                    <div class="col-md-6">
-                      <label for="confirmPassword" class="form-label">Repetir contraseña</label>
-                      <input
-                        type="password"
-                        class="form-control"
-                        id="confirmPassword"
-                        placeholder="Repetir contraseña..."
-                        name="confirmPassword"
-                        [(ngModel)]="clientData.confirmPassword"
-                      />
+                      <div class="text-danger" *ngIf="clientData.password && clientData.password.length < 6">La contraseña debe tener al menos 6 caracteres</div>
                     </div>
                   </div>
                 </div>
