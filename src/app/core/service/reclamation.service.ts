@@ -40,4 +40,9 @@ export class ReclamationService {
     };
     return this.http.put<any>(`${this.baseUrl}/reclamations/updateStateReclamation`, data);
   }
+
+  deleteReclamations(id_salon_reclamacion: string[]): Observable<any> {
+    return this.http.post(`${this.baseUrl}/reclamations/delete`, { id_salon_reclamacion: id_salon_reclamacion });
+  }
+  
 }

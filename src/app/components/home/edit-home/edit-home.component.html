@@ -136,52 +136,60 @@
           >
             <!-- Formulario de Negocio -->
 
-            <form>
+            <form class="px-3" style="padding-bottom: 50px;">
               <div class="row mb-3 align-items-center">
-                <div class="col-md-2" *ngIf="userPermiso === 'admin'">
-                  <label for="estado" class="form-label">Estado</label>
-                  <select
-                    class="form-select"
-                    id="state"
-                    [(ngModel)]="salonData.state"
-                    name="state"
-                  >
-                    <option value="Reclamado">Reclamado</option>
-                    <option value="Validado">Validado</option>
-                    <option value="No reclamado">No reclamado</option>
-                  </select>
-                </div>
-                <div class="col-md-4 d-flex align-items-center">
-                  <label class="form-check-label me-2" for="active"
-                    >Activo</label
-                  >
-                  <div class="form-check form-switch me-3">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="active"
-                      name="active"
-                      [(ngModel)]="salonData.active"
-                    />
+                <div class="col-md-12 d-flex justify-content-between align-items-center">
+                  <div class="d-flex align-items-center">
+                    <div class="me-3 mt-3">
+                      <label for="estado" class="form-label">
+                        <i class="fa-solid fa-check"></i> Estado
+                      </label>
+                      <select
+                        class="form-select"
+                        id="state"
+                        [(ngModel)]="salonData.state"
+                        name="state"
+                      >
+                        <option value="Reclamado">Reclamado</option>
+                        <option value="Validado">Validado</option>
+                        <option value="No reclamado">No reclamado</option>
+                      </select>
+                    </div>
+                    <div class="me-3 d-flex align-items-center mt-5">
+                      <label class="form-check-label me-2" for="active">Activo</label>
+                      <div class="form-check form-switch">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="active"
+                          name="active"
+                          [(ngModel)]="salonData.active"
+                        />
+                      </div>
+                    </div>
+                    <div class="d-flex align-items-center mt-5">
+                      <label class="form-check-label me-2" for="in_vacation">Cerrado por vacaciones</label>
+                      <div class="form-check form-switch">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="in_vacation"
+                          name="in_vacation"
+                          [(ngModel)]="salonData.in_vacation"
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <label class="form-check-label me-2" for="in_vacation"
-                    >Cerrado por vacaciones</label
-                  >
-                  <div class="form-check form-switch">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="in_vacation"
-                      name="in_vacation"
-                      [(ngModel)]="salonData.in_vacation"
-                    />
-                  </div>
+                  <!-- Enlace a la derecha -->
+                  <a [href]="getSalonUrl()" target="_blank" class="text-dark me-3">
+                    <i class="fa-solid fa-globe"></i> Ir al sitio
+                  </a>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="nombre" class="form-label">Nombre</label>
+                  <label for="nombre" class="form-label"><i class="fa-regular fa-building"></i> Nombre</label>
                   <input
                     type="text"
                     class="form-control"
@@ -196,8 +204,9 @@
                     Nombre es obligatorio
                   </div>
                 </div>
+                
                 <div class="col-md-6">
-                  <label for="email" class="form-label">E-mail</label>
+                  <label for="email" class="form-label"><i class="fa fa-envelope" aria-hidden="true"></i> E-mail</label>
                   <input
                     type="email"
                     class="form-control"
@@ -220,7 +229,7 @@
 
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="direccion" class="form-label">Dirección</label>
+                  <label for="direccion" class="form-label"><i class="fa-regular fa-address-book"></i> Dirección</label>
                   <input
                     type="text"
                     class="form-control"
@@ -239,7 +248,7 @@
                 </div>
                 <div class="col-md-6">
                   <label for="telefono" class="form-label"
-                    >Nº de Teléfono</label
+                    ><i class="fa-solid fa-phone"></i> Nº de Teléfono</label
                   >
                   <input
                     type="tel"
@@ -263,7 +272,7 @@
 
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="provincia" class="form-label">Provincia</label>
+                  <label for="provincia" class="form-label"><i class="fa-solid fa-city"></i> Provincia</label>
                   <select
                     class="form-select"
                     id="provincia"
@@ -291,7 +300,7 @@
                   </div>
                 </div>
                 <div class="col-md-6">
-                  <label for="ciudad" class="form-label">Ciudad-CP</label>
+                  <label for="ciudad" class="form-label"><i class="fa-solid fa-building-user"></i> Ciudad-CP</label>
                   <select
                     class="form-select"
                     id="ciudad"
@@ -319,7 +328,7 @@
 
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="latitud" class="form-label">Latitud</label>
+                  <label for="latitud" class="form-label"><i class="fa-solid fa-compass"></i> Latitud</label>
                   <input
                     type="text"
                     class="form-control"
@@ -338,7 +347,7 @@
                   </div>
                 </div>
                 <div class="col-md-6">
-                  <label for="longitud" class="form-label">Longitud</label>
+                  <label for="longitud" class="form-label"><i class="fa-regular fa-compass"></i> Longitud</label>
                   <input
                     type="text"
                     class="form-control"
@@ -358,23 +367,25 @@
                 </div>
               </div>
 
+
               <div class="row mb-3">
                 <div class="col-md-6">
                   <label for="googlemaps" class="form-label"
-                    >URL de Google Maps</label
+                    ><i class="fa-regular fa-map"></i> URL de Google Maps</label
                   >
                   <input
                     type="text"
                     class="form-control"
                     maxlength="1000"
                     id="map"
+                    placeholder="No olvide el prefijo https://"
                     name="map"
                     [(ngModel)]="salonData.map"
                   />
                 </div>
                 <div class="col-md-6">
                   <label for="urlnegocio" class="form-label"
-                    >URL del Negocio</label
+                    ><i class="fa-solid fa-link"></i> URL del Negocio</label
                   >
                   <input
                     type="text"
@@ -382,16 +393,74 @@
                     id="url"
                     name="url"
                     maxlength="1000"
+                    placeholder="No olvide el prefijo https://"
                     value=""
                     [(ngModel)]="salonData.url"
                   />
                 </div>
               </div>
 
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="facebook_url" class="form-label"><i class="fa-brands fa-square-facebook"></i> Facebook</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="facebook_url"
+                    name="facebook_url"
+                    maxlength="1000"
+                    placeholder="No olvide el prefijo https://"
+                    [(ngModel)]="salonData.facebook_url"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="instagram_url" class="form-label"><i class="fa-brands fa-instagram"></i> Instagram</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="instagram_url"
+                    name="instagram_url"
+                    placeholder="No olvide el prefijo https://"
+                    maxlength="1000"
+                    [(ngModel)]="salonData.instagram_url"
+                  />
+                </div>
+              </div>
+
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="tiktok_url" class="form-label"><i class="fa-brands fa-tiktok"></i> TikTok</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="tiktok_url" 
+                    placeholder="No olvide el prefijo https://"
+                    name="tiktok_url"
+                    maxlength="1000"
+                    [(ngModel)]="salonData.tiktok_url"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="youtube_url" class="form-label"><i class="fa-brands fa-youtube"></i> Youtube</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="youtube_url"
+                    placeholder="No olvide el prefijo https://"
+                    name="youtube_url"
+                    maxlength="1000"
+                    [(ngModel)]="salonData.youtube_url"
+                  />
+                </div>
+              </div>
+
+
               <div class="row mb-3">
                 <div class="col-md-12">
                   <label for="sobrenosotros" class="form-label"
-                    >Sobre Nosotros</label
+                    ><i class="fa-solid fa-user"></i> Sobre Nosotros</label
                   >
                   <textarea
                     class="form-control"

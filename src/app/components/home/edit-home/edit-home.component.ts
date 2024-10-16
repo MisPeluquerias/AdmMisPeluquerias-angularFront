@@ -158,6 +158,21 @@ export class EditHomeComponent implements OnInit {
   }
 
 
+  getSalonUrl(): string {
+    if (!this.salonData || !this.salonData.name) {
+      return '#';  // Si no hay datos del salón, devuelve una URL por defecto o vacía
+    }
+  
+    const salonSlug = this.salonData.name
+      .toLowerCase()
+      .replace(/ /g, '-')           // Reemplaza los espacios con guiones
+      .replace(/[^a-z0-9-]/g, '')   // Elimina caracteres no alfanuméricos y deja solo guiones y letras
+      .replace(/--+/g, '-');        // Reemplaza múltiples guiones seguidos por uno solo
+  
+    // Construye y retorna la URL completa
+    return `https://www.mispeluquerias.com/centro/${salonSlug}/${this.salonData.id_salon}`;
+  }
+
   generateStars(rating: number): string[] {
   return Array(5).fill(0).map((_, i) => {
     if (i < Math.floor(rating)) {

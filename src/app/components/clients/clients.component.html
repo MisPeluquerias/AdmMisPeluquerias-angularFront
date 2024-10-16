@@ -33,7 +33,7 @@
                 <thead class="thead-dark">
                   <tr>
                     <th><input type="checkbox" (change)="toggleAllSelection()" [checked]="allSelected" /></th>
-                    <th>Nombre</th>
+                    <th> Nombre</th>
                     <th>Email</th>
                     <th>Creado</th>
                     <th>Telefono</th>
@@ -43,7 +43,7 @@
                 <tbody>
                   <tr *ngFor="let client of AllClients">
                     <td><input type="checkbox" [(ngModel)]="client.selected" (change)="checkIfAllSelected()" /></td>
-                    <td>{{ client.name }}</td>
+                    <td><i class="fa-solid fa-user"></i> {{ client.name }}</td>
                     <td>{{ client.email }}</td>
                     <td>{{ client.created_at |date:'dd-MM-yyyy' }}</td>
                     <td>{{ client.phone }}</td>
