@@ -567,7 +567,7 @@ export class EditHomeComponent implements OnInit {
       (response) => {
         if (response.success) {
           this.getSalonDataSelect = response.data;
-          //console.log('Servicios cargados',this.getSalonServices); // Usa este valor para gestionar la paginación en el frontend
+          console.log('Servicios cargados',this.getSalonServices); // Usa este valor para gestionar la paginación en el frontend
         } else {
           console.error('Error fetching services', response);
 
@@ -652,7 +652,7 @@ getServicesWithSubservices() {
       if (response.data) {
         // Asignar los datos, incluso si están vacíos
         this.getSalonServices = response.data;
-        //console.log('Servicios actualizados:', this.getSalonServices);
+        console.log('Servicios actualizados:', this.getSalonServices);
 
         // Maneja el caso de array vacío
         if (this.getSalonServices.length === 0) {

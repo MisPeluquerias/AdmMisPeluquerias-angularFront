@@ -36,6 +36,7 @@
                     <th>Nombre</th>
                     <th>Logo</th>
                     <th>Asignaciones a Salones</th>
+                    <th>Catagorias Asignadas</th>
                     <th>Activo</th>
                     <th class="col-1">Editar</th>
                   </tr>
@@ -49,6 +50,9 @@
                     </td>
                     <td>
                       {{brand.totalSalones}}
+                    </td>
+                    <td>
+                      {{brand.categories}}
                     </td>
                     <td>{{ brand.active ? 'Si' : 'No' }}</td>
                     <td>
@@ -98,9 +102,9 @@
 
 <!-- Modal para editar marcas -->
 <div class="modal fade" id="editBrandModal" tabindex="-1" aria-labelledby="editBrandLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header bg-dark text-white">
         <h5 class="modal-title" id="editBrandLabel">Editar Marca</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -130,7 +134,56 @@
             <input type="file" class="form-control" id="editBrandImage" (change)="onEditImageSelected($event)" />
           </div>
         </div>
+    
+       <!-- Mostrar las categorías asociadas a la marca -->
+       <label for="categoryName" class="form-label mt-3">Introduce categoria:</label>
+       <input 
+         type="text" 
+         class="form-control" 
+         id="categoryName" 
+         [(ngModel)]="selectedCategory" 
+         name="category"
+         placeholder="Haga click para ir introduciendo..."
+         (input)="searchCategory(selectedCategory)"
+         autocomplete="off"
+       >
+       <!-- Lista de resultados de búsqueda -->
+       <ul *ngIf="dataCategoryList.length > 0" class="list-group email-list">
+         <li 
+           *ngFor="let category of dataCategoryList" 
+           class="list-group-item list-group-item-action"
+           (click)="selectCategory({ name: category })"
+         ><i class="las la-tag"></i>
+           {{category}}
+         </li>
+       </ul>
+       <!-- Mostrar las categorias seleccionados -->
+       <div class="mt-3">
+        <div *ngIf="newCategory !== ''">
+          <ul class="list-group">
+            <li *ngFor="let category of newCategory.categories; let i = index" class="list-group-item d-flex justify-content-between align-items-center">
+              {{ category.name }}
+              <button type="button" class="btn btn-danger btn-sm" (click)="removeCategory(i)">
+                <i class="las la-times"></i>
+              </button>
+            </li>
+          </ul>
+        </div>
+       </div>
+       <div class="row">
+        <div class="col-12">
+          <ul class="list-group">
+            <li *ngFor="let category of categories; let i = index" class="list-group-item d-flex justify-content-between align-items-center">
+              {{ category }}
+              <button type="button" class="btn btn-danger btn-sm" (click)="removeUpdateCategory(i)">
+                <i class="las la-times"></i>
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
+      </div>
+
       <div class="modal-footer">
         <button type="button" class="btn btn-danger"  data-bs-dismiss="modal" (click)="updatebrand()">Guardar</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -142,9 +195,9 @@
 
 <!-- Modal para nueva marca -->
 <div class="modal fade" id="newBrandModal" tabindex="-1" aria-labelledby="newBrandLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header bg-dark text-white">
         <h5 class="modal-title" id="newBrandLabel">Nueva Marca</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -157,6 +210,39 @@
             <label for="newBrandName" class="form-label">Introduzca el nombre de la Marca:</label>
             <input type="text" class="form-control" id="newBrandName" [(ngModel)]="newBrand" autocomplete="off" />
           </div>
+
+          <label for="categoryName" class="form-label mt-3">Introduce categoria:</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="categoryName" 
+              [(ngModel)]="selectedCategory" 
+              name="category"
+              placeholder="Haga click para ir introduciendo..."
+              (input)="searchCategory(selectedCategory)"
+              autocomplete="off"
+            >
+            <!-- Lista de resultados de búsqueda -->
+            <ul *ngIf="dataCategoryList.length > 0" class="list-group email-list">
+              <li 
+                *ngFor="let category of dataCategoryList" 
+                class="list-group-item list-group-item-action"
+                (click)="selectCategory({ name: category })"
+              ><i class="las la-tag"></i>
+                {{category}}
+              </li>
+            </ul>
+            <!-- Mostrar las categorias seleccionados -->
+            <div class="mt-3 mb-3">
+              <ul class="list-group">
+                <li *ngFor="let category of newCategory.categories; let i = index" class="list-group-item d-flex justify-content-between align-items-center">
+                  {{ category.name}}
+                  <button type="button" class="btn btn-danger btn-sm" (click)="removeCategory(i)">
+                    <i class="las la-times"></i>
+                  </button>
+                </li>
+              </ul>
+            </div>
           <div class="col-12 mt-3">
             <label for="brandImage" class="form-label">Subir imagen de la Marca:</label>
             <input type="file" class="form-control" id="brandImage" (change)="onImageSelected($event)" />
@@ -172,12 +258,11 @@
 </div>
 
 
-
 <!-- Modal de confirmación para eliminar -->
 <div class="modal fade" id="deleteBrandModal" tabindex="-1" aria-labelledby="deleteBrandModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header bg-dark text-white">
         <h5 class="modal-title" id="deleteBrandModalLabel">Eliminar Marcas</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -185,11 +270,12 @@
         <div class="text-center mb-3">
           <img src="../../../assets/img/sello.jpg" alt="sello" width="120" class="img-fluid" />
         </div>
-        <p>¿Estás seguro que deseas eliminar las marcas seleccionadas?</p>
+        <p>¿Estás seguro que deseas eliminar la marca/s seleccionadas?</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="confirmDelete()">Eliminar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+
       </div>
     </div>
   </div>

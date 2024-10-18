@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient,HttpParams } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';
 import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -42,7 +43,14 @@ export class ReclamationService {
   }
 
   deleteReclamations(id_salon_reclamacion: string[]): Observable<any> {
-    return this.http.post(`${this.baseUrl}/reclamations/delete`, { id_salon_reclamacion: id_salon_reclamacion });
-  }
+    const localUrl = `http://localhost:3900/salon-reclamation/delete`;
+    const remoteUrl = `https://api.mispeluquerias.com/salon-reclamation/delete`;
   
+    return this.http.post(localUrl, { id_salon_reclamacion: id_salon_reclamacion }).pipe(
+      catchError((error) => {
+        console.log('Eliminando reclamacion/es...');
+        return this.http.post(remoteUrl, { id_salon_reclamacion: id_salon_reclamacion });
+      })
+    );
+  }
 }

@@ -1,7 +1,8 @@
 import { ToastrService } from 'ngx-toastr';
 import { Component } from '@angular/core';
 import { BrandsService } from '../../core/service/brands.service';
-
+import { Subject,of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-brands',
@@ -14,6 +15,7 @@ export class BrandsComponent {
   currentPage: number = 1;
   pageSize: number = 10;
   totalItems: number = 0;
+  categories: Array<{ name: string }> = []
   Math = Math;
   allSelected: boolean = false;
   searchText:string ='';
@@ -25,7 +27,11 @@ export class BrandsComponent {
   imagePreview: string | ArrayBuffer | null = null;
   selectedImgBrang:any;
   selectedUpdateImgFile:any;
-
+  private searchTermsCategory = new Subject<string>();
+  selectedCategory: string = '';
+  dataCategoryList: any[] = [];
+  newCategory: any = { email: '', salons: [] };
+  
 
   constructor(private brandsService: BrandsService,
     private toastr : ToastrService
@@ -33,63 +39,132 @@ export class BrandsComponent {
 
   ngOnInit(): void {
     this.loadAllBrands(this.currentPage);
+  
+    this.searchTermsCategory.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap((term) => {
+        if (term.length >= 2) {
+          return this.brandsService.getCategoryInLive(term);
+        } else {
+          return of([]); 
+        }
+      })
+    ).subscribe({
+      next: (category) => {
+        this.dataCategoryList = category.map((cat: any) => cat.categories); // Aquí ajustamos el formato
+      },
+      error: (error) => {
+        console.error('Error al buscar categorias:', error);
+      },
+    });
   }
 
-  loadAllBrands (page: number): void {
-    this.brandsService.loadAllBrands(page, this.pageSize,this.searchText).subscribe({
+
+  loadAllBrands(page: number): void {
+    this.brandsService.loadAllBrands(page, this.pageSize, this.searchText).subscribe({
       next: (response: any) => {
-        this.AllBrands = response.data;
+        // Convertir 'categories' en un array vacío si es una cadena vacía
+        this.AllBrands = response.data.map((brand: any) => {
+          return {
+            ...brand,
+            categories: brand.categories && brand.categories !== '' ? brand.categories.split(',') : []
+          };
+        });
+        
         this.totalItems = response.totalItems;
-        console.log('Marcas cargadas',this.AllBrands);
+        console.log('Marcas cargadas', this.AllBrands);
       },
       error: (err) => {
         console.error('Error loading brands', err);
       }
     });
   }
+  
 
+  selectCategory(category: { name: string }): void {
+    // Asegurarse de que 'categories' esté inicializado
+    if (!this.newCategory.categories) {
+      this.newCategory.categories = [];
+    }
+  
+    // Almacenar solo el nombre de la categoría en el array newCategory.categories
+    this.newCategory.categories.push({ name: category.name }); 
+    this.dataCategoryList = []; // Limpiar la lista después de la selección
+    this.selectedCategory = ''; // Limpiar el campo de entrada
+  }
 
   selectBrand(brand: any): void {
-    this.id_brand = brand.id_brand;  // Guardamos el nombre original de la categoría
+    this.id_brand = brand.id_brand;
     this.selectedBrand = brand.name;
-    this.selectedImgBrang = brand.imagePath;  // Guardamos el nombre seleccionado para su edición
+    this.selectedImgBrang = brand.imagePath;
     this.brand = brand;
-    //console.log('nombre de marca seleccionada',this.brand.name);
-    //console.log('id_marca seleccionada',this.id_brand);
-    console.log('ruta de la imagen seleccionada',this.selectedImgBrang);
+
+
+     // Reiniciar las categorías antes de cargarlas
+  this.categories = []; // Reiniciar la lista de categorías para evitar duplicados
+  this.newCategory.categories = []; // Limpiar las categorías añadidas por el usuario
+  
+    // Convertir las categorías en array si es una cadena
+    if (typeof brand.categories === 'string') {
+      this.categories = brand.categories.split(',').map((cat: string) => cat.trim());; // Separar por comas y eliminar espacios
+    } else {
+      // Si ya es un array, asignarlo directamente
+      this.categories = Array.isArray(brand.categories) ? brand.categories : [];
+    }
+    
+    console.log('Categorías asignadas:', this.categories);
   }
 
 
-  updatebrand(): void {
 
+  removeCategory(index: number): void {
+    this.newCategory.categories.splice(index, 1); // Eliminar el salón de la lista
+  }
+  removeUpdateCategory(index: number): void {
+    // Eliminar la categoría en el índice proporcionado
+    this.categories.splice(index, 1);
+  }
+  
+
+
+  searchCategory(term: string): void {
+    this.searchTermsCategory.next(term);
+  }
+
+  updatebrand(): void {
     if (!this.selectedBrand || this.selectedBrand.trim() === '') {
       this.toastr.warning('El nombre de la marca no puede estar vacío.');
       return;
+    }
+  
+    // Crear el FormData
+    const formData = new FormData();
+    formData.append('name', this.selectedBrand); // Añadir el nombre de la marca
+    
+    // Asegúrate de que el archivo de imagen se haya seleccionado, si no, solo actualiza las categorías y el nombre
+    if (this.selectedUpdateImgFile) {
+      formData.append('brandImage', this.selectedUpdateImgFile); // Añadir la imagen si fue seleccionada
+    }
+  
+    // Convertir las categorías a JSON y añadirlas al FormData
+    formData.append('categories', JSON.stringify(this.newCategory.categories));
+  
+    // Llamar al servicio para actualizar la marca, pasando el ID en la URL
+    this.brandsService.updateBrand(this.id_brand, formData).subscribe({
+      next: (response) => {
+        this.toastr.success('Marca actualizada con éxito');
+        this.loadAllBrands(this.currentPage); // Recargar la lista de marcas
+        // Aquí puedes cerrar el modal si es necesario, o realizar otras acciones
+      },
+      error: (error) => {
+        this.toastr.error('Error al actualizar la marca');
+        console.error('Error al actualizar la marca', error);
+      }
+    });
   }
 
-    if (this.selectedUpdateImgFile) {
-        const formData = new FormData();
-        formData.append('id_brand', this.id_brand.toString());
-        formData.append('name', this.selectedBrand);
-        formData.append('brandImage', this.selectedUpdateImgFile); // Asegúrate de que este nombre coincida con el backend
 
-        // Llama a tu servicio para actualizar la marca
-        this.brandsService.updateBrand(formData).subscribe(
-            (response) => {
-              this.toastr.success('Marca actualizada con éxito');
-              this.loadAllBrands(this.currentPage);
-                //console.log('Marca actualizada exitosamente', response);
-                // Aquí puedes cerrar el modal y actualizar la lista de marcas si es necesario
-            },
-            (error) => {
-              this.toastr.error('Error al actualizar la marca');
-                console.error('Error al actualizar la marca', error);
-            }
-        );
-    } else {
-        console.warn('No se seleccionó ninguna imagen para actualizar.');
-    }
-}
 
   onEditImageSelected(event: any): void {
     const file = event.target.files[0];
@@ -190,16 +265,32 @@ export class BrandsComponent {
       return;
     }
   
+    if (this.newCategory.categories.length === 0) {
+      this.toastr.warning('Debe seleccionar al menos una categoría', 'Advertencia');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('name', this.newBrand);
     formData.append('brandImage', this.selectedImgFile);
-  
+    
+    // Extraer solo los nombres de las categorías (o IDs si es el caso)
+    const categoryNames = this.newCategory.categories.map((category: any) => category.name);
+    const categoriesJson = JSON.stringify(categoryNames);
+    
+    formData.append('categories', categoriesJson); // Añadir las categorías en formato JSON
+    
+    formData.forEach((value, key) => {
+      console.log(key, value); // Verificar los datos que se envían
+    });
+    
     this.brandsService.addBrand(formData).subscribe({
       next: (response: any) => {
         this.toastr.success('Marca añadida con éxito', 'Éxito');
         this.loadAllBrands(this.currentPage);
-        this.newBrand = ''; // Resetear el archivo seleccionado
-        this.imagePreview = '../../../assets/img/sello.jpg'; // Resetear el archivo seleccionado si es necesario
+        this.newBrand = ''; // Resetear el campo de nombre de la marca
+        this.imagePreview = '../../../assets/img/sello.jpg'; // Resetear la vista previa de la imagen si es necesario
+        this.newCategory.categories = []; // Limpiar las categorías seleccionadas
       },
       error: (err: any) => {
         console.error('Error añadiendo marca', err);

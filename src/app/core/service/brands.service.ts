@@ -29,11 +29,22 @@ export class BrandsService {
   }
   
   
-  updateBrand(data: FormData): Observable<any> {
-    return this.http.put(`${this.baseUrl}/brands/updateBrand`, data);
-}
+  updateBrand(id: number, data: FormData): Observable<any> {
+    return this.http.put(`${this.baseUrl}/brands/updateBrand/${id}`, data);
+  }
 
   deleteBrand(id_brand: string[]): Observable<any> {
     return this.http.post(`${this.baseUrl}/brands/deleteBrand`, { id_brand: id_brand });
+  }
+
+  getCategoryInLive(category: string) {
+    return this.http.get<any[]>(
+      `${this.baseUrl}/brands/searchCategoryInLive`,
+      {
+        params: {
+          category,
+        },
+      }
+    );
   }
 }
