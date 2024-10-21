@@ -4,6 +4,7 @@ import { environment } from '../../../environments/environment.development';
 import { throwError } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
+import { HttpParams } from '@angular/common/http';
 let EditHomeService = class EditHomeService {
     constructor(http) {
         this.http = http;
@@ -83,12 +84,13 @@ let EditHomeService = class EditHomeService {
         };
         return this.http.put(`${this.baseUrl}/edithomeimages/updatePrincipalImage`, body);
     }
-    addService(id_salon, id_service, id_service_type, time) {
+    addService(id_salon, id_service, id_service_type, time, price) {
         const body = {
             id_salon: id_salon,
             id_service: id_service,
             id_service_type: id_service_type,
-            time: time
+            time: time,
+            price: price
         };
         return this.http.post(`${this.baseUrl}/edithome/addService`, body);
     }
@@ -146,6 +148,25 @@ let EditHomeService = class EditHomeService {
     }
     getCategories() {
         return this.http.get(`${this.baseUrl}/edithome/getAllCategoriesSalon`);
+    }
+    getBrandByIdSalon(id_salon) {
+        const params = new HttpParams().set('id_salon', id_salon.toString());
+        return this.http.get(`${this.baseUrl}/edithome/getBrandsBySalon`, { params });
+    }
+    addBrandToSalon(salonId, brandId) {
+        return this.http.post(`${this.baseUrl}/edithome/addBrandToSalon`, { salonId, brandId });
+    }
+    deleteBrandById(id_brand) {
+        return this.http.delete(`${this.baseUrl}/edithome/deleteBrandById`, {
+            body: { id_brand }
+        });
+    }
+    UpdateBrandsalon(id_brand_salon, id_brand, id_salon) {
+        return this.http.put(`${this.baseUrl}/edithome/UpdateBrandById`, {
+            id_brand_salon,
+            id_brand,
+            id_salon
+        });
     }
 };
 EditHomeService = __decorate([

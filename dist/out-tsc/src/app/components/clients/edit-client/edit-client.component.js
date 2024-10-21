@@ -9,6 +9,7 @@ let EditClientComponent = class EditClientComponent {
         this.provinces = [];
         this.cities = [];
         this.clientData = [];
+        this.formValid = false;
     }
     ngOnInit() {
         const id_user = this.route.snapshot.paramMap.get('id');
@@ -21,12 +22,32 @@ let EditClientComponent = class EditClientComponent {
         this.getProvinces();
     }
     updateClient() {
+        this.formValid = true;
+        // Verifica si todos los campos requeridos están llenos
+        if (!this.clientData.name || !this.clientData.lastname || !this.clientData.phone || !this.clientData.email || !this.clientData.address || !this.clientData.id_province || !this.clientData.id_city || !this.clientData.dni) {
+            this.toastr.error('Por favor, complete todos los campos obligatorios.');
+            return;
+        }
         this.editClientService.updateClient(this.clientData).subscribe((response) => {
             console.log('Cliente actualizado exitosamente', response);
             this.toastr.success('Cambios realizados con éxito');
         }, (error) => {
             console.error('Error al actualizar el cliente', error);
-            this.toastr.error('No se realizaron los cambios');
+            // Maneja el caso de errores por duplicado (correo o DNI)
+            if (error.status === 409 && error.error) {
+                if (error.error.message === 'El correo electrónico ya está registrado.') {
+                    this.toastr.error('El correo electrónico ya está registrado.');
+                }
+                else if (error.error.message === 'El DNI ya está registrado.') {
+                    this.toastr.error('El DNI ya está registrado.');
+                }
+                else {
+                    this.toastr.error('No se realizaron los cambios.');
+                }
+            }
+            else {
+                this.toastr.error('No se realizaron los cambios.');
+            }
         });
     }
     getClientData(id_user) {

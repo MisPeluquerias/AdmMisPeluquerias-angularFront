@@ -2,6 +2,7 @@ import { __decorate } from "tslib";
 import { Injectable } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';
+import { catchError } from 'rxjs/operators';
 let ReclamationService = class ReclamationService {
     constructor(http) {
         this.http = http;
@@ -28,6 +29,14 @@ let ReclamationService = class ReclamationService {
             email: email
         };
         return this.http.put(`${this.baseUrl}/reclamations/updateStateReclamation`, data);
+    }
+    deleteReclamations(id_salon_reclamacion) {
+        const localUrl = `http://localhost:3900/salon-reclamation/delete`;
+        const remoteUrl = `https://api.mispeluquerias.com/salon-reclamation/delete`;
+        return this.http.post(localUrl, { id_salon_reclamacion: id_salon_reclamacion }).pipe(catchError((error) => {
+            console.log('Eliminando reclamacion/es...');
+            return this.http.post(remoteUrl, { id_salon_reclamacion: id_salon_reclamacion });
+        }));
     }
 };
 ReclamationService = __decorate([

@@ -17,6 +17,7 @@ let ServicesComponent = class ServicesComponent {
         this.selectedService = { service_name: '' };
         this.selectedSubServices = [];
         this.subservicesAsText = "";
+        this.selectedSubServiceIds = [];
     }
     ngOnInit() {
         this.loadAllServices(this.currentPage);
@@ -25,6 +26,7 @@ let ServicesComponent = class ServicesComponent {
         this.servicesService.loadAllServices(page, this.pageSize, this.searchText).subscribe({
             next: (response) => {
                 this.AllServices = response.data;
+                console.log('Servicios cargados:', this.AllServices);
                 this.totalItems = response.totalItems;
             },
             error: (err) => {
@@ -166,14 +168,19 @@ let ServicesComponent = class ServicesComponent {
     }
     updateSubService() {
         if (this.subservicesAsText.trim() === "" || this.subservicesAsText === "") {
-            this.toastr.error('Error, Introduzca al meno un subservicio');
+            this.toastr.error('Error, Introduzca al menos un subservicio');
             return;
         }
         // Convertir el texto del textarea en un arreglo de subservicios
-        this.selectedSubServices = this.subservicesAsText.split(',').map(subservice => subservice.trim()).filter(subservice => subservice.length > 0);
+        this.selectedSubServices = this.subservicesAsText.split(',')
+            .map(subservice => subservice.trim())
+            .filter(subservice => subservice.length > 0);
+        // Asegurarse de que la lista de subservicios contiene los id_service_type
         const updatedService = {
-            subservices: this.selectedSubServices // Enviar la lista de subservicios actualizada
+            subservices: this.selectedSubServices,
+            service_type_ids: this.selectedSubServiceIds // Asegúrate de que este arreglo contiene los IDs
         };
+        console.log('Servicio actualizado:', updatedService);
         // Asegurarse de que el id_service esté presente
         if (!this.selectedService.id_service) {
             this.toastr.error('No se pudo actualizar los subservicios porque falta el ID del servicio');

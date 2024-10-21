@@ -19,11 +19,18 @@ let BrandsService = class BrandsService {
     addBrand(formData) {
         return this.http.post(`${this.baseUrl}/brands/addBrand`, formData);
     }
-    updateBrand(data) {
-        return this.http.put(`${this.baseUrl}/brands/updateBrand`, data);
+    updateBrand(id, data) {
+        return this.http.put(`${this.baseUrl}/brands/updateBrand/${id}`, data);
     }
     deleteBrand(id_brand) {
         return this.http.post(`${this.baseUrl}/brands/deleteBrand`, { id_brand: id_brand });
+    }
+    getCategoryInLive(category) {
+        return this.http.get(`${this.baseUrl}/brands/searchCategoryInLive`, {
+            params: {
+                category,
+            },
+        });
     }
 };
 BrandsService = __decorate([

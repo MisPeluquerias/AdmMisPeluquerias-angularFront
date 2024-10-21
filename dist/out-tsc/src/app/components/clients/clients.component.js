@@ -1,9 +1,10 @@
 import { __decorate } from "tslib";
 import { Component } from '@angular/core';
 let ClientsComponent = class ClientsComponent {
-    constructor(clientsService, router) {
+    constructor(clientsService, router, toastr) {
         this.clientsService = clientsService;
         this.router = router;
+        this.toastr = toastr;
         this.AllClients = [];
         this.currentPage = 1;
         this.pageSize = 10;
@@ -63,12 +64,30 @@ let ClientsComponent = class ClientsComponent {
     hasSelected() {
         return this.AllClients.some(client => client.selected);
     }
-    deleteSelected() {
-        this.AllClients = this.AllClients.filter(client => !client.selected);
-        this.allSelected = false;
-    }
     editClient(id) {
         this.router.navigate(['edit-client/edit', id]);
+    }
+    deleteSelected() {
+        const selectedClients = this.AllClients.filter(client => client.selected).map(client => client.id_user);
+        if (selectedClients.length > 0) {
+            this.clientsService.deleteClients(selectedClients).subscribe({
+                next: () => {
+                    // Filtra la lista localmente para eliminar los seleccionados
+                    this.AllClients = this.AllClients.filter(client => !client.selected);
+                    this.allSelected = false;
+                    // Mostrar notificación de éxito
+                    this.toastr.success('Clientes eliminados correctamente');
+                },
+                error: (err) => {
+                    console.error('Error eliminando clientes', err);
+                    // Mostrar notificación de error
+                    this.toastr.error('Error al eliminar clientes');
+                }
+            });
+        }
+        else {
+            this.toastr.warning('No hay clientes seleccionados');
+        }
     }
 };
 ClientsComponent = __decorate([

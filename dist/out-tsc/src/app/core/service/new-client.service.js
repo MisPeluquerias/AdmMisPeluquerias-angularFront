@@ -1,7 +1,6 @@
 import { __decorate } from "tslib";
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
-import { HttpHeaders } from '@angular/common/http';
 let NewClientService = class NewClientService {
     constructor(http) {
         this.http = http;
@@ -26,9 +25,20 @@ let NewClientService = class NewClientService {
     uploadProfilePicture(id_user, formData) {
         return this.http.put(`${this.baseUrl}/new-client/uploadProfilePicture/${id_user}`, formData);
     }
-    addNewClient(userData) {
-        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-        return this.http.post(`${this.baseUrl}/new-client/addNewUser`, userData, { headers });
+    addNewClient(name, lastname, email, phone, address, id_province, id_city, dni, password) {
+        const body = {
+            name: name,
+            lastname: lastname,
+            email: email,
+            phone: phone,
+            address: address,
+            id_province: id_province,
+            id_city: id_city,
+            dni: dni,
+            password: password
+        };
+        console.log('datos enviados al backend:', body);
+        return this.http.post(`${this.baseUrl}/new-client/addNewClient`, body);
     }
 };
 NewClientService = __decorate([

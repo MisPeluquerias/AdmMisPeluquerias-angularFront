@@ -65,10 +65,17 @@ let EditHomeComponent = class EditHomeComponent {
         this.isImageOpen = false;
         this.services = [];
         this.newServiceName = '';
+        this.updateServiceName = '';
         this.newSubservices = '';
+        this.updateSubservices = '';
         this.newServiceTime = 0;
+        this.updateServiceTime = 0;
+        this.newServicePrice = "";
+        this.updateServicePrice = "";
         this.selectedService = {};
         this.selectedSubservice = {};
+        this.selectedNewBrand = "";
+        this.selectedUpdateBrand = "";
         this.totalPages = 1;
         this.getSalonDataSelect = [];
         this.faqByIdSalon = [];
@@ -87,8 +94,8 @@ let EditHomeComponent = class EditHomeComponent {
         this.selectedCategory = {};
         this.oldCategory = '';
         this.userPermiso = '';
-        this.brands = [];
         this.responseText = '';
+        this.selectedUpdateBrandIdName = "";
         this.days = [
             { name: 'Lunes', hours: [] },
             { name: 'Martes', hours: [] },
@@ -113,6 +120,8 @@ let EditHomeComponent = class EditHomeComponent {
             this.selectedCategory = '';
         });
         this.getUserPermiso();
+        this.getAllBrands();
+        this.getBrandsBySalon();
     }
     getUserPermiso() {
         // Llama al método del servicio para obtener el permiso del usuario
@@ -127,6 +136,18 @@ let EditHomeComponent = class EditHomeComponent {
                 // Manejo de errores si es necesario
             }
         });
+    }
+    getSalonUrl() {
+        if (!this.salonData || !this.salonData.name) {
+            return '#'; // Si no hay datos del salón, devuelve una URL por defecto o vacía
+        }
+        const salonSlug = this.salonData.name
+            .toLowerCase()
+            .replace(/ /g, '-') // Reemplaza los espacios con guiones
+            .replace(/[^a-z0-9-]/g, '') // Elimina caracteres no alfanuméricos y deja solo guiones y letras
+            .replace(/--+/g, '-'); // Reemplaza múltiples guiones seguidos por uno solo
+        // Construye y retorna la URL completa
+        return `https://www.mispeluquerias.com/centro/${salonSlug}/${this.salonData.id_salon}`;
     }
     generateStars(rating) {
         return Array(5).fill(0).map((_, i) => {
@@ -174,7 +195,7 @@ let EditHomeComponent = class EditHomeComponent {
         this.editHomeService.getSalonById(id_salon).subscribe((response) => {
             this.salonData = response.data;
             this.averageRatingStart = this.salonData.average_rating || 0;
-            console.log('salonData', this.salonData);
+            //console.log('salonData', this.salonData);
             // Verificar si las categorías existen y no son nulas
             if (this.salonData.categories && this.salonData.categories.trim() !== '') {
                 try {
@@ -425,7 +446,7 @@ let EditHomeComponent = class EditHomeComponent {
         this.editHomeService.getServices().subscribe((response) => {
             if (response.success) {
                 this.getSalonDataSelect = response.data;
-                //console.log('Servicios cargados',this.getSalonServices); // Usa este valor para gestionar la paginación en el frontend
+                console.log('Servicios cargados', this.getSalonServices); // Usa este valor para gestionar la paginación en el frontend
             }
             else {
                 console.error('Error fetching services', response);
@@ -441,6 +462,7 @@ let EditHomeComponent = class EditHomeComponent {
         if (selectedService) {
             this.selectedServiceName = selectedService.name;
         }
+        this.updateSubservices = "";
         this.getSubservicesByService(this.selectedServiceId);
         console.log('ID del servicio seleccionado:', this.selectedServiceId);
         console.log('Nombre del servicio seleccionado:', this.selectedServiceName);
@@ -473,7 +495,7 @@ let EditHomeComponent = class EditHomeComponent {
             return;
         }
         // Asegúrate de enviar selectedServiceName en lugar de newServiceName
-        this.editHomeService.addService(this.salonId, this.selectedServiceId, this.newSubservices, this.newServiceTime).subscribe((response) => {
+        this.editHomeService.addService(this.salonId, this.selectedServiceId, this.newSubservices, this.newServiceTime, this.newServicePrice).subscribe((response) => {
             if (response.success) {
                 this.toastr.success('Servicio agregado con éxito');
                 this.getServicesWithSubservices(); // Recargar la lista de servicios
@@ -483,7 +505,7 @@ let EditHomeComponent = class EditHomeComponent {
             }
         }, (error) => {
             console.error('Error adding service:', error);
-            this.toastr.error('Error al agregar el servicio');
+            this.toastr.error('Error al agregar el servicio,compruebe si el servicio ya esta en su lista');
         });
     }
     getServicesWithSubservices() {
@@ -491,7 +513,7 @@ let EditHomeComponent = class EditHomeComponent {
             if (response.data) {
                 // Asignar los datos, incluso si están vacíos
                 this.getSalonServices = response.data;
-                //console.log('Servicios actualizados:', this.getSalonServices);
+                console.log('Servicios actualizados:', this.getSalonServices);
                 // Maneja el caso de array vacío
                 if (this.getSalonServices.length === 0) {
                     console.warn('No hay servicios disponibles.');
@@ -600,8 +622,10 @@ let EditHomeComponent = class EditHomeComponent {
         // Clona el objeto del servicio seleccionado
         this.selectedService = { ...service };
         // Asigna los valores necesarios
-        this.newServiceName = this.selectedService.id_service; // ID del servicio seleccionado
-        this.newServiceTime = this.selectedService.time;
+        this.updateServiceName = this.selectedService.id_service;
+        this.updateServiceTime = this.selectedService.time;
+        this.updateServicePrice = this.selectedService.price.toString();
+        this.updateSubservices = this.selectedService.id_service_type.toString();
         // Asigna el ID de Salon Service Type
         this.idSalonServiceType = this.selectedService.id_salon_service_type; // Asegúrate de que este valor exista en el objeto `service`
         // Cargar los subservicios correspondientes al servicio seleccionado
@@ -612,8 +636,8 @@ let EditHomeComponent = class EditHomeComponent {
                 // Una vez cargados los subservicios, asigna el subservicio seleccionado
                 this.newSubservices = this.selectedService.id_service_type.toString();
                 // Verificación: imprimir los valores asignados
-                console.log('Servicio seleccionado:', this.newServiceName);
-                console.log('Subservicio seleccionado:', this.newSubservices);
+                console.log('Servicio seleccionado:', this.updateServiceName);
+                console.log('Subservicio seleccionado:', this.updateSubservices);
                 console.log('ID de Salon Service Type:', this.idSalonServiceType);
             }
             else {
@@ -629,44 +653,30 @@ let EditHomeComponent = class EditHomeComponent {
         console.log('Subservicio seleccionado:', this.selectedSubservice);
     }
     updateServiceWithSubservice() {
-        // Validaciones detalladas para identificar qué dato falta
-        if (this.idSalonServiceType === null || this.idSalonServiceType === undefined) {
-            this.toastr.error('El ID de Salon Service Type es necesario para la actualización.');
+        if (!this.updateServiceName || !this.updateSubservices || !this.updateServiceTime) {
+            this.toastr.error('Por favor, rellene los campos servicios,subservicios y tiempo de servicio');
             return;
         }
-        if (this.selectedServiceId === null || this.selectedServiceId === undefined) {
-            this.toastr.error('El ID del Servicio seleccionado es necesario para la actualización.');
-            return;
-        }
-        if (this.selectedSubservice === null || this.selectedSubservice === undefined) {
-            this.toastr.error('El Subservicio seleccionado es necesario para la actualización.');
-            return;
-        }
-        if (this.newServiceTime === null || this.newServiceTime === undefined || this.newServiceTime <= 0) {
-            this.toastr.error('El tiempo del servicio debe ser un valor válido y mayor a cero.');
-            return;
-        }
-        // Crear el objeto con los datos para la actualización
         const updateData = {
             idSalonServiceType: this.idSalonServiceType,
-            idService: this.selectedServiceId,
-            idServiceType: this.selectedSubservice,
-            time: this.newServiceTime,
-            active: 1, // Cambia si necesitas actualizarlo de manera diferente
+            idService: this.updateServiceName,
+            idServiceType: this.updateSubservices,
+            price: this.updateServicePrice,
+            time: this.updateServiceTime,
+            active: 1,
         };
-        // Llamada al servicio para actualizar el servicio con los subservicios
+        console.log('Datos enviados:', updateData); // Verifica los valores
         this.editHomeService.updateServiceWithSubservice(updateData).subscribe((response) => {
             if (response.success) {
                 this.toastr.success('Servicio actualizado con éxito');
-                this.getServicesWithSubservices(); // Recargar la lista de servicios
-                this.modalService.dismissAll(); // Cerrar el modal de edición
+                this.getServicesWithSubservices();
             }
             else {
                 this.toastr.error('Error al actualizar el servicio');
             }
         }, (error) => {
             console.error('Error updating service:', error);
-            this.toastr.error('Error al actualizar el servicio');
+            this.toastr.error('Error al actualizar el servicio, compruebe que el subervicio no este en su lista.');
         });
     }
     openEditModalToReview(review) {
@@ -703,8 +713,6 @@ let EditHomeComponent = class EditHomeComponent {
             next: () => {
                 this.toastr.success('Reseña actualizada con éxito');
                 this.getReviewsById();
-                // Refrescar todos los datos
-                // Recargar las puntuaciones
             },
             error: (error) => {
                 //console.error('Error al actualizar la reseña:', error);
@@ -719,6 +727,31 @@ let EditHomeComponent = class EditHomeComponent {
     }
     getCheckboxState(rating) {
         return [1, 2, 3, 4, 5].map((val) => val <= rating);
+    }
+    checkLengthTime(event) {
+        const input = event.target;
+        if (input.value.length > 3) {
+            input.value = input.value.slice(0, 3);
+        }
+    }
+    checkLengthPrice(event) {
+        const input = event.target;
+        let value = input.value;
+        // Limitar a cuatro enteros y dos decimales
+        const regex = /^\d{0,4}(\.\d{0,2})?$/;
+        if (!regex.test(value)) {
+            // Remover caracteres no permitidos y limitar la longitud
+            value = value.replace(/[^0-9.]/g, '').substring(0, 7); // 7 por cuatro enteros, punto y dos decimales
+            const parts = value.split('.');
+            if (parts[0].length > 4) {
+                parts[0] = parts[0].substring(0, 4);
+            }
+            if (parts[1] && parts[1].length > 2) {
+                parts[1] = parts[1].substring(0, 2);
+            }
+            value = parts.join('.');
+        }
+        input.value = value;
     }
     confirmResponseReview() {
         const responseReview = {
@@ -747,7 +780,7 @@ let EditHomeComponent = class EditHomeComponent {
             // Opcional: Puedes actualizar la lista de categorías o realizar otra acción después de añadir la categoría
             this.getSalonData(this.salonId);
         }, (error) => {
-            this.toastr.error('Error al añadir la categoría.');
+            this.toastr.error('Error al añadir la categoría. Por favor, compruebe si la categoría ya existe en la lista.');
             console.error('Error:', error);
         });
         // Reiniciar la categoría seleccionada
@@ -789,7 +822,7 @@ let EditHomeComponent = class EditHomeComponent {
                 this.getSalonData(this.salonId); // Actualiza la lista de categoríasp
             }, (error) => {
                 console.error('Error al actualizar la categoría:', error);
-                this.toastr.error('Error al actualizar la categoría.');
+                this.toastr.error('Error al actualizar la categoría. Por favor, compruebe si la categoría ya existe en la lista.');
             });
         }
         else {
@@ -853,12 +886,91 @@ let EditHomeComponent = class EditHomeComponent {
         this.editHomeService.getBrands().subscribe({
             next: (response) => {
                 this.brands = response; // Asigna la respuesta a la variable `allBrands`
-                console.log('marcas recividas', this.brands);
+                //console.log('marcas recividas',this.brands);
             },
             error: (err) => {
                 console.error('Error al obtener las marcas:', err);
                 this.toastr.error('Hubo un error al cargar las marcas', 'Error');
             }
+        });
+    }
+    getBrandsBySalon() {
+        this.editHomeService.getBrandByIdSalon(this.salonId).subscribe({
+            next: (response) => {
+                this.brandsBySalon = response; // Asigna la respuesta a la variable `allBrands`
+                console.log('marcas recividas', this.brandsBySalon);
+            },
+            error: (err) => {
+                console.error('Error al obtener las marcas:', err);
+                //this.toastr.error('Hubo un error al cargar las marcas', 'Error');
+            }
+        });
+    }
+    addBrandSalon() {
+        if (!this.salonId || !this.selectedNewBrand) {
+            this.toastr.warning('Debe seleccionar un salón y una marca', 'Advertencia');
+            return;
+        }
+        //console.log('ID de la marca seleccionado:', this.selectedNewBrand);
+        //console.log('ID del salón:', this.salonId);
+        this.editHomeService.addBrandToSalon(this.salonId, this.selectedNewBrand).subscribe({
+            next: (response) => {
+                this.toastr.success('Marca añadida al salón con éxito', 'Éxito');
+                console.log('Respuesta del servidor:', response);
+                this.getBrandsBySalon();
+                // Aquí puedes añadir lógica adicional, como recargar la lista de salones o cerrar el modal
+            },
+            error: (err) => {
+                console.error('Error al añadir la marca al salón:', err);
+                this.toastr.error('Hubo un error al añadir la marca al salón, Por favor compruebe que la marca exista en su lista', 'Error');
+            }
+        });
+    }
+    setToDeleteBrand(id_brand) {
+        this.setDeleteBrand = id_brand;
+    }
+    confirmDeleteBrand() {
+        if (this.setDeleteBrand) {
+            this.editHomeService.deleteBrandById(this.setDeleteBrand).subscribe({
+                next: () => {
+                    this.toastr.success('Marca eliminada de su salón con éxito');
+                    console.log('Marca eliminada con éxito');
+                    this.getBrandsBySalon();
+                },
+                error: (err) => {
+                    this.toastr.error('Error al eliminar la marca');
+                    console.error('Error al eliminar la marca:', err);
+                },
+            });
+        }
+        else {
+            console.warn('No se ha seleccionado ninguna marca para eliminar.');
+        }
+    }
+    setToUpdateBrand(id_brand_salon) {
+        this.selectedUpdateBrand = id_brand_salon;
+    }
+    updateBrandSalon() {
+        // Verifica si los valores están presentes
+        if (!this.selectedUpdateBrand || !this.selectedUpdateBrandIdName) {
+            console.warn("La marca o el nombre de marca no están seleccionados.");
+            return;
+        }
+        // Logs para confirmar los valores antes de hacer la llamada
+        //console.log('ID enviado para modificar (id_brand_salon):', this.selectedUpdateBrand);
+        //console.log('ID brand enviado para modificar (id_brand):', this.selectedUpdateBrandIdName);
+        this.editHomeService.UpdateBrandsalon(this.selectedUpdateBrand, this.selectedUpdateBrandIdName, this.salonId).subscribe({
+            next: (data) => {
+                this.toastr.success('La marca del salón ha sido actualizada con éxito');
+                this.selectedUpdateBrandIdName = "";
+                this.getBrandsBySalon();
+            },
+            error: (error) => {
+                this.toastr.error('Error, no se pudo actualizar la marca seleccionada, Por favor compruebe que la marca no este en su lista.');
+                console.error('Error al actualizar la marca del salón:', error);
+                this.selectedUpdateBrandIdName = "";
+            },
+            complete: () => console.log("Proceso completado con éxito.")
         });
     }
 };

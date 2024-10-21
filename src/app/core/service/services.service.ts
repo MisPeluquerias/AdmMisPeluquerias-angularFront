@@ -43,7 +43,7 @@ export class ServicesService {
     return this.http.put(`${this.baseUrl}/services/updateSubservices/${id_service}`, data);
   }
   
-  updateService(id_service: string, data: any): Observable<any> {
-    return this.http.put(`${this.baseUrl}/services/updateService/${id_service}`, data);
+  updateService(service_type_ids: string, data: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/services/updateService/${service_type_ids}`, data);
   }  
 }

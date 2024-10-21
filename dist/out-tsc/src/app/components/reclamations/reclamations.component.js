@@ -68,22 +68,6 @@ let ReclamationsComponent = class ReclamationsComponent {
     hasSelected() {
         return this.AllReclamations.some(reclamation => reclamation.selected);
     }
-    deleteSelected() {
-        /*
-        const selectedIds = this.AllReclamations.filter(reclamation => reclamation.selected).map(reclamation => reclamation.id);
-        if (selectedIds.length > 0) {
-          this.reclamationService.deleteReclamations(selectedIds).subscribe({
-            next: () => {
-              this.loadAllReclamations();
-              this.allSelected = false;
-            },
-            error: (err) => {
-              console.error('Error deleting selected reclamations', err);
-            }
-          });
-        }
-          */
-    }
     selectedReclamationUpdate(reclamation) {
         this.selectedReclamation = {
             id_salon_reclamacion: reclamation.id_salon_reclamacion,
@@ -106,6 +90,30 @@ let ReclamationsComponent = class ReclamationsComponent {
                 console.error('Error updating reclamation state', err);
             }
         });
+    }
+    deleteSelected() {
+        const selectedReclamations = this.AllReclamations
+            .filter(reclamation => reclamation.selected)
+            .map(reclamation => reclamation.id_salon_reclamacion);
+        if (selectedReclamations.length > 0) {
+            this.reclamationService.deleteReclamations(selectedReclamations).subscribe({
+                next: () => {
+                    // Filtrar la lista localmente para eliminar las seleccionadas
+                    this.AllReclamations = this.AllReclamations.filter(reclamation => !reclamation.selected);
+                    this.allSelected = false;
+                    // Mostrar notificación de éxito
+                    this.toastr.success('Reclamaciones eliminadas correctamente');
+                },
+                error: (err) => {
+                    console.error('Error eliminando reclamaciones', err);
+                    // Mostrar notificación de error
+                    this.toastr.error('Error al eliminar reclamaciones');
+                }
+            });
+        }
+        else {
+            this.toastr.warning('No hay reclamaciones seleccionadas para eliminar');
+        }
     }
 };
 ReclamationsComponent = __decorate([

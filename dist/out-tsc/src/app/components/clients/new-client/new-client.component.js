@@ -5,98 +5,49 @@ let NewClientComponent = class NewClientComponent {
         this.toastr = toastr;
         this.newClientService = newClientService;
         this.password = '';
+        this.name = "";
+        this.lastname = "";
+        this.email = "";
+        this.phone = "";
+        this.address = "";
+        this.id_province = "";
+        this.id_city = "";
+        this.dni = "";
         this.confirmPassword = '';
         this.errorMessage = '';
         this.userData = [];
         this.cities = [];
         this.provinces = [];
         this.errors = {};
+        this.formValid = false;
     }
     ngOnInit() {
         this.getProvinces();
     }
     addNewClient() {
-        this.errors = {};
-        let hasError = false;
-        if (!this.userData.name) {
-            this.errors['name'] = 'El nombre es obligatorio';
-            console.log('nombre requerido');
-            hasError = true;
-        }
-        if (!this.userData.lastname) {
-            this.errors['lastname'] = 'Los apellidos son obligatorios';
-            console.log('Apellidos requeridos');
-            hasError = true;
-        }
-        if (!this.userData.email || !this.validateEmail(this.userData.email)) {
-            this.errors['email'] = 'El correo electrónico no es válido';
-            console.log('Email requerido');
-            hasError = true;
-        }
-        if (!this.userData.phone || !this.validatePhone(this.userData.phone)) {
-            this.errors['phone'] = 'El número de teléfono no es válido';
-            console.log('Telefono requerido');
-            hasError = true;
-        }
-        if (!this.userData.address) {
-            this.errors['address'] = 'La dirección es obligatoria';
-            console.log('Direccion requerida');
-            hasError = true;
-        }
-        if (!this.userData.id_province) {
-            this.errors['id_province'] = 'Debe seleccionar una provincia';
-            console.log('id_province requerida');
-            hasError = true;
-        }
-        if (!this.userData.id_city) {
-            this.errors['id_city'] = 'Debe seleccionar una población';
-            console.log('id_city requerida');
-            hasError = true;
-        }
-        if (!this.userData.dni || !this.validateDNI(this.userData.dni)) {
-            this.errors['dni'] = 'El NIF no es válido';
-            console.log('Nif requerido');
-            hasError = true;
-        }
-        if (this.userData.password !== this.userData.confirmPassword) {
-            this.errors['confirmPassword'] = 'Las contraseñas no coinciden';
-            console.log('Contraseña requerida');
-            hasError = true;
-        }
-        if (!this.userData.password || this.userData.password.length < 6) {
-            this.errors['password'] = 'La contraseña debe tener al menos 6 caracteres';
-            console.log('Confirmacion de contraseña requerida');
-            hasError = true;
-        }
-        console.log('Password:', this.userData.password);
-        this.userData.permiso = 'client';
-        this.userData.id_user = "";
-        if (hasError) {
+        this.formValid = true;
+        // Verificar si todos los campos requeridos están llenos
+        if (!this.name || !this.lastname || !this.email || !this.phone || !this.address || !this.id_province || !this.id_city || !this.dni || !this.password || !this.confirmPassword) {
             return;
         }
-        this.newClientService.addNewClient(this.userData).subscribe(response => {
-            //console.log('Cliente creado con éxito:', response);
-            this.toastr.success('<i class="las la-info-circle"> Cliente creado con éxito</i>');
-            setTimeout(() => {
-                window.location.reload();
-            }, 3000);
+        console.log('Contraseña', this.address);
+        this.newClientService.addNewClient(this.name, this.lastname, this.email, this.phone, this.address, this.id_province, this.id_city, this.dni, this.password).subscribe(response => {
+            // Cliente creado con éxito
+            this.toastr.success('<i class="las la-info-circle"></i> Cliente creado con éxito');
         }, error => {
             console.error('Error al crear el cliente:', error);
-            this.toastr.error('<i class="las la-info-circle"> Ya existe un usuario con este email</i>');
+            // Verificar si el error tiene un código 409 (conflicto, es decir, duplicado)
+            if (error.status === 409 && error.error && error.error.error === 'User with this email already exists') {
+                this.toastr.error('<i class="las la-exclamation-circle"></i> El correo electrónico ya está registrado.');
+            }
+            else if (error.status === 409 && error.error && error.error.error === 'User with this dni already exists') {
+                this.toastr.error('<i class="las la-exclamation-circle"></i> El DNI ya está registrado.');
+            }
+            else {
+                // Otro tipo de error
+                this.toastr.error('<i class="las la-info-circle"></i> Error al crear cliente');
+            }
         });
-        //console.log(this.userData.id_user);
-    }
-    validateEmail(email) {
-        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-        return emailPattern.test(email);
-    }
-    validatePhone(phone) {
-        const phonePattern = /^[0-9]{9}$/; // Ajustar el patrón según el formato de teléfono deseado
-        return phonePattern.test(phone);
-    }
-    validateDNI(dni) {
-        const dniPattern = /^[0-9]{8}[A-Z]$/; // Patrón básico para NIF
-        return dniPattern.test(dni);
     }
     getProvinces() {
         this.newClientService.getProvinces().subscribe((response) => {

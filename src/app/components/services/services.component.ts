@@ -21,6 +21,7 @@ export class ServicesComponent {
   selectedService: any = { service_name: '' }; 
   selectedSubServices: string[] = []; 
   subservicesAsText : string = "";
+  selectedSubServiceIds: number[] = [];
 
   constructor(private servicesService: ServicesService,
     private toastr : ToastrService
@@ -34,6 +35,7 @@ export class ServicesComponent {
     this.servicesService.loadAllServices(page, this.pageSize, this.searchText).subscribe({
       next: (response: any) => {
         this.AllServices = response.data;
+        console.log('Servicios cargados:', this.AllServices);
         this.totalItems = response.totalItems;
       },
       error: (err) => {
@@ -173,6 +175,8 @@ export class ServicesComponent {
       });
     });
   }
+
+
   updateService(): void {
     if (this.selectedService.service_name.trim() === '') {
       this.toastr.error('El nombre del servicio no puede estar vacío');
@@ -197,19 +201,24 @@ export class ServicesComponent {
 
 
   updateSubService(): void {
-
-
-    if(this.subservicesAsText.trim() ==="" || this.subservicesAsText === ""){
-      this.toastr.error('Error, Introduzca al meno un subservicio')
-      return
+    if (this.subservicesAsText.trim() === "" || this.subservicesAsText === "") {
+      this.toastr.error('Error, Introduzca al menos un subservicio');
+      return;
     }
+  
     // Convertir el texto del textarea en un arreglo de subservicios
-    this.selectedSubServices = this.subservicesAsText.split(',').map(subservice => subservice.trim()).filter(subservice => subservice.length > 0);
-    
+    this.selectedSubServices = this.subservicesAsText.split(',')
+      .map(subservice => subservice.trim())
+      .filter(subservice => subservice.length > 0);
+  
+    // Asegurarse de que la lista de subservicios contiene los id_service_type
     const updatedService = {
-      subservices: this.selectedSubServices  // Enviar la lista de subservicios actualizada
+      subservices: this.selectedSubServices,
+      id_service: this.selectedService.id_service,
+      service_type_ids: this.selectedSubServiceIds // Asegúrate de que este arreglo contiene los IDs
     };
-    
+    console.log('Servicio actualizado:', updatedService);
+  
     // Asegurarse de que el id_service esté presente
     if (!this.selectedService.id_service) {
       this.toastr.error('No se pudo actualizar los subservicios porque falta el ID del servicio');
@@ -217,7 +226,7 @@ export class ServicesComponent {
     }
   
     // Llamada al servicio para actualizar los subservicios
-    this.servicesService.updateSubservices(this.selectedService.id_service, updatedService).subscribe({
+    this.servicesService.updateSubservices(this.selectedService.service_type_ids, updatedService).subscribe({
       next: (response) => {
         this.toastr.success('Subservicios actualizados con éxito');
         this.loadAllServices(this.currentPage);  // Recargar la lista de servicios
@@ -228,5 +237,4 @@ export class ServicesComponent {
       }
     });
   }
-  
 }

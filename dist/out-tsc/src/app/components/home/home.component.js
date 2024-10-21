@@ -63,6 +63,18 @@ let HomeComponent = class HomeComponent {
         this.currentPage = page;
         this.loadAllSalon(page);
     }
+    getSalonUrl(salon) {
+        if (!salon || !salon.name || !salon.id_salon) {
+            return '#'; // Si faltan datos del salón, devuelve una URL por defecto o vacía
+        }
+        const salonSlug = salon.name
+            .toLowerCase()
+            .replace(/ /g, '-') // Reemplaza los espacios con guiones
+            .replace(/[^a-z0-9-]/g, '') // Elimina caracteres no alfanuméricos y deja solo guiones y letras
+            .replace(/--+/g, '-'); // Reemplaza múltiples guiones seguidos por uno solo
+        // Construye y retorna la URL completa
+        return `https://www.mispeluquerias.com/centro/${salonSlug}/${salon.id_salon}`;
+    }
     get pageCount() {
         return Math.ceil(this.totalItems / this.pageSize);
     }
