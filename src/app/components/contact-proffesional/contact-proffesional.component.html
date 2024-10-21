@@ -60,6 +60,7 @@
                     <th>Provincia</th>
                     <th>Población</th>
                     <th>Dirección</th>
+                    <th>Respuesta</th>
                     <th>Estado</th>
                     <th>Cambiar estado</th>
                     <th>Contestar</th>
@@ -76,6 +77,7 @@
                     <td>{{ message.province_name || 'No definida' }}</td>
                     <td>{{ message.id_city_name || 'No definida' }}</td>
                     <td>{{message.address || 'No definida'}}</td>
+                    <td>{{message.answer || 'No constestado'}}</td>
                     <td>{{ message.state }}</td>
                     <td>
                       <!-- Botón para cambiar el estado -->

@@ -56,6 +56,7 @@ export class ContactProffesionalComponent {
     this.selectedMessage = message;
     this.replySubject = ''; 
     this.replyMessage = '';
+    
   }
 
   sendReply() {
@@ -151,14 +152,18 @@ export class ContactProffesionalComponent {
   }
   
   sendReplyContactProffesional() {
+    const id_contact = this.selectedMessage.id_contact;
     const to = this.selectedMessage.email;
     const subject = this.replySubject;
     const message = this.replyMessage;
+    const replyMessage = this.replyMessage;
   
 
-    this.contactProffesionalService.sendEmailContactProffesional(to, subject, message).subscribe(
+    this.contactProffesionalService.sendEmailContactProffesional(id_contact,to, subject, message,replyMessage).subscribe(
       (response) => {
         this.toastr.success('Correo enviado con éxito');
+        this.loadAllContactProffesionalMenssage(this.currentPage);
+      
         // Cerrar el modal después de enviar el correo
       },
       (error) => {

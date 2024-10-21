@@ -44,7 +44,7 @@
                 <tbody>
                   <tr *ngFor="let brand of AllBrands">
                     <td><input type="checkbox" [(ngModel)]="brand.selected" (change)="checkIfAllSelected()" /></td>
-                    <td>{{ brand.name }}</td>
+                    <td><i class="fa-solid fa-flag"></i> {{ brand.name }}</td>
                     <td>
                       <img [src]="brand.imagePath" alt="{{ brand.name }}" width="100" />
                     </td>
@@ -143,7 +143,7 @@
          id="categoryName" 
          [(ngModel)]="selectedCategory" 
          name="category"
-         placeholder="Haga click para ir introduciendo..."
+         placeholder="Introduzca el nombre de la categoría y haga clic para añadir..."
          (input)="searchCategory(selectedCategory)"
          autocomplete="off"
        >
@@ -218,7 +218,7 @@
               id="categoryName" 
               [(ngModel)]="selectedCategory" 
               name="category"
-              placeholder="Haga click para ir introduciendo..."
+              placeholder="Introduzca el nombre de la categoría y haga clic para añadir..."
               (input)="searchCategory(selectedCategory)"
               autocomplete="off"
             >

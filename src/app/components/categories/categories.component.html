@@ -42,7 +42,7 @@
                 <tbody>
                   <tr *ngFor="let category of AllCategories">
                     <td><input type="checkbox" [(ngModel)]="category.selected" (change)="checkIfAllSelected()" /></td>
-                    <td>{{ category.category }}</td>
+                    <td><i class="fa-solid fa-tag"></i> {{ category.category }}</td>
                     <td >{{category.totalSalones}}</td>
                     <td>{{ category.active ? 'No' : 'Si' }}</td>
                     <td>

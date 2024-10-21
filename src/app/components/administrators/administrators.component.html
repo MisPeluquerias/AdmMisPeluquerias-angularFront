@@ -43,7 +43,7 @@
                 <tbody>
                   <tr *ngFor="let admin of AllAdministrators">
                     <td><input type="checkbox" [(ngModel)]="admin.selected" (change)="checkIfAllSelected()" /></td>
-                    <td>{{ admin.name }}</td>
+                    <td><i class="fa-solid fa-user-gear"></i> {{admin.name }}</td>
                     <td>{{ admin.email }}</td>
                     <td>{{ admin.created_at | date }}</td>
                     <td>{{ admin.phone }}</td>

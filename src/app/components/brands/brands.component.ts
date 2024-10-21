@@ -23,6 +23,7 @@ export class BrandsComponent {
   selectedImgFile: File | null = null;
   brand:any;
   id_brand:any;
+  id_brand_category:any;
   newBrand:any;
   imagePreview: string | ArrayBuffer | null = null;
   selectedImgBrang:any;
@@ -95,12 +96,12 @@ export class BrandsComponent {
   }
 
   selectBrand(brand: any): void {
+    this.id_brand_category= brand.id_brand_category;
     this.id_brand = brand.id_brand;
     this.selectedBrand = brand.name;
     this.selectedImgBrang = brand.imagePath;
     this.brand = brand;
-
-
+    console.log('id_brand_category',this.id_brand_category);
      // Reiniciar las categorías antes de cargarlas
   this.categories = []; // Reiniciar la lista de categorías para evitar duplicados
   this.newCategory.categories = []; // Limpiar las categorías añadidas por el usuario
@@ -114,6 +115,7 @@ export class BrandsComponent {
     }
     
     console.log('Categorías asignadas:', this.categories);
+    console.log('id_brand_category',this.id_brand_category);
   }
 
 

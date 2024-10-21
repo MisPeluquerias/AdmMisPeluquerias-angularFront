@@ -139,15 +139,17 @@ export class ContactComponent {
   }
 
   sendReplyContact() {
+    const id_contact = this.selectedMessage.id_contact;
     const to = this.selectedMessage.email;
     const subject = this.replySubject;
     const message = this.replyMessage;
-  
+    const replyMessage = this.replyMessage;
 
-    this.contactService.sendEmailContact(to, subject, message).subscribe(
+    this.contactService.sendEmailContact(id_contact,to, subject, message,replyMessage).subscribe(
       (response) => {
         this.toastr.success('Correo enviado con éxito');
         // Cerrar el modal después de enviar el correo
+        this.loadAllContactMenssage(this.currentPage);
       },
       (error) => {
         this.toastr.error('Error al enviar el correo');

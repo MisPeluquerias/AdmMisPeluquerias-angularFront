@@ -37,8 +37,8 @@ export class ContactService {
     return this.http.put<any>(`${this.baseUrl}/contact/updateStateContact`, data);
   }
 
-  sendEmailContact(to: string, subject: string, message: string): Observable<any> {
-    const emailData = { to, subject, message };
+  sendEmailContact(id_contact:number,to: string, subject: string, message: string,replyMessage:string): Observable<any> {
+    const emailData = {id_contact, to, subject, message,replyMessage };
     return this.http.post<any>(`${this.baseUrl}/contact/send-reply-contact`, emailData); // Asegúrate de que esta URL coincida con tu backend
   }
 }

@@ -41,7 +41,7 @@
                 <tbody>
                   <tr *ngFor="let service of AllServices">
                     <td><input type="checkbox" [(ngModel)]="service.selected" (change)="checkIfAllSelected()" /></td>
-                    <td>{{ service.service_name}}</td>
+                    <td><i class="fa-solid fa-scissors"></i> {{service.service_name}}</td>
                     <td>{{ service.subservices}}</td>
                     <td><button class="btn btn-dark me-2" data-bs-toggle="modal" data-bs-target="#editServiceModal" (click)="selectService(service)" >Servicios</button>
                     <button class="btn btn-dark"  data-bs-toggle="modal" data-bs-target="#editSubServiceModal" (click)="selectSubService(service)">Subservicios</button></td>

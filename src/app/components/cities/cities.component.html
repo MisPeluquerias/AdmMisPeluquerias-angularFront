@@ -43,7 +43,7 @@
                 <tbody>
                   <tr *ngFor="let city of AllCities">
                     <td><input type="checkbox" [(ngModel)]="city.selected" (change)="checkIfAllSelected()" /></td>
-                    <td>{{ city.province_name}}</td>
+                    <td><i class="fa-solid fa-map-location-dot"></i> {{city.province_name}} </td>
                     <td>{{ city.name }}</td>
                     <td>{{ city.zip_code }}</td>
                     <td>{{ city.latitud }}</td>
