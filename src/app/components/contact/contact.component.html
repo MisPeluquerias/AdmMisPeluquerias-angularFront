@@ -41,7 +41,7 @@
                     <li><hr class="dropdown-divider"></li>
                   </ul>
                 </div>
-                <button class="btn btn-danger">Nuevo</button>
+                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#sendMailModal">Nuevo</button>
               </div>
               <div *ngIf="hasSelected()" class="mt-3 text-end" >
                 <button class="btn btn-danger" (click)="deleteSelected() " style="background-color: darkorange;">Eliminar seleccionados</button>
@@ -234,6 +234,62 @@
           </div>
           <div class="text-end">
             <button type="submit" class="btn btn-danger" data-bs-dismiss="modal" (click)="sendReplyContact()">Enviar Respuesta</button>
+            <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal para nuevo mensaje -->
+<div class="modal fade" id="sendMailModal" tabindex="-1" aria-labelledby="sendMailModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title" id="sendMailModalLabel">Nuevo Correo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-4">
+          <img src="../../../assets/img/sello.jpg" alt="sello" width="120" class="img-fluid rounded-circle shadow">
+        </div>
+        <form>
+          <div class="mb-3">
+            <label for="replyEmail" class="form-label">Para:</label>
+            <input 
+              type="email" 
+              class="form-control" 
+              id="replyEmail" 
+              [(ngModel)]="addressNewEmail"
+              placeholder="Escribe el correo..." 
+              name="replyEmail" 
+             >
+          </div>
+          <div class="mb-3">
+            <label for="replySubject" class="form-label">Asunto:</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="replySubject" 
+              [(ngModel)]="replyNewEmailSubject" 
+              name="replySubject" 
+              placeholder="Escribe el asunto...">
+          </div>
+          <div class="mb-3">
+            <label for="replyNewEmailMessage" class="form-label">Mensaje:</label>
+            <textarea 
+              class="form-control" 
+              id="replyNewEmailMessage" 
+              [(ngModel)]="replyNewEmailMessage" 
+              name="replyNewEmailMessage" 
+              rows="5" 
+              placeholder="Escribe aqui..."></textarea>
+          </div>
+          <div class="text-end">
+            <button type="submit" class="btn btn-danger" data-bs-dismiss="modal" (click)="sendNewEmailContact()">Enviar Respuesta</button>
             <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">Cancelar</button>
           </div>
         </form>

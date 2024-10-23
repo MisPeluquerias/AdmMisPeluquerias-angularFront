@@ -41,4 +41,9 @@ export class ContactService {
     const emailData = {id_contact, to, subject, message,replyMessage };
     return this.http.post<any>(`${this.baseUrl}/contact/send-reply-contact`, emailData); // Asegúrate de que esta URL coincida con tu backend
   }
+
+  sendNewEmailContact( to: string, subject: string, message: string): Observable<any> {
+    const emailData = {to, subject, message};
+    return this.http.post<any>(`${this.baseUrl}/contact/send-new-email-contact`, emailData);
+  }
 }

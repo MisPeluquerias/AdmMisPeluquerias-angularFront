@@ -83,6 +83,7 @@ export class EditHomeComponent implements OnInit {
   selectedNewBrand: any = "";
   selectedUpdateBrand:any="";
   totalPages: number = 1;
+  brands_categories:any;
   getSalonDataSelect:any[]=[];
   faqByIdSalon:any[]=[];
   faqToEdit: any;
@@ -104,7 +105,7 @@ export class EditHomeComponent implements OnInit {
   idCategoryToDelete: any;
   idServiceToDelete: any;
   userPermiso: string = '';
-  brands:any;
+  brands:any[]=[];
   brandsBySalon:any;
   responseText: string = '';
   idFaqToDelete: any;
@@ -114,6 +115,7 @@ export class EditHomeComponent implements OnInit {
   setUpdateBrand:any;
   selectedUpdateBrandIdName:any="";
   selectedUpdateBrandIdNameCheck:any;
+  term:any;
   
   constructor(
     private route: ActivatedRoute,
@@ -138,7 +140,7 @@ export class EditHomeComponent implements OnInit {
       this.selectedCategory='';
     }); 
     this.getUserPermiso();
-    this.getAllBrands();
+    this.getAllCategoriesBrands();
     this.getBrandsBySalon();
   }
 
@@ -1138,11 +1140,11 @@ confirmDeleteReview(): void {
   }
 }
 
-getAllBrands(): void {
-  this.editHomeService.getBrands().subscribe({
+getAllCategoriesBrands(): void {
+  this.editHomeService.getAllCategoriesBrands().subscribe({
     next: (response) => {
-      this.brands = response; // Asigna la respuesta a la variable `allBrands`
-      //console.log('marcas recividas',this.brands);
+      this.brands_categories = response; // Asigna la respuesta a la variable `allBrands`
+      console.log('marcas recividas con categorías',this.brands_categories);
     },
     error: (err) => {
       console.error('Error al obtener las marcas:', err);
@@ -1165,27 +1167,9 @@ getBrandsBySalon(): void {
   });
 }
 
-addBrandSalon(): void {
-  if (!this.salonId || !this.selectedNewBrand) {
-    this.toastr.warning('Debe seleccionar un salón y una marca', 'Advertencia');
-    return;
-  }
-  //console.log('ID de la marca seleccionado:', this.selectedNewBrand);
-  //console.log('ID del salón:', this.salonId);
-  this.editHomeService.addBrandToSalon(this.salonId, this.selectedNewBrand).subscribe({
-    next: (response) => {
-      this.toastr.success('Marca añadida al salón con éxito', 'Éxito');
-      console.log('Respuesta del servidor:', response);
-      this.getBrandsBySalon();
-     
-      // Aquí puedes añadir lógica adicional, como recargar la lista de salones o cerrar el modal
-    },
-    error: (err) => {
-      console.error('Error al añadir la marca al salón:', err);
-      this.toastr.error('Hubo un error al añadir la marca al salón, Por favor compruebe que la marca exista en su lista', 'Error');
-    }
-  });
-}
+
+
+
 setToDeleteBrand(id_brand: number): void {
   this.setDeleteBrand = id_brand;
 }
@@ -1215,27 +1199,105 @@ setToUpdateBrand(id_brand_salon: number): void {
 updateBrandSalon(): void {
   // Verifica si los valores están presentes
   if (!this.selectedUpdateBrand || !this.selectedUpdateBrandIdName) {
-    console.warn("La marca o el nombre de marca no están seleccionados.");
+    this.toastr.warning("Debe seleccionar una nueva marca para actualizar", "Advertencia");
     return;
   }
 
-  
-  // Logs para confirmar los valores antes de hacer la llamada
-  //console.log('ID enviado para modificar (id_brand_salon):', this.selectedUpdateBrand);
-  //console.log('ID brand enviado para modificar (id_brand):', this.selectedUpdateBrandIdName);
-
-  this.editHomeService.UpdateBrandsalon(this.selectedUpdateBrand, this.selectedUpdateBrandIdName,this.salonId).subscribe({
-    next: (data) => {
+  this.editHomeService.UpdateBrandsalon(this.selectedUpdateBrand, this.selectedUpdateBrandIdName, this.salonId).subscribe({
+    next: (response) => {
       this.toastr.success('La marca del salón ha sido actualizada con éxito');
-      this.selectedUpdateBrandIdName="";
-      this.getBrandsBySalon();
+      this.selectedUpdateBrandIdName = ""; // Limpiar los campos después de actualizar
+      this.getBrandsBySalon(); // Recargar las marcas del salón
     },
     error: (error) => {
-      this.toastr.error('Error, no se pudo actualizar la marca seleccionada, Por favor compruebe que la marca no este en su lista.');
       console.error('Error al actualizar la marca del salón:', error);
-      this.selectedUpdateBrandIdName="";
-    },
-    complete: () => console.log("Proceso completado con éxito.")
+      this.toastr.error('Error al actualizar la marca seleccionada');
+    }
   });
 }
+
+
+
+selectBrand(brand: any): void {
+  this.term = brand.name;
+  this.selectedNewBrand = brand.id_brand;
+  this.brands = [];
+}
+
+
+
+searchBrands(term: string): void {
+  console.log('Categoría seleccionada:', this.selectedCategory);
+  console.log('Término de búsqueda:', term);
+
+  // Verifica que el término de búsqueda tenga al menos 2 caracteres
+  if (term.length < 2) {
+    this.brands = []; // Limpia los resultados si el término es muy corto
+    return; // No realiza la búsqueda si el término tiene menos de 2 caracteres
+  }
+
+  if (this.selectedCategory) {
+    this.editHomeService.getBrandByCategory(term, this.selectedCategory).subscribe(
+      (results) => {
+        this.brands = results;
+      },
+      (error) => {
+        console.error('Error al buscar las marcas:', error);
+      }
+    );
+  } else {
+    console.error('Por favor selecciona una categoría antes de buscar.');
+  }
+}
+
+
+
+addBrandSalon(): void {
+  if (!this.salonId || !this.selectedNewBrand) {
+    this.toastr.warning('Debe seleccionar una categoría y una marca', 'Advertencia');
+    return;
+  }
+
+  this.editHomeService.addBrandToSalon(this.salonId, this.selectedNewBrand).subscribe({
+    next: (response) => {
+      this.toastr.success('Marca añadida al salón con éxito', 'Éxito');
+      console.log('Respuesta del servidor:', response);
+      
+      // Recargar la lista de marcas del salón o realizar otras acciones
+      this.getBrandsBySalon();
+
+      // Limpiar los campos del formulario
+      this.selectedCategory = '';  // Limpia la categoría seleccionada
+      this.term = '';  // Limpia el término de búsqueda (marca)
+      this.selectedNewBrand = '';  // Limpia el ID de la marca seleccionada
+      this.brands = [];  // Limpia la lista de resultados de búsqueda
+    },
+    error: (err) => {
+      console.error('Error al añadir la marca al salón:', err);
+      this.toastr.error('Hubo un error al añadir la marca al salón. Por favor, compruebe que la marca exista en su lista', 'Error');
+    }
+  });
+}
+
+
+searchBrandsForUpdate(term: string): void {
+  if (term.length < 2) {
+    this.brands = [];
+    return;
+  }
+
+  if (this.selectedCategory) {
+    this.editHomeService.getBrandByCategory(term, this.selectedCategory).subscribe(
+      (results) => {
+        this.brands = results;
+      },
+      (error) => {
+        console.error('Error al buscar las marcas:', error);
+      }
+    );
+  } else {
+    console.error('Por favor selecciona una categoría antes de buscar.');
+  }
+}
+
 }

@@ -69,7 +69,9 @@ export class BrandsComponent {
         this.AllBrands = response.data.map((brand: any) => {
           return {
             ...brand,
-            categories: brand.categories && brand.categories !== '' ? brand.categories.split(',') : []
+            categories: brand.categories && brand.categories !== '' 
+              ? Array.from(new Set(brand.categories.split(',').map((category: string) => category.trim()))) 
+              : []
           };
         });
         
@@ -143,21 +145,33 @@ export class BrandsComponent {
     // Crear el FormData
     const formData = new FormData();
     formData.append('name', this.selectedBrand); // Añadir el nombre de la marca
-    
+  
     // Asegúrate de que el archivo de imagen se haya seleccionado, si no, solo actualiza las categorías y el nombre
     if (this.selectedUpdateImgFile) {
       formData.append('brandImage', this.selectedUpdateImgFile); // Añadir la imagen si fue seleccionada
     }
   
+    // Combinar las categorías existentes con las nuevas categorías
+    const combinedCategories = [
+      ...this.categories.map(category => ({ name: category })),  // Convertir categorías existentes a objetos con 'name'
+      ...this.newCategory.categories                            // Añadir las nuevas categorías seleccionadas
+    ];
+  
+    // Eliminar duplicados (si los hay) basándonos en el nombre de la categoría
+    const uniqueCategories = combinedCategories.reduce((acc, current) => {
+      const found = acc.find((cat:any) => cat.name === current.name);
+      if (!found) acc.push(current);
+      return acc;
+    }, []);
+  
     // Convertir las categorías a JSON y añadirlas al FormData
-    formData.append('categories', JSON.stringify(this.newCategory.categories));
+    formData.append('categories', JSON.stringify(uniqueCategories));
   
     // Llamar al servicio para actualizar la marca, pasando el ID en la URL
     this.brandsService.updateBrand(this.id_brand, formData).subscribe({
       next: (response) => {
         this.toastr.success('Marca actualizada con éxito');
         this.loadAllBrands(this.currentPage); // Recargar la lista de marcas
-        // Aquí puedes cerrar el modal si es necesario, o realizar otras acciones
       },
       error: (error) => {
         this.toastr.error('Error al actualizar la marca');
@@ -165,6 +179,7 @@ export class BrandsComponent {
       }
     });
   }
+
 
 
 

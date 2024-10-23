@@ -42,4 +42,8 @@ export class ContactProffesionalService {
     const emailData = {id_contact, to, subject, message,replyMessage };
     return this.http.post<any>(`${this.baseUrl}/contact-proffesional/send-reply-contactProffesional`, emailData); // Asegúrate de que esta URL coincida con tu backend
   }
+  sendNewEmailContactProffesional( to: string, subject: string, message: string): Observable<any> {
+    const emailData = {to, subject, message };
+    return this.http.post<any>(`${this.baseUrl}/contact-proffesional/send-new-email-contactProffesional`, emailData); // Asegúrate de que esta URL coincida con tu backend
+  }
 }

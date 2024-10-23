@@ -136,9 +136,11 @@
           >
             <!-- Formulario de Negocio -->
 
-            <form class="px-3" style="padding-bottom: 50px;">
+            <form class="px-3" style="padding-bottom: 50px">
               <div class="row mb-3 align-items-center">
-                <div class="col-md-12 d-flex justify-content-between align-items-center">
+                <div
+                  class="col-md-12 d-flex justify-content-between align-items-center"
+                >
                   <div class="d-flex align-items-center">
                     <div class="me-3 mt-3">
                       <label for="estado" class="form-label">
@@ -156,7 +158,9 @@
                       </select>
                     </div>
                     <div class="me-3 d-flex align-items-center mt-5">
-                      <label class="form-check-label me-2" for="active">Activo</label>
+                      <label class="form-check-label me-2" for="active"
+                        >Activo</label
+                      >
                       <div class="form-check form-switch">
                         <input
                           class="form-check-input"
@@ -168,7 +172,9 @@
                       </div>
                     </div>
                     <div class="d-flex align-items-center mt-5">
-                      <label class="form-check-label me-2" for="in_vacation">Cerrado por vacaciones</label>
+                      <label class="form-check-label me-2" for="in_vacation"
+                        >Cerrado por vacaciones</label
+                      >
                       <div class="form-check form-switch">
                         <input
                           class="form-check-input"
@@ -181,7 +187,11 @@
                     </div>
                   </div>
                   <!-- Enlace a la derecha -->
-                  <a [href]="getSalonUrl()" target="_blank" class="text-dark me-3">
+                  <a
+                    [href]="getSalonUrl()"
+                    target="_blank"
+                    class="text-dark me-3"
+                  >
                     <i class="fa-solid fa-globe"></i> Ir al sitio
                   </a>
                 </div>
@@ -189,7 +199,9 @@
 
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="nombre" class="form-label"><i class="fa-regular fa-building"></i> Nombre</label>
+                  <label for="nombre" class="form-label"
+                    ><i class="fa-regular fa-building"></i> Nombre</label
+                  >
                   <input
                     type="text"
                     class="form-control"
@@ -204,9 +216,12 @@
                     Nombre es obligatorio
                   </div>
                 </div>
-                
+
                 <div class="col-md-6">
-                  <label for="email" class="form-label"><i class="fa fa-envelope" aria-hidden="true"></i> E-mail</label>
+                  <label for="email" class="form-label"
+                    ><i class="fa fa-envelope" aria-hidden="true"></i>
+                    E-mail</label
+                  >
                   <input
                     type="email"
                     class="form-control"
@@ -229,7 +244,9 @@
 
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="direccion" class="form-label"><i class="fa-regular fa-address-book"></i> Dirección</label>
+                  <label for="direccion" class="form-label"
+                    ><i class="fa-regular fa-address-book"></i> Dirección</label
+                  >
                   <input
                     type="text"
                     class="form-control"
@@ -272,7 +289,9 @@
 
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="provincia" class="form-label"><i class="fa-solid fa-city"></i> Provincia</label>
+                  <label for="provincia" class="form-label"
+                    ><i class="fa-solid fa-city"></i> Provincia</label
+                  >
                   <select
                     class="form-select"
                     id="provincia"
@@ -300,7 +319,9 @@
                   </div>
                 </div>
                 <div class="col-md-6">
-                  <label for="ciudad" class="form-label"><i class="fa-solid fa-building-user"></i> Ciudad-CP</label>
+                  <label for="ciudad" class="form-label"
+                    ><i class="fa-solid fa-building-user"></i> Ciudad-CP</label
+                  >
                   <select
                     class="form-select"
                     id="ciudad"
@@ -328,7 +349,9 @@
 
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="latitud" class="form-label"><i class="fa-solid fa-compass"></i> Latitud</label>
+                  <label for="latitud" class="form-label"
+                    ><i class="fa-solid fa-compass"></i> Latitud</label
+                  >
                   <input
                     type="text"
                     class="form-control"
@@ -347,7 +370,9 @@
                   </div>
                 </div>
                 <div class="col-md-6">
-                  <label for="longitud" class="form-label"><i class="fa-regular fa-compass"></i> Longitud</label>
+                  <label for="longitud" class="form-label"
+                    ><i class="fa-regular fa-compass"></i> Longitud</label
+                  >
                   <input
                     type="text"
                     class="form-control"
@@ -366,7 +391,6 @@
                   </div>
                 </div>
               </div>
-
 
               <div class="row mb-3">
                 <div class="col-md-6">
@@ -400,10 +424,12 @@
                 </div>
               </div>
 
-
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="facebook_url" class="form-label"><i class="fa-brands fa-square-facebook"></i> Facebook</label>
+                  <label for="facebook_url" class="form-label"
+                    ><i class="fa-brands fa-square-facebook"></i>
+                    Facebook</label
+                  >
                   <input
                     type="text"
                     class="form-control"
@@ -415,7 +441,9 @@
                   />
                 </div>
                 <div class="col-md-6">
-                  <label for="instagram_url" class="form-label"><i class="fa-brands fa-instagram"></i> Instagram</label>
+                  <label for="instagram_url" class="form-label"
+                    ><i class="fa-brands fa-instagram"></i> Instagram</label
+                  >
                   <input
                     type="text"
                     class="form-control"
@@ -428,14 +456,15 @@
                 </div>
               </div>
 
-
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="tiktok_url" class="form-label"><i class="fa-brands fa-tiktok"></i> TikTok</label>
+                  <label for="tiktok_url" class="form-label"
+                    ><i class="fa-brands fa-tiktok"></i> TikTok</label
+                  >
                   <input
                     type="text"
                     class="form-control"
-                    id="tiktok_url" 
+                    id="tiktok_url"
                     placeholder="No olvide el prefijo https://"
                     name="tiktok_url"
                     maxlength="1000"
@@ -443,7 +472,9 @@
                   />
                 </div>
                 <div class="col-md-6">
-                  <label for="youtube_url" class="form-label"><i class="fa-brands fa-youtube"></i> Youtube</label>
+                  <label for="youtube_url" class="form-label"
+                    ><i class="fa-brands fa-youtube"></i> Youtube</label
+                  >
                   <input
                     type="text"
                     class="form-control"
@@ -455,7 +486,6 @@
                   />
                 </div>
               </div>
-
 
               <div class="row mb-3">
                 <div class="col-md-12">
@@ -677,7 +707,7 @@
                 <div
                   class="d-flex justify-content-between align-items-center mb-3"
                 >
-                  <h4>Categorías</h4>
+                
                   <button
                     class="btn btn-danger ms-auto"
                     data-bs-toggle="modal"
@@ -921,7 +951,7 @@
               </div>
             </div>
 
-            <!-- Modales para agregar y editar marcas -->
+            <!-- Modales para agregar marcas -->
             <div
               class="modal fade"
               id="modalNuevaMarca"
@@ -933,7 +963,7 @@
                 <div class="modal-content">
                   <div class="modal-header bg-dark text-white">
                     <h5 class="modal-title" id="modalNuevaMarcaLabel">
-                      Añadir Marca al salón
+                      Añadir marca al salón
                     </h5>
                     <button
                       type="button"
@@ -952,26 +982,53 @@
                       />
                     </div>
                     <div class="mb-3">
-                      <label for="nombreMarca" class="form-label"
-                        >Seleccione Marca</label
+                      <label for="nameCategory" class="form-label"
+                        >Seleccione Categoría:</label
                       >
                       <select
                         class="form-select"
-                        id="nombreMarca"
-                        name="nombreMarca"
-                        [(ngModel)]="selectedNewBrand"
+                        id="selectedCategory"
+                        name="selectedCategory"
+                        [(ngModel)]="selectedCategory"
                         required
                       >
                         <option value="" disabled selected>
-                          Seleccione una marca
+                          Seleccione una categoría
                         </option>
                         <option
-                          *ngFor="let marca of brands"
-                          [value]="marca.id_brand"
+                          *ngFor="let category of brands_categories"
+                          [value]="category.category"
                         >
-                          {{ marca.name }}
+                          {{ category.category }}
                         </option>
                       </select>
+                    </div>
+
+                    <div class="mb-3 position-relative">
+                      <label for="newBrand" class="form-label"
+                        >Introduce marca:</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="newBrand"
+                        name="term"
+                        required
+                        [(ngModel)]="term"
+                        (input)="searchBrands(term)"
+                        autocomplete="off"
+                      />
+
+                      <!-- Lista de resultados de búsqueda -->
+                      <ul *ngIf="brands.length > 0" class="list-group">
+                        <li
+                          *ngFor="let brand of brands"
+                          class="list-group-item list-group-item-action"
+                          (click)="selectBrand(brand)"
+                        >
+                          <i class="las la-tag"></i> {{ brand.name }}
+                        </li>
+                      </ul>
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -1027,9 +1084,9 @@
                     </div>
                     <form>
                       <div class="mb-3">
-                        <label for="editarNombreMarca" class="form-label"
-                          >Seleccione nueva marca</label
-                        >
+                        <label for="editarNombreMarca" class="form-label">
+                          Seleccione nueva marca
+                        </label>
                         <select
                           class="form-select"
                           id="editarNombreMarca"
@@ -1059,15 +1116,13 @@
                     >
                       Guardar Cambios
                     </button>
-                    <div class="modal-footer">
-                      <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                      >
-                        Cancelar
-                      </button>
-                    </div>
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      Cancelar
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1934,7 +1989,7 @@
     aria-hidden="true"
   >
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content ">
+      <div class="modal-content">
         <div class="modal-header bg-dark text-white">
           <h5 class="modal-title" id="deleteCategoryModalLabel">
             Eliminar Categorías

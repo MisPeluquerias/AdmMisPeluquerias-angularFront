@@ -25,6 +25,9 @@ export class ContactProffesionalComponent {
   selectedMessage: any = {};
   replySubject: string = '';
   filterState: string = '';
+  addressNewEmail:string='';
+  replyNewEmailSubject:string='';
+  replyNewEmailMessage:string='';
  
 
   constructor(private contactProffesionalService: ContactProffesionalService,private toastr:ToastrService) { }
@@ -56,8 +59,8 @@ export class ContactProffesionalComponent {
     this.selectedMessage = message;
     this.replySubject = ''; 
     this.replyMessage = '';
-    
   }
+
 
   sendReply() {
     if (!this.replyMessage.trim()) {
@@ -135,10 +138,10 @@ export class ContactProffesionalComponent {
     };
   }
 
+
   UpdateStateContactProffesional(){
     this.contactProffesionalService.updateStateContactProffesional(this.selectedContactProffesional.id_contact,this.selectedContactProffesional.state).subscribe({
       next: () => {
-
         this.loadAllContactProffesionalMenssage(this.currentPage);
         this.allSelected = false;
         this.toastr.success('Estado actualizado con éxito');
@@ -165,6 +168,23 @@ export class ContactProffesionalComponent {
         this.loadAllContactProffesionalMenssage(this.currentPage);
       
         // Cerrar el modal después de enviar el correo
+      },
+      (error) => {
+        this.toastr.error('Error al enviar el correo');
+        console.error(error);
+      }
+    );
+  }
+    sendNewEmailContactProffesional() {
+    const to = this.addressNewEmail;
+    const subject = this.replyNewEmailSubject;
+    const message = this.replyNewEmailMessage;
+    
+  
+    this.contactProffesionalService.sendNewEmailContactProffesional(to, subject, message).subscribe(
+      (response) => {
+        this.toastr.success('Correo enviado con éxito');
+        this.loadAllContactProffesionalMenssage(this.currentPage);
       },
       (error) => {
         this.toastr.error('Error al enviar el correo');

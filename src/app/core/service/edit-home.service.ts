@@ -25,6 +25,15 @@ export class EditHomeService {
       },
     });;
   }
+
+  getBrandByCategory(term:string,category:string){
+    return this.http.get<any[]>(`${this.baseUrl}/edithome/getBrandsByCategory`, {
+      params: {
+        category,
+        term
+      }
+    });
+  }
   
   getUserPermiso(): Observable<any> {
     const permiso = localStorage.getItem('permiso');
@@ -195,8 +204,8 @@ export class EditHomeService {
     });
   }
 
-  getBrands(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/edithome/getAllBrands`);
+  getAllCategoriesBrands(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/edithome/getAllCategoriesBrands`);
   }
 
   getCategories(): Observable<any[]> {

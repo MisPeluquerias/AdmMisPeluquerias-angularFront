@@ -24,6 +24,9 @@ export class ContactComponent {
   replySubject: string = '';
   replyMessage: string = '';
   filterState: string = '';
+  addressNewEmail:string='';
+  replyNewEmailSubject :string='';
+  replyNewEmailMessage :string='';
 
   constructor(private contactService: ContactService,private toastr:ToastrService) { }
 
@@ -154,6 +157,30 @@ export class ContactComponent {
       (error) => {
         this.toastr.error('Error al enviar el correo');
         console.error(error);
+      }
+    );
+  }
+  sendNewEmailContact() {
+    const to = this.addressNewEmail;
+    const subject = this.replyNewEmailSubject;
+    const message = this.replyNewEmailMessage;
+    const replyMessage = this.replyNewEmailMessage;
+  
+    this.contactService.sendNewEmailContact(to, subject, message).subscribe(
+      (response) => {
+        this.toastr.success('Correo enviado con éxito');
+        this.loadAllContactMenssage(this.currentPage);
+        this.addressNewEmail = '';
+        this.replyNewEmailSubject = '';
+        this.replyNewEmailMessage='';
+
+      },
+      (error) => {
+        this.toastr.error('Error al enviar el correo');
+        console.error(error);
+        this.addressNewEmail = '';
+        this.replyNewEmailSubject = '';
+        this.replyNewEmailMessage='';
       }
     );
   }
