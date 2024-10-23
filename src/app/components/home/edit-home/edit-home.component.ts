@@ -631,6 +631,10 @@ export class EditHomeComponent implements OnInit {
     this.toastr.error('El tiempo del servicio debe ser un valor válido y mayor a cero.');
     return;
   }
+  if(this.newServicePrice === null || this.newServicePrice === undefined){
+    this.toastr.error('El precio tiene que ser mayor o igual a 0');
+    return
+  }
   // Asegúrate de enviar selectedServiceName en lugar de newServiceName
   this.editHomeService.addService(this.salonId, this.selectedServiceId,this.newSubservices, this.newServiceTime,this.newServicePrice).subscribe(
     (response) => {
