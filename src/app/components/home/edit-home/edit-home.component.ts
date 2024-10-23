@@ -76,7 +76,7 @@ export class EditHomeComponent implements OnInit {
   updateSubservices: string = '';
   newServiceTime:number=0;
   updateServiceTime:number=0;
-  newServicePrice:string="";
+  newServicePrice:string="0.00";
   updateServicePrice:string="";
   selectedService: any = {};
   selectedSubservice: any = {};
