@@ -707,7 +707,6 @@
                 <div
                   class="d-flex justify-content-between align-items-center mb-3"
                 >
-                
                   <button
                     class="btn btn-danger ms-auto"
                     data-bs-toggle="modal"
@@ -930,7 +929,13 @@
                               class="btn btn-dark"
                               data-bs-toggle="modal"
                               data-bs-target="#modalEditMarca"
-                              (click)="setToUpdateBrand(marca.id_brand_salon)"
+                              (click)="
+                                setToUpdateBrand(
+                                  marca.name,
+                                  marca.imagePath,
+                                  marca.id_brand_salon
+                                )
+                              "
                             >
                               <i class="fas fa-edit"></i>
                             </button>
@@ -1084,26 +1089,77 @@
                     </div>
                     <form>
                       <div class="mb-3">
-                        <label for="editarNombreMarca" class="form-label">
-                          Seleccione nueva marca
-                        </label>
+                        <div class="row mt-2">
+                          <img
+                            [src]="selectedImgUpdateBrand"
+                            style="
+                              max-width: 220px !important;
+                              margin: 0 auto !important;
+                            "
+                            alt="Imagen de la marca"
+                          />
+                        </div>
+                        <div class="text-center">
+                          <label for="selectedUpdateBrand"
+                            >Marca seleccionada:
+                          </label>
+                          <span
+                            id="selectedUpdateBrand"
+                            class="mt-2"
+                            style="width: auto"
+                          >
+                            {{ selectedUpdateBrand }}
+                          </span>
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <label for="nameCategory" class="form-label"
+                          >Seleccione Categoría:</label
+                        >
                         <select
                           class="form-select"
-                          id="editarNombreMarca"
-                          name="editarNombreMarca"
-                          [(ngModel)]="selectedUpdateBrandIdName"
+                          id="selectedUpdatedCategoryBrand"
+                          name="selectedUpdatedCategoryBrand"
+                          [(ngModel)]="selectedUpdatedCategoryBrand"
                           required
                         >
-                          <option value="" disabled selected>
-                            Seleccione una marca
+                          <option value="" disabled  selected>
+                            Seleccione una categoría
                           </option>
                           <option
-                            *ngFor="let marca of brands"
-                            [value]="marca.id_brand"
+                            *ngFor="let category of brands_categories"
+                            [value]="category.category"
                           >
-                            {{ marca.name }}
+                            {{ category.category }}
                           </option>
                         </select>
+                      </div>
+
+                      <div class="mb-3 position-relative">
+                        <label for="newBrand" class="form-label"
+                          >Introduce marca:</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="newBrand"
+                          name="term"
+                          required
+                          [(ngModel)]="termUpdate"
+                          (input)="searchUpdateBrands(termUpdate)"
+                          autocomplete="off"
+                        />
+
+                        <!-- Lista de resultados de búsqueda -->
+                        <ul *ngIf="brands.length > 0" class="list-group">
+                          <li
+                            *ngFor="let brand of brands"
+                            class="list-group-item list-group-item-action"
+                            (click)="selectUpdateBrand(brand)"
+                          >
+                            <i class="las la-tag"></i> {{ brand.name }}
+                          </li>
+                        </ul>
                       </div>
                     </form>
                   </div>
@@ -1521,6 +1577,7 @@
                   placeholder="Introduzca los decimales con punto (.)"
                   [(ngModel)]="newServicePrice"
                   name="newServicePrice"
+                  (blur)="resetPrice($event)"
                   (input)="checkLengthPrice($event)"
                 />
               </div>
@@ -1652,6 +1709,7 @@
                   placeholder="10"
                   [(ngModel)]="updateServicePrice"
                   name="newServicePrice"
+                  (blur)="resetPrice($event)"
                   (input)="checkLengthPrice($event)"
                 />
               </div>

@@ -125,6 +125,8 @@ export class BrandsComponent {
   removeCategory(index: number): void {
     this.newCategory.categories.splice(index, 1); // Eliminar el salón de la lista
   }
+
+  
   removeUpdateCategory(index: number): void {
     // Eliminar la categoría en el índice proporcionado
     this.categories.splice(index, 1);

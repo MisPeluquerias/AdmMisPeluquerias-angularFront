@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ServicesService } from '../../core/service/services.service';
 import { ToastrService } from 'ngx-toastr';
+import { Subject, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-services',
@@ -22,6 +24,11 @@ export class ServicesComponent {
   selectedSubServices: string[] = []; 
   subservicesAsText : string = "";
   selectedSubServiceIds: number[] = [];
+  selectedCategory: string = '';
+  private searchTermsCategory = new Subject<string>();
+  dataCategoryList: any[] = [];
+  newCategory: any = { category: '', salons: [] };
+  
 
   constructor(private servicesService: ServicesService,
     private toastr : ToastrService
@@ -29,6 +36,25 @@ export class ServicesComponent {
 
   ngOnInit(): void {
     this.loadAllServices(this.currentPage);
+
+    this.searchTermsCategory.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap((term) => {
+        if (term.length >= 2) {
+          return this.servicesService.getCategoryInLive(term);
+        } else {
+          return of([]); 
+        }
+      })
+    ).subscribe({
+      next: (category) => {
+        this.dataCategoryList = category.map((cat: any) => cat.categories); 
+      },
+      error: (error) => {
+        console.error('Error al buscar categorias:', error);
+      },
+    });
   }
 
   loadAllServices(page: number): void {
@@ -44,8 +70,30 @@ export class ServicesComponent {
     });
   }
 
+  searchCategory(term: string): void {
+    this.searchTermsCategory.next(term);
+  }
+
+  
+  removeCategory(index: number): void {
+    this.newCategory.categories.splice(index, 1); // Eliminar el salón de la lista
+  }
+
   selectService(service: any): void {
     this.selectedService = { ...service };  // Asignamos el servicio seleccionado a la variable
+  }
+
+
+  selectCategory(category: { name: string }): void {
+    // Asegurarse de que 'categories' esté inicializado
+    if (!this.newCategory.categories) {
+      this.newCategory.categories = [];
+    }
+  
+    // Almacenar solo el nombre de la categoría en el array newCategory.categories
+    this.newCategory.categories.push({ name: category.name }); 
+    this.dataCategoryList = []; // Limpiar la lista después de la selección
+    this.selectedCategory = ''; // Limpiar el campo de entrada
   }
 
   
@@ -124,25 +172,27 @@ export class ServicesComponent {
   addNewService(): void {
     if (this.newService.name.trim() !== '' && this.newSubservice.length > 0) {
       this.newService.subservices = this.newSubservice;
+      this.newService.categories = this.newCategory.categories; // Añadir las categorías seleccionadas
   
       // Llamada al servicio para crear el nuevo servicio en el backend
       this.servicesService.addNewService(this.newService).subscribe({
         next: (response) => {
-          this.toastr.success('Servicios y subservicios añadidos con éxito')
-          //console.log('Servicio creado exitosamente:', response);
+          this.toastr.success('Servicios, subservicios y categorías añadidos con éxito');
+          
           // Reiniciar el formulario después de la creación exitosa
           this.newService = { name: '', subservices: [] };
           this.newSubservice = [];
+          this.newCategory.categories = []; // Limpiar las categorías seleccionadas
           this.loadAllServices(this.currentPage); // Recargar la lista de servicios
         },
         error: (err) => {
-          this.toastr.error('No se pudo crear el servicio y subservicio')
+          this.toastr.error('No se pudo crear el servicio, subservicio y categorías');
           console.error('Error creando el servicio:', err);
         }
       });
-    }else{
-    this.toastr.error('Por favor rellene todos los campos')
-  }
+    } else {
+      this.toastr.error('Por favor, rellene todos los campos');
+    }
   }
 
 

@@ -46,4 +46,14 @@ export class ServicesService {
   updateService(service_type_ids: string, data: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/services/updateService/${service_type_ids}`, data);
   }  
+  getCategoryInLive(category: string) {
+    return this.http.get<any[]>(
+      `${this.baseUrl}/services/searchCategoryInLive`,
+      {
+        params: {
+          category,
+        },
+      }
+    );
+  }
 }
