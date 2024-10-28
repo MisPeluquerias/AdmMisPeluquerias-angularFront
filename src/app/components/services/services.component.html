@@ -48,7 +48,7 @@
                     <td class="d-flex flex-wrap flex-md-nowrap">
                       <button class="btn btn-dark me-2 mb-2 mb-md-0 btn-sm" data-bs-toggle="modal" data-bs-target="#editServiceModal" (click)="selectService(service)">Servicios</button>
                       <button class="btn btn-dark mb-2 mb-md-0 btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editSubServiceModal" (click)="selectSubService(service)">Subservicios</button>
-                      <button class="btn btn-dark ms-2 ms-md-0 btn-sm">Categorías</button>
+                      <button class="btn btn-dark ms-2 ms-md-0 btn-sm" data-bs-toggle="modal" data-bs-target="#editCategoriesModal" (click)="selectCategories(service)">Categorías</button>
                     </td>
                   </tr>
                 </tbody>
@@ -175,9 +175,7 @@
               </ul>
             </div>
           </div>
-          
           <div class="d-flex justify-content-end me-2">
-            
             <button class="btn btn-danger"  (click)="addNewService()">Guardar</button>
             <button
               type="button"
@@ -265,6 +263,35 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" (click)="updateSubService()">Guardar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!--Modal para editar categorias-->
+<div class="modal fade" id="editCategoriesModal" tabindex="-1" aria-labelledby="editCategoriesLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title" id="editCategoriesLabel">Editar Categorías</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-3">
+          <img src="../../../assets/img/sello.jpg" alt="sello" width="120" class="img-fluid" />
+        </div>
+        <div class="row mt-3">
+          <div class="col-12 mt-3">
+            <label for="categoriesTextarea" class="form-label">Categorías:</label>
+            <textarea class="form-control" id="categoriesTextarea" rows="3" [(ngModel)]="categoriesAsText"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="updateCategories()">Guardar</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
       </div>
     </div>

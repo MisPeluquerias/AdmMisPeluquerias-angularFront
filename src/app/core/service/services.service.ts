@@ -42,10 +42,16 @@ export class ServicesService {
   updateSubservices(id_service: string, data: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/services/updateSubservices/${id_service}`, data);
   }
+
+  
+  updateCategories(id_service: string, data: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/services/updateCategories/${id_service}`, data);
+  }
   
   updateService(service_type_ids: string, data: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/services/updateService/${service_type_ids}`, data);
   }  
+
   getCategoryInLive(category: string) {
     return this.http.get<any[]>(
       `${this.baseUrl}/services/searchCategoryInLive`,

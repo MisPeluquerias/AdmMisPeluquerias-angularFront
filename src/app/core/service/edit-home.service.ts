@@ -26,6 +26,7 @@ export class EditHomeService {
     });;
   }
 
+  
   getBrandByCategory(term:string,category:string){
     return this.http.get<any[]>(`${this.baseUrl}/edithome/getBrandsByCategory`, {
       params: {
@@ -99,10 +100,11 @@ export class EditHomeService {
     );
   }
 
-  getServices(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/edithome/getServices`);
+  getUniqueServices(category: string) {
+    console.log('Categoria enviada:', category);
+    return this.http.get<any>(`${this.baseUrl}/edithome/getUniqueServices/${category}`);
 }
-
+ 
   getSubservicesByService(id_service: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/edithome/getSubservicesByService`, {
       params: { id_service: id_service.toString()}
@@ -206,6 +208,10 @@ export class EditHomeService {
 
   getAllCategoriesBrands(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/edithome/getAllCategoriesBrands`);
+  }
+
+  getAllCategoriesServices(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/edithome/getAllCategoriesServices`);
   }
 
   getCategories(): Observable<any[]> {

@@ -23,10 +23,14 @@ export class ServicesComponent {
   selectedService: any = { service_name: '' }; 
   selectedSubServices: string[] = []; 
   subservicesAsText : string = "";
+  categoriesAsText : string = "";
   selectedSubServiceIds: number[] = [];
+  selectedCategoryIds: number[] = [];
   selectedCategory: string = '';
+  selectedCategories: string[] = [];
   private searchTermsCategory = new Subject<string>();
   dataCategoryList: any[] = [];
+  id_category: any = '';
   newCategory: any = { category: '', salons: [] };
   
 
@@ -82,6 +86,23 @@ export class ServicesComponent {
   selectService(service: any): void {
     this.selectedService = { ...service };  // Asignamos el servicio seleccionado a la variable
   }
+selectCategories(service: any): void {
+  // Verifica si `service.categories` es un arreglo de nombres o una cadena separada por comas
+ console.log('Contenido de service.categories:', service.categories);
+
+  if (Array.isArray(service.categories)) {
+    this.selectedCategories = [...service.categories];
+  } else if (typeof service.categories === 'string') {
+    this.selectedCategories = service.categories.split(',').map((category: string) => category.trim());
+  } else {
+    this.selectedCategories = [];
+  }
+
+  this.selectedService = { ...service };
+  this.categoriesAsText = this.selectedCategories.join(', ');  // Actualiza el área de texto con los nombres de categorías
+}
+  
+
 
 
   selectCategory(category: { name: string }): void {
@@ -89,7 +110,6 @@ export class ServicesComponent {
     if (!this.newCategory.categories) {
       this.newCategory.categories = [];
     }
-  
     // Almacenar solo el nombre de la categoría en el array newCategory.categories
     this.newCategory.categories.push({ name: category.name }); 
     this.dataCategoryList = []; // Limpiar la lista después de la selección
@@ -287,4 +307,43 @@ export class ServicesComponent {
       }
     });
   }
+
+
+  updateCategories(): void {
+  if (this.categoriesAsText.trim() === "") {
+    this.toastr.error('Error, Introduzca al menos una categoría');
+    return;
+  }
+
+  // Convertir el texto en un arreglo de nombres de categorías
+  this.selectedCategories = this.categoriesAsText.split(',')
+    .map(category => category.trim())
+    .filter(category => category.length > 0);
+
+  const updatedCategories = {
+    categories: this.selectedCategories,  // Asegúrate de que aquí solo enviamos los nombres de las categorías
+    id_service: this.selectedService.id_service
+  };
+
+  console.log('Datos de categorías a enviar:', updatedCategories);
+
+  if (!this.selectedService.id_service) {
+    this.toastr.error('No se pudo actualizar las categorías porque falta el ID del servicio');
+    return;
+  }
+
+  // Llamada al servicio para actualizar las categorías
+  this.servicesService.updateCategories(this.selectedService.id_service, updatedCategories).subscribe({
+    next: (response) => {
+      this.toastr.success('Categorías actualizadas con éxito');
+      this.loadAllServices(this.currentPage);  // Recargar la lista de servicios
+    },
+    error: (err) => {
+      this.toastr.error('Error al actualizar las categorías, por favor compruebe los nombres...');
+      console.error('Error actualizando las categorías:', err);
+    }
+  });
 }
+
+}
+

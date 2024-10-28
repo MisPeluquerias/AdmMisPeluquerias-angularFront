@@ -1507,6 +1507,25 @@
             Complete los detalles del nuevo servicio
           </p>
           <form>
+            <div class="mb-3 col-md-12 d-flex flex-column align-items-center">
+              <label for="nameCategory" class="form-label text-center fw-bold">Seleccione Categoría del servicio:</label>
+              <select
+                class="form-select"
+                id="selectedCategory"
+                name="selectedCategory"
+                [(ngModel)]="selectedCategory"
+                (change)="getUniqueServices(selectedCategory)"
+                required
+                style="max-width: 300px;"
+              >
+                <option value="" disabled selected>
+                  Seleccione una categoría
+                </option>
+                <option *ngFor="let category of service_categories" [value]="category.category">
+                  {{ category.category }}
+                </option>
+              </select>
+            </div>
             <div class="row mb-3">
               <div class="col-md-6">
                 <label for="serviceSelect" class="form-label fw-bold"

@@ -88,6 +88,7 @@ export class EditHomeComponent implements OnInit {
   selectedUpdateBrand:any="";
   totalPages: number = 1;
   brands_categories:any;
+  service_categories:any;
   getSalonDataSelect:any[]=[];
   faqByIdSalon:any[]=[];
   faqToEdit: any;
@@ -141,7 +142,7 @@ export class EditHomeComponent implements OnInit {
       this.salonId = id ? +id : 0; // Convierte el ID a número, asegurándote de que es un valor válido
       this.loadProvinces();
       this.loadImages();
-      this.getUniqueServices();
+      this.getUniqueServices('');
       this.getServicesWithSubservices();
       this.getFaqByIdSalon();
       this.getReviewsById();
@@ -151,6 +152,7 @@ export class EditHomeComponent implements OnInit {
     this.getUserPermiso();
     this.getAllCategoriesBrands();
     this.getBrandsBySalon();
+    this.getAllCategoriesServices();
   }
 
   getUserPermiso(): void {
@@ -573,15 +575,14 @@ export class EditHomeComponent implements OnInit {
   }
 
 
-  getUniqueServices(){
-    this.editHomeService.getServices().subscribe(
+  getUniqueServices(category:string){
+    this.editHomeService.getUniqueServices(category).subscribe(
       (response) => {
         if (response.success) {
           this.getSalonDataSelect = response.data;
           //console.log('Servicios cargados',this.getSalonServices); // Usa este valor para gestionar la paginación en el frontend
         } else {
           console.error('Error fetching services', response);
-
         }
       },
       (error) => {
@@ -632,7 +633,7 @@ export class EditHomeComponent implements OnInit {
     return;
   }
 
-  if (this.selectedSubservice === null || this.selectedSubservice === undefined) {
+  if (this.selectedSubservice === null || this.selectedSubservice === undefined || this.selectedSubservice==='') {
     this.toastr.error('El Subservicio seleccionado es necesario para la actualización.');
     return;
   }
@@ -1173,6 +1174,20 @@ getAllCategoriesBrands(): void {
     error: (err) => {
       console.error('Error al obtener las marcas:', err);
       this.toastr.error('Hubo un error al cargar las marcas', 'Error');
+    }
+  });
+}
+
+
+getAllCategoriesServices(): void {
+  this.editHomeService.getAllCategoriesServices().subscribe({
+    next: (response) => {
+      this.service_categories = response; // Asigna la respuesta a la variable `allBrands`
+      console.log('servicios recividas con categorías',this.service_categories);
+    },
+    error: (err) => {
+      console.error('Error al obtener las categorias de servicios', err);
+      this.toastr.error('Hubo un error al cargar las categorias de servicios', 'Error');
     }
   });
 }
