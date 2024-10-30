@@ -67,6 +67,8 @@ export class ContactComponent {
     this.replySubject = ''; 
     this.replyMessage = '';
   }
+
+
   
   onSearch(): void {
     this.loadAllContactMenssage(this.currentPage);
@@ -117,10 +119,7 @@ export class ContactComponent {
     return this.AllContactMenssage.some(contact => contact.selected);
   }
 
-  deleteSelected() {
-    this.AllContactMenssage = this.AllContactMenssage.filter(contact => !contact.selected);
-    this.allSelected = false;
-  }
+ 
 
   selectedStateContact(message:any){
     this.selectStateContact = {
@@ -184,4 +183,33 @@ export class ContactComponent {
       }
     );
   }
+
+
+
+  confirmDelete(): void {
+    const selectedContacts = this.AllContactMenssage.filter(contact => contact.selected);
+    if (selectedContacts.length === 0) {
+      this.toastr.warning('No has seleccionado ningún mensaje para eliminar.');
+      return;
+    }
+    console.log('Contactos seleccionados para eliminar:', selectedContacts); // Muestra los contactos seleccionados en la consola
+  
+    const idsToDelete = selectedContacts.map(contact => contact.id_contact);
+  
+    this.contactService.deleteContacts(idsToDelete).subscribe({
+
+      next: () => {
+        this.toastr.success('Mensajes eliminados con éxito');
+        this.loadAllContactMenssage(this.currentPage);
+        this.AllContactMenssage.forEach(contact => contact.selected = false); // Limpiar selección
+        this.allSelected = false;
+      },
+      error: (err) => {
+        console.error('Error eliminando contactos', err);
+        this.toastr.error('Error al eliminar los mensajes seleccionados.');
+      }
+    });
+  }
 }
+
+

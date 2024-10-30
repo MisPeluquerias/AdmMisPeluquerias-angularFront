@@ -43,4 +43,8 @@ export class HomeService {
       params: { permiso: permiso || ''}
     });
   }
+
+  deleteBusiness(ids: number[]): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/home/deleteBusiness`, { ids });
+  }
 }

@@ -71,7 +71,8 @@
             <div *ngIf="hasSelected()" class="text-end mb-3">
               <button
                 class="btn btn-danger"
-                (click)="deleteSelected()"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteReclamationModal"
                 style="background-color: darkorange"
               >
                 Eliminar seleccionados
@@ -296,6 +297,29 @@
           </button>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal de confirmación para eliminar -->
+<div class="modal fade" id="deleteReclamationModal" tabindex="-1" aria-labelledby="deleteReclamationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title" id="deleteReclamationModalLabel">Eliminar Reclamaciones</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-3">
+          <img src="../../../assets/img/sello.jpg" alt="sello" width="120" class="img-fluid" />
+        </div>
+        <p>¿Estás seguro que deseas eliminar la reclamación/es seleccionadas?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="confirmDelete()">Eliminar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
       </div>
     </div>
   </div>

@@ -37,4 +37,8 @@ export class AdministratorsService {
     console.log('email enviado desde el servicio', email);
     return this.http.put<any[]>(`${this.baseUrl}/administrators/addNewAdmin`, { email });
 }
+
+deleteAdministrators(ids: number[]): Observable<any> {
+  return this.http.post<any>(`${this.baseUrl}/administrators/deleteAdministrators`, { ids });
+}
 }

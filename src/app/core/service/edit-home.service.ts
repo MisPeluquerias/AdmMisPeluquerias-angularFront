@@ -101,9 +101,9 @@ export class EditHomeService {
   }
 
   getUniqueServices(category: string) {
-    console.log('Categoria enviada:', category);
     return this.http.get<any>(`${this.baseUrl}/edithome/getUniqueServices/${category}`);
-}
+  }
+  
  
   getSubservicesByService(id_service: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/edithome/getSubservicesByService`, {

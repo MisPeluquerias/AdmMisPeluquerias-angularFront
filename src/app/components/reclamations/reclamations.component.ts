@@ -115,7 +115,9 @@ export class ReclamationsComponent {
       }
     });
   }
-  deleteSelected() {
+
+
+  confirmDelete(): void {
     const selectedReclamations = this.AllReclamations
       .filter(reclamation => reclamation.selected)
       .map(reclamation => reclamation.id_salon_reclamacion);

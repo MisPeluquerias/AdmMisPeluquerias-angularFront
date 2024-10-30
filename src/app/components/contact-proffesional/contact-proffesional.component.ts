@@ -192,4 +192,30 @@ export class ContactProffesionalComponent {
       }
     );
   }
+
+  
+  confirmDelete(): void {
+    const selectedContacts = this.AllContactMenssage.filter(contact => contact.selected);
+    if (selectedContacts.length === 0) {
+      this.toastr.warning('No has seleccionado ningún mensaje para eliminar.');
+      return;
+    }
+    console.log('Contactos seleccionados para eliminar:', selectedContacts); // Muestra los contactos seleccionados en la consola
+  
+    const idsToDelete = selectedContacts.map(contact => contact.id_contact);
+  
+    this.contactProffesionalService.deleteContactsProfessional(idsToDelete).subscribe({
+
+      next: () => {
+        this.toastr.success('Mensajes eliminados con éxito');
+        this.loadAllContactProffesionalMenssage(this.currentPage);
+        this.AllContactMenssage.forEach(contact => contact.selected = false); // Limpiar selección
+        this.allSelected = false;
+      },
+      error: (err) => {
+        console.error('Error eliminando contactos', err);
+        this.toastr.error('Error al eliminar los mensajes seleccionados.');
+      }
+    });
+  }
 }

@@ -1,5 +1,13 @@
 <app-header></app-header>
-<div id="layoutSidenav">
+<div *ngIf="isLoading" class="loading-overlay">
+  <p>Cargando, por favor espere...    </p>
+  <!-- O puedes usar un spinner en lugar de texto -->
+  <div class="spinner-border" role="status">
+    <span class="sr-only">Cargando...</span>
+  </div>
+</div>
+
+<div id="layoutSidenav"  *ngIf="!isLoading">
   <app-aside></app-aside>
   <div id="layoutSidenav_content">
     <main>
@@ -1659,25 +1667,15 @@
           <form>
             <div class="row mb-3">
               <div class="col-md-6">
-                <label for="serviceSelect" class="form-label fw-bold"
-                  >Servicio</label
-                >
-                <select
-                  id="updateServiceName"
-                  class="form-select"
-                  aria-label="Selecciona una opción"
-                  (change)="onServiceSelect($event)"
-                  [(ngModel)]="updateServiceName"
-                  name="updateServiceName"
-                >
-                  <option value="" selected>Selecciona una opción</option>
-                  <option
-                    *ngFor="let service of getSalonDataSelect"
-                    [value]="service.id_service"
-                  >
-                    {{ service.name }}
-                  </option>
-                </select>
+                <label for="serviceName" class="form-label fw-bold">Servicio</label>
+                <input
+                  type="text"
+                  id="serviceName"
+                  class="form-control"
+                  [value]="selectedServiceName"
+                  readonly
+                  disabled
+                />
               </div>
               <div class="col-md-6">
                 <label for="timeInput" class="form-label fw-bold"
@@ -1696,28 +1694,18 @@
             </div>
 
             <div class="row">
-              <div class="col-md-6 mb-3 row">
-                <label for="subserviceInput" class="form-label fw-bold"
-                  >Subservicio</label
-                >
-                <select
-                  id="subServiceSelect"
-                  class="form-select ms-2"
-                  aria-label="Selecciona una opción"
-                  [(ngModel)]="updateSubservices"
-                  (change)="onSubserviceSelect($event)"
-                  name="newSubServiceName"
-                >
-                  <option value="" selected>Selecciona una opción</option>
-                  <option
-                    *ngFor="let subService of getSalonSubservices"
-                    [value]="subService.id_service_type"
-                  >
-                    {{ subService.name }}
-                  </option>
-                </select>
+              <div class="col-md-6 mb-3">
+                <label for="subserviceName" class="form-label fw-bold">Subservicio</label>
+                <input
+                  type="text"
+                  id="subserviceName"
+                  class="form-control"
+                  [value]="selectedSubserviceName"
+                  readonly
+                  disabled
+                />
               </div>
-              <div class="col-md-6 ms-4">
+              <div class="col-md-6">
                 <label for="timeInput" class="form-label fw-bold"
                   >Precio (*Opcional)</label
                 >
@@ -1740,6 +1728,7 @@
             type="button  editReviewText: string = '';"
             class="btn btn-danger me-2"
             (click)="updateServiceWithSubservice()"
+            data-bs-dismiss="modal"
           >
             Guardar
           </button>

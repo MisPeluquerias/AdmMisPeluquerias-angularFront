@@ -52,4 +52,7 @@ export class OwnerSalonService {
       }
     );
   }
+  deleteOwners(ids: number[]): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/owner-salon/deleteOwners`, { ids });
+  }
 }

@@ -44,6 +44,7 @@ export class EditHomeComponent implements OnInit {
     categories: '',
     city_name: '',
     
+    
     city_zip_code: '',
     sortedHours: []
   };
@@ -55,6 +56,7 @@ export class EditHomeComponent implements OnInit {
   dias: any[] = [];
   getSalonServices:any[]=[];
   totalItems: number = 0;
+  isLoading: boolean = false; 
   currentPage: number = 1;
   pageSize: number = 10;
   selectedFile: File | null = null;
@@ -104,6 +106,7 @@ export class EditHomeComponent implements OnInit {
   getSalonSubservices:any[]=['Seleccione una opción'];
   selectedServiceId: number | null = null;
   selectedServiceName: string | null = null;
+  selectedSubserviceName: number | null = null;
   idSalonServiceType: number | null = null;
   selectedCategory: any = {};
   selectedUpdatedCategoryBrand: string = "";
@@ -137,12 +140,12 @@ export class EditHomeComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.loadData();
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
       this.salonId = id ? +id : 0; // Convierte el ID a número, asegurándote de que es un valor válido
       this.loadProvinces();
       this.loadImages();
-      this.getUniqueServices('');
       this.getServicesWithSubservices();
       this.getFaqByIdSalon();
       this.getReviewsById();
@@ -154,6 +157,8 @@ export class EditHomeComponent implements OnInit {
     this.getBrandsBySalon();
     this.getAllCategoriesServices();
   }
+
+
 
   getUserPermiso(): void {
     // Llama al método del servicio para obtener el permiso del usuario
@@ -235,6 +240,22 @@ export class EditHomeComponent implements OnInit {
       ...Array(halfStar).fill(0.5),  // Media estrella
       ...Array(emptyStars).fill(0)  // Estrellas vacías
     ];
+  }
+
+
+  loadData(): void {
+    this.isLoading = true; // Activa el mensaje de carga al iniciar la petición
+    
+    this.editHomeService.getSalonById(this.salonId).subscribe(
+      (response:any) => {
+        this.salonData = response.data;
+        this.isLoading = false; // Oculta el mensaje de carga al completar la petición
+      },
+      (error) => {
+        //this.toastr.error("Error al cargar los datos");
+        this.isLoading = false; // Asegura que se oculta el mensaje de carga incluso si falla la petición
+      }
+    );
   }
 
 
@@ -436,14 +457,18 @@ export class EditHomeComponent implements OnInit {
   }
 
   onProvinceChange(provinceId: number, initialLoad: boolean = false): void {
+    this.isLoading = true; // Activa la carga al iniciar la petición
+  
     if (!initialLoad) {
       this.salonData.id_city = '';
       this.salonData.city_name = '';
     }
-
-    this.editHomeService.getCitiesByProvince(provinceId).subscribe(
-      (response: any) => {
+  
+    this.editHomeService.getCitiesByProvince(provinceId).subscribe({
+      next: (response: any) => {
         this.cities = response.data;
+        
+        // Si es una carga inicial y ya existe un id_city, selecciona la ciudad correspondiente
         if (initialLoad && this.salonData.id_city) {
           const selectedCity = this.cities.find(
             (city) => city.id_city === this.salonData.id_city
@@ -453,11 +478,15 @@ export class EditHomeComponent implements OnInit {
           }
         }
       },
-      (error) => {
-        console.error('Error fetching cities:', error);
+      error: (error) => {
+        console.error('Error al cargar las ciudades:', error);
+      },
+      complete: () => {
+        this.isLoading = false; // Desactiva la carga al finalizar la petición
       }
-    );
+    });
   }
+  
 
   onCityChange(cityId: number): void {
     const selectedCity = this.cities.find((city) => city.id_city === cityId);
@@ -580,6 +609,10 @@ export class EditHomeComponent implements OnInit {
       (response) => {
         if (response.success) {
           this.getSalonDataSelect = response.data;
+          this.newServiceName="";
+          this.newSubservices="";
+
+
           //console.log('Servicios cargados',this.getSalonServices); // Usa este valor para gestionar la paginación en el frontend
         } else {
           console.error('Error fetching services', response);
@@ -801,41 +834,18 @@ getServicesWithSubservices() {
   }
 
   openEditModal(service: any): void {
-    // Clona el objeto del servicio seleccionado
+    console.log("Servicio recibido:", service);
     this.selectedService = { ...service };
   
-    // Asigna los valores necesarios
-    this.updateServiceName = this.selectedService.id_service; 
-    this.updateServiceTime = this.selectedService.time;
-    this.updateServicePrice = this.selectedService.price.toString();
-    this.updateSubservices = this.selectedService.id_service_type.toString();
-  
-    // Asigna el ID de Salon Service Type
-    this.idSalonServiceType = this.selectedService.id_salon_service_type; // Asegúrate de que este valor exista en el objeto `service`
-  
-    // Cargar los subservicios correspondientes al servicio seleccionado
-    this.editHomeService.getSubservicesByService(this.selectedService.id_service).subscribe(
-      (response) => {
-        if (response.success) {
-          // Asigna los subservicios cargados a la lista correspondiente
-          this.getSalonSubservices = response.data;
-  
-          // Una vez cargados los subservicios, asigna el subservicio seleccionado
-          this.newSubservices = this.selectedService.id_service_type.toString();
-  
-          // Verificación: imprimir los valores asignados
-          console.log('Servicio seleccionado:', this.updateServiceName);
-          console.log('Subservicio seleccionado:', this.updateSubservices);
-          console.log('ID de Salon Service Type:', this.idSalonServiceType);
-        } else {
-          console.error('Error al cargar los subservicios:', response.message);
-        }
-      },
-      (error) => {
-        console.error('Error al obtener subservicios:', error);
-      }
-    );
+    // Asigna el nombre del servicio y subservicio a las variables que mostrarán los valores
+    this.selectedServiceName = this.selectedService.service_name ?? ''; 
+    this.selectedSubserviceName = this.selectedService.subservice_name ?? '';
+    this.idSalonServiceType = this.selectedService.id_salon_service_type ?? 0;
+    // Asigna otros valores como tiempo y precio si los necesitas
+    this.updateServiceTime = this.selectedService.time ?? 0;
+    this.updateServicePrice = this.selectedService.price ? this.selectedService.price.toString() : "0.00";
   }
+  
   
 
   onSubserviceSelect(event: Event): void {
@@ -847,15 +857,9 @@ getServicesWithSubservices() {
 
   updateServiceWithSubservice(): void {
 
-    if (!this.updateServiceName || !this.updateSubservices || !this.updateServiceTime) {
-        this.toastr.error('Por favor, rellene los campos servicios,subservicios y tiempo de servicio');
-        return;
-    }
     
     const updateData = {
         idSalonServiceType: this.idSalonServiceType,
-        idService: this.updateServiceName,
-        idServiceType: this.updateSubservices,
         price: this.updateServicePrice,
         time: this.updateServiceTime,
         active: 1,
@@ -868,6 +872,10 @@ getServicesWithSubservices() {
             if (response.success) {
                 this.toastr.success('Servicio actualizado con éxito');
                 this.getServicesWithSubservices();
+                this.idSalonServiceType = 0;
+                this.updateServiceTime = 0;
+                this.updateServicePrice = '0.00';
+                this
             } else {
                 this.toastr.error('Error al actualizar el servicio');
             }
@@ -1183,7 +1191,7 @@ getAllCategoriesServices(): void {
   this.editHomeService.getAllCategoriesServices().subscribe({
     next: (response) => {
       this.service_categories = response; // Asigna la respuesta a la variable `allBrands`
-      console.log('servicios recividas con categorías',this.service_categories);
+      //console.log('servicios recividas con categorías',this.service_categories);
     },
     error: (err) => {
       console.error('Error al obtener las categorias de servicios', err);

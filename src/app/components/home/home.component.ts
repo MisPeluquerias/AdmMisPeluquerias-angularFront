@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../../core/service/home.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-home',
@@ -19,7 +21,9 @@ export class HomeComponent implements OnInit {
   salonPermiso:string='';
   showBoton:boolean=false;
 
-  constructor(private homeService: HomeService, private router:Router) { }
+  constructor(private homeService: HomeService, private router:Router,
+    private toastr: ToastrService
+  ) { }
 
   allSelected: boolean = false;
 
@@ -130,13 +134,34 @@ export class HomeComponent implements OnInit {
     return this.AllSalon.some(salon => salon.selected);
   }
 
-  deleteSelected() {
-    this.AllSalon = this.AllSalon.filter(salon => !salon.selected);
-    this.allSelected = false;
-  }
+ 
 
   editSalon(id: number) {
     this.router.navigate(['home/edit', id]);
   }
 
+  confirmDelete(): void {
+    const selectedBusiness = this.AllSalon.filter(business => business.selected);
+    if (selectedBusiness.length === 0) {
+      this.toastr.warning('No has seleccionado ningún negocio para eliminar.');
+      return;
+    }
+    console.log('Negocios seleccionados para eliminar:', selectedBusiness); // Muestra los contactos seleccionados en la consola
+  
+    const idsToDelete = selectedBusiness.map(business => business.id_salon);
+  
+    this.homeService.deleteBusiness(idsToDelete).subscribe({
+
+      next: () => {
+        this.toastr.success('Negocio/s eliminados con éxito');
+        this.loadAllSalon(this.currentPage);
+        this.AllSalon.forEach(businnes => businnes.selected = false); // Limpiar selección
+        this.allSelected = false;
+      },
+      error: (err) => {
+        console.error('Error eliminando negocios', err);
+        this.toastr.error('Error al eliminar los negocio/s seleccionados.');
+      }
+    });
+  } 
 }

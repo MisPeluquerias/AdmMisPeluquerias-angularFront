@@ -46,4 +46,8 @@ export class ContactProffesionalService {
     const emailData = {to, subject, message };
     return this.http.post<any>(`${this.baseUrl}/contact-proffesional/send-new-email-contactProffesional`, emailData); // Asegúrate de que esta URL coincida con tu backend
   }
+
+  deleteContactsProfessional(ids: number[]): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/contact-proffesional/deleteContactsProfessional`, { ids });
+  }
 }

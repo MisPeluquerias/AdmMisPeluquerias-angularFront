@@ -46,4 +46,9 @@ export class ContactService {
     const emailData = {to, subject, message};
     return this.http.post<any>(`${this.baseUrl}/contact/send-new-email-contact`, emailData);
   }
+
+  
+  deleteContacts(ids: number[]): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/contact/deleteContacts`, { ids });
+  }
 }

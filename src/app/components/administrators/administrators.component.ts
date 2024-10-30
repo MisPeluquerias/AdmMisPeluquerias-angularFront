@@ -145,12 +145,34 @@ export class AdministratorsComponent {
     return this.AllAdministrators.some(administrator => administrator.selected);
   }
 
-  deleteSelected(): void {
-    this.AllAdministrators = this.AllAdministrators.filter(administrator => !administrator.selected);
-    this.allSelected = false;
-  }
 
   editAdministrator(id: number) {
     this.router.navigate(['edit-administrator/edit',id]);
   }
+
+  confirmDelete(): void {
+    const selectedAdministrators = this.AllAdministrators.filter(administrator => administrator.selected);
+    if (selectedAdministrators.length === 0) {
+      this.toastr.warning('No has seleccionado ningún administrador para eliminar.');
+      return;
+    }
+    console.log('Administradores seleccionados para eliminar:', selectedAdministrators); // Muestra los contactos seleccionados en la consola
+  
+    const idsToDelete = selectedAdministrators.map(administrator => administrator.id_user);
+  
+    this.administratorsService.deleteAdministrators(idsToDelete).subscribe({
+
+      next: () => {
+        this.toastr.success('Administrador/es eliminados con éxito');
+        this.loadAllAministrators(this.currentPage);
+        this.AllAdministrators.forEach(administrator => administrator.selected = false); // Limpiar selección
+        this.allSelected = false;
+      },
+      error: (err) => {
+        console.error('Error eliminando administradores', err);
+        this.toastr.error('Error al eliminar los adminsitradores seleccionados.');
+      }
+    });
+  }
+
 }

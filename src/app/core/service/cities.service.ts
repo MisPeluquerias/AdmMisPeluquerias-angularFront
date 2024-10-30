@@ -24,4 +24,8 @@ export class CitiesService {
     return this.http.get<any>(`${this.baseUrl}/cities/getAllCities`, { params });
   }
 
+  deleteCities(citiesToDelete: { id_city: number; id_province: number; }[]): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/cities/deleteCities`, citiesToDelete);
+  }
+
 }
