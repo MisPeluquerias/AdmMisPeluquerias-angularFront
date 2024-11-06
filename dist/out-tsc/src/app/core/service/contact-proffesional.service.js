@@ -27,9 +27,16 @@ let ContactProffesionalService = class ContactProffesionalService {
         console.log(data);
         return this.http.put(`${this.baseUrl}/contact-proffesional/updateStateContactProffesional`, data);
     }
-    sendEmailContactProffesional(to, subject, message) {
-        const emailData = { to, subject, message };
+    sendEmailContactProffesional(id_contact, to, subject, message, replyMessage) {
+        const emailData = { id_contact, to, subject, message, replyMessage };
         return this.http.post(`${this.baseUrl}/contact-proffesional/send-reply-contactProffesional`, emailData); // Asegúrate de que esta URL coincida con tu backend
+    }
+    sendNewEmailContactProffesional(to, subject, message) {
+        const emailData = { to, subject, message };
+        return this.http.post(`${this.baseUrl}/contact-proffesional/send-new-email-contactProffesional`, emailData); // Asegúrate de que esta URL coincida con tu backend
+    }
+    deleteContactsProfessional(ids) {
+        return this.http.post(`${this.baseUrl}/contact-proffesional/deleteContactsProfessional`, { ids });
     }
 };
 ContactProffesionalService = __decorate([

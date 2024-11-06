@@ -41,11 +41,13 @@ let EditHomeComponent = class EditHomeComponent {
             sortedHours: []
         };
         this.provinces = [];
+        this.selectedImgUpdateBrand = '';
         this.cities = [];
         this.additionalComments = '';
         this.dias = [];
         this.getSalonServices = [];
         this.totalItems = 0;
+        this.isLoading = false;
         this.currentPage = 1;
         this.pageSize = 10;
         this.selectedFile = null;
@@ -70,10 +72,11 @@ let EditHomeComponent = class EditHomeComponent {
         this.updateSubservices = '';
         this.newServiceTime = 0;
         this.updateServiceTime = 0;
-        this.newServicePrice = "";
-        this.updateServicePrice = "";
+        this.newServicePrice = "0.00";
+        this.updateServicePrice = "0.00";
         this.selectedService = {};
         this.selectedSubservice = {};
+        this.selectedIdBrandSalon = 0;
         this.selectedNewBrand = "";
         this.selectedUpdateBrand = "";
         this.totalPages = 1;
@@ -90,12 +93,18 @@ let EditHomeComponent = class EditHomeComponent {
         this.getSalonSubservices = ['Seleccione una opción'];
         this.selectedServiceId = null;
         this.selectedServiceName = null;
+        this.selectedSubserviceName = null;
         this.idSalonServiceType = null;
         this.selectedCategory = {};
+        this.selectedUpdatedCategoryBrand = "";
+        this.selectedUpdateIdBrandCategory = {};
         this.oldCategory = '';
         this.userPermiso = '';
+        this.brands = [];
         this.responseText = '';
+        this.selectedBrandId = "";
         this.selectedUpdateBrandIdName = "";
+        this.selectedSalonId = "";
         this.days = [
             { name: 'Lunes', hours: [] },
             { name: 'Martes', hours: [] },
@@ -107,12 +116,12 @@ let EditHomeComponent = class EditHomeComponent {
         ];
     }
     ngOnInit() {
+        this.loadData();
         this.route.paramMap.subscribe((params) => {
             const id = params.get('id');
             this.salonId = id ? +id : 0; // Convierte el ID a número, asegurándote de que es un valor válido
             this.loadProvinces();
             this.loadImages();
-            this.getUniqueServices();
             this.getServicesWithSubservices();
             this.getFaqByIdSalon();
             this.getReviewsById();
@@ -120,8 +129,9 @@ let EditHomeComponent = class EditHomeComponent {
             this.selectedCategory = '';
         });
         this.getUserPermiso();
-        this.getAllBrands();
+        this.getAllCategoriesBrands();
         this.getBrandsBySalon();
+        this.getAllCategoriesServices();
     }
     getUserPermiso() {
         // Llama al método del servicio para obtener el permiso del usuario
@@ -190,6 +200,16 @@ let EditHomeComponent = class EditHomeComponent {
             ...Array(halfStar).fill(0.5), // Media estrella
             ...Array(emptyStars).fill(0) // Estrellas vacías
         ];
+    }
+    loadData() {
+        this.isLoading = true; // Activa el mensaje de carga al iniciar la petición
+        this.editHomeService.getSalonById(this.salonId).subscribe((response) => {
+            this.salonData = response.data;
+            this.isLoading = false; // Oculta el mensaje de carga al completar la petición
+        }, (error) => {
+            //this.toastr.error("Error al cargar los datos");
+            this.isLoading = false; // Asegura que se oculta el mensaje de carga incluso si falla la petición
+        });
     }
     getSalonData(id_salon) {
         this.editHomeService.getSalonById(id_salon).subscribe((response) => {
@@ -335,20 +355,28 @@ let EditHomeComponent = class EditHomeComponent {
         });
     }
     onProvinceChange(provinceId, initialLoad = false) {
+        this.isLoading = true; // Activa la carga al iniciar la petición
         if (!initialLoad) {
             this.salonData.id_city = '';
             this.salonData.city_name = '';
         }
-        this.editHomeService.getCitiesByProvince(provinceId).subscribe((response) => {
-            this.cities = response.data;
-            if (initialLoad && this.salonData.id_city) {
-                const selectedCity = this.cities.find((city) => city.id_city === this.salonData.id_city);
-                if (selectedCity) {
-                    this.salonData.city_name = selectedCity.city_name;
+        this.editHomeService.getCitiesByProvince(provinceId).subscribe({
+            next: (response) => {
+                this.cities = response.data;
+                // Si es una carga inicial y ya existe un id_city, selecciona la ciudad correspondiente
+                if (initialLoad && this.salonData.id_city) {
+                    const selectedCity = this.cities.find((city) => city.id_city === this.salonData.id_city);
+                    if (selectedCity) {
+                        this.salonData.city_name = selectedCity.city_name;
+                    }
                 }
+            },
+            error: (error) => {
+                console.error('Error al cargar las ciudades:', error);
+            },
+            complete: () => {
+                this.isLoading = false; // Desactiva la carga al finalizar la petición
             }
-        }, (error) => {
-            console.error('Error fetching cities:', error);
         });
     }
     onCityChange(cityId) {
@@ -442,11 +470,13 @@ let EditHomeComponent = class EditHomeComponent {
             }
         });
     }
-    getUniqueServices() {
-        this.editHomeService.getServices().subscribe((response) => {
+    getUniqueServices(category) {
+        this.editHomeService.getUniqueServices(category).subscribe((response) => {
             if (response.success) {
                 this.getSalonDataSelect = response.data;
-                console.log('Servicios cargados', this.getSalonServices); // Usa este valor para gestionar la paginación en el frontend
+                this.newServiceName = "";
+                this.newSubservices = "";
+                //console.log('Servicios cargados',this.getSalonServices); // Usa este valor para gestionar la paginación en el frontend
             }
             else {
                 console.error('Error fetching services', response);
@@ -486,12 +516,16 @@ let EditHomeComponent = class EditHomeComponent {
             this.toastr.error('Por favor, selecciona un servicio válido.');
             return;
         }
-        if (this.selectedSubservice === null || this.selectedSubservice === undefined) {
+        if (this.selectedSubservice === null || this.selectedSubservice === undefined || this.selectedSubservice === '') {
             this.toastr.error('El Subservicio seleccionado es necesario para la actualización.');
             return;
         }
         if (this.newServiceTime === null || this.newServiceTime === undefined || this.newServiceTime <= 0) {
             this.toastr.error('El tiempo del servicio debe ser un valor válido y mayor a cero.');
+            return;
+        }
+        if (this.newServicePrice === null || this.newServicePrice === undefined) {
+            this.toastr.error('El precio tiene que ser mayor o igual a 0');
             return;
         }
         // Asegúrate de enviar selectedServiceName en lugar de newServiceName
@@ -513,7 +547,7 @@ let EditHomeComponent = class EditHomeComponent {
             if (response.data) {
                 // Asignar los datos, incluso si están vacíos
                 this.getSalonServices = response.data;
-                console.log('Servicios actualizados:', this.getSalonServices);
+                //console.log('Servicios actualizados:', this.getSalonServices);
                 // Maneja el caso de array vacío
                 if (this.getSalonServices.length === 0) {
                     console.warn('No hay servicios disponibles.');
@@ -619,33 +653,15 @@ let EditHomeComponent = class EditHomeComponent {
         return ratingArray.filter(Boolean).length;
     }
     openEditModal(service) {
-        // Clona el objeto del servicio seleccionado
+        console.log("Servicio recibido:", service);
         this.selectedService = { ...service };
-        // Asigna los valores necesarios
-        this.updateServiceName = this.selectedService.id_service;
-        this.updateServiceTime = this.selectedService.time;
-        this.updateServicePrice = this.selectedService.price.toString();
-        this.updateSubservices = this.selectedService.id_service_type.toString();
-        // Asigna el ID de Salon Service Type
-        this.idSalonServiceType = this.selectedService.id_salon_service_type; // Asegúrate de que este valor exista en el objeto `service`
-        // Cargar los subservicios correspondientes al servicio seleccionado
-        this.editHomeService.getSubservicesByService(this.selectedService.id_service).subscribe((response) => {
-            if (response.success) {
-                // Asigna los subservicios cargados a la lista correspondiente
-                this.getSalonSubservices = response.data;
-                // Una vez cargados los subservicios, asigna el subservicio seleccionado
-                this.newSubservices = this.selectedService.id_service_type.toString();
-                // Verificación: imprimir los valores asignados
-                console.log('Servicio seleccionado:', this.updateServiceName);
-                console.log('Subservicio seleccionado:', this.updateSubservices);
-                console.log('ID de Salon Service Type:', this.idSalonServiceType);
-            }
-            else {
-                console.error('Error al cargar los subservicios:', response.message);
-            }
-        }, (error) => {
-            console.error('Error al obtener subservicios:', error);
-        });
+        // Asigna el nombre del servicio y subservicio a las variables que mostrarán los valores
+        this.selectedServiceName = this.selectedService.service_name ?? '';
+        this.selectedSubserviceName = this.selectedService.subservice_name ?? '';
+        this.idSalonServiceType = this.selectedService.id_salon_service_type ?? 0;
+        // Asigna otros valores como tiempo y precio si los necesitas
+        this.updateServiceTime = this.selectedService.time ?? 0;
+        this.updateServicePrice = this.selectedService.price ? this.selectedService.price.toString() : "0.00";
     }
     onSubserviceSelect(event) {
         const target = event.target;
@@ -653,14 +669,8 @@ let EditHomeComponent = class EditHomeComponent {
         console.log('Subservicio seleccionado:', this.selectedSubservice);
     }
     updateServiceWithSubservice() {
-        if (!this.updateServiceName || !this.updateSubservices || !this.updateServiceTime) {
-            this.toastr.error('Por favor, rellene los campos servicios,subservicios y tiempo de servicio');
-            return;
-        }
         const updateData = {
             idSalonServiceType: this.idSalonServiceType,
-            idService: this.updateServiceName,
-            idServiceType: this.updateSubservices,
             price: this.updateServicePrice,
             time: this.updateServiceTime,
             active: 1,
@@ -670,6 +680,10 @@ let EditHomeComponent = class EditHomeComponent {
             if (response.success) {
                 this.toastr.success('Servicio actualizado con éxito');
                 this.getServicesWithSubservices();
+                this.idSalonServiceType = 0;
+                this.updateServiceTime = 0;
+                this.updateServicePrice = '0.00';
+                this;
             }
             else {
                 this.toastr.error('Error al actualizar el servicio');
@@ -732,6 +746,12 @@ let EditHomeComponent = class EditHomeComponent {
         const input = event.target;
         if (input.value.length > 3) {
             input.value = input.value.slice(0, 3);
+        }
+    }
+    resetPrice(event) {
+        const input = event.target;
+        if (!input.value) {
+            input.value = '0.00';
         }
     }
     checkLengthPrice(event) {
@@ -882,11 +902,11 @@ let EditHomeComponent = class EditHomeComponent {
             console.error('No se encontró el ID de la reseña.');
         }
     }
-    getAllBrands() {
-        this.editHomeService.getBrands().subscribe({
+    getAllCategoriesBrands() {
+        this.editHomeService.getAllCategoriesBrands().subscribe({
             next: (response) => {
-                this.brands = response; // Asigna la respuesta a la variable `allBrands`
-                //console.log('marcas recividas',this.brands);
+                this.brands_categories = response; // Asigna la respuesta a la variable `allBrands`
+                //console.log('marcas recividas con categorías',this.brands_categories);
             },
             error: (err) => {
                 console.error('Error al obtener las marcas:', err);
@@ -894,35 +914,27 @@ let EditHomeComponent = class EditHomeComponent {
             }
         });
     }
+    getAllCategoriesServices() {
+        this.editHomeService.getAllCategoriesServices().subscribe({
+            next: (response) => {
+                this.service_categories = response; // Asigna la respuesta a la variable `allBrands`
+                //console.log('servicios recividas con categorías',this.service_categories);
+            },
+            error: (err) => {
+                console.error('Error al obtener las categorias de servicios', err);
+                this.toastr.error('Hubo un error al cargar las categorias de servicios', 'Error');
+            }
+        });
+    }
     getBrandsBySalon() {
         this.editHomeService.getBrandByIdSalon(this.salonId).subscribe({
             next: (response) => {
                 this.brandsBySalon = response; // Asigna la respuesta a la variable `allBrands`
-                console.log('marcas recividas', this.brandsBySalon);
+                //console.log('marcas recividas',this.brandsBySalon);
             },
             error: (err) => {
                 console.error('Error al obtener las marcas:', err);
                 //this.toastr.error('Hubo un error al cargar las marcas', 'Error');
-            }
-        });
-    }
-    addBrandSalon() {
-        if (!this.salonId || !this.selectedNewBrand) {
-            this.toastr.warning('Debe seleccionar un salón y una marca', 'Advertencia');
-            return;
-        }
-        //console.log('ID de la marca seleccionado:', this.selectedNewBrand);
-        //console.log('ID del salón:', this.salonId);
-        this.editHomeService.addBrandToSalon(this.salonId, this.selectedNewBrand).subscribe({
-            next: (response) => {
-                this.toastr.success('Marca añadida al salón con éxito', 'Éxito');
-                console.log('Respuesta del servidor:', response);
-                this.getBrandsBySalon();
-                // Aquí puedes añadir lógica adicional, como recargar la lista de salones o cerrar el modal
-            },
-            error: (err) => {
-                console.error('Error al añadir la marca al salón:', err);
-                this.toastr.error('Hubo un error al añadir la marca al salón, Por favor compruebe que la marca exista en su lista', 'Error');
             }
         });
     }
@@ -947,30 +959,131 @@ let EditHomeComponent = class EditHomeComponent {
             console.warn('No se ha seleccionado ninguna marca para eliminar.');
         }
     }
-    setToUpdateBrand(id_brand_salon) {
-        this.selectedUpdateBrand = id_brand_salon;
+    selectBrand(brand) {
+        this.term = brand.name;
+        this.selectedNewBrand = brand.id_brand;
+        this.brands = [];
     }
-    updateBrandSalon() {
-        // Verifica si los valores están presentes
-        if (!this.selectedUpdateBrand || !this.selectedUpdateBrandIdName) {
-            console.warn("La marca o el nombre de marca no están seleccionados.");
+    searchBrands(term) {
+        //console.log('Categoría seleccionada:', this.selectedCategory);
+        //console.log('Término de búsqueda:', term);
+        // Verifica que el término de búsqueda tenga al menos 2 caracteres
+        if (term.length < 2) {
+            this.brands = []; // Limpia los resultados si el término es muy corto
+            return; // No realiza la búsqueda si el término tiene menos de 2 caracteres
+        }
+        if (this.selectedCategory) {
+            this.editHomeService.getBrandByCategory(term, this.selectedCategory).subscribe((results) => {
+                this.brands = results;
+            }, (error) => {
+                console.error('Error al buscar las marcas:', error);
+            });
+        }
+        else {
+            console.error('Por favor selecciona una categoría antes de buscar.');
+        }
+    }
+    addBrandSalon() {
+        if (!this.salonId || !this.selectedNewBrand) {
+            this.toastr.warning('Debe seleccionar una categoría y una marca', 'Advertencia');
             return;
         }
-        // Logs para confirmar los valores antes de hacer la llamada
-        //console.log('ID enviado para modificar (id_brand_salon):', this.selectedUpdateBrand);
-        //console.log('ID brand enviado para modificar (id_brand):', this.selectedUpdateBrandIdName);
-        this.editHomeService.UpdateBrandsalon(this.selectedUpdateBrand, this.selectedUpdateBrandIdName, this.salonId).subscribe({
-            next: (data) => {
-                this.toastr.success('La marca del salón ha sido actualizada con éxito');
-                this.selectedUpdateBrandIdName = "";
+        this.editHomeService.addBrandToSalon(this.salonId, this.selectedNewBrand).subscribe({
+            next: (response) => {
+                this.toastr.success('Marca añadida al salón con éxito', 'Éxito');
+                console.log('Respuesta del servidor:', response);
+                // Recargar la lista de marcas del salón o realizar otras acciones
                 this.getBrandsBySalon();
+                // Limpiar los campos del formulario
+                this.selectedCategory = ''; // Limpia la categoría seleccionada
+                this.term = ''; // Limpia el término de búsqueda (marca)
+                this.selectedNewBrand = ''; // Limpia el ID de la marca seleccionada
+                this.brands = []; // Limpia la lista de resultados de búsqueda
+            },
+            error: (err) => {
+                console.error('Error al añadir la marca al salón:', err);
+                this.toastr.error('Hubo un error al añadir la marca al salón. Por favor, compruebe que la marca exista en su lista', 'Error');
+            }
+        });
+    }
+    searchBrandsForUpdate(term) {
+        if (term.length < 2) {
+            this.brands = [];
+            return;
+        }
+        if (this.selectedCategory) {
+            this.editHomeService.getBrandByCategory(term, this.selectedCategory).subscribe((results) => {
+                this.brands = results;
+            }, (error) => {
+                console.error('Error al buscar las marcas:', error);
+            });
+        }
+        else {
+            console.error('Por favor selecciona una categoría antes de buscar.');
+        }
+    }
+    searchUpdateBrands(termUpdate) {
+        //console.log('Categoría seleccionada:', this.selectedUpdatedCategoryBrand);
+        //console.log('Término de búsqueda:', termUpdate);
+        // Verifica que el término de búsqueda tenga al menos 2 caracteres
+        if (termUpdate.length < 2) {
+            this.brands = []; // Limpia los resultados si el término es muy corto
+            return; // No realiza la búsqueda si el término tiene menos de 2 caracteres
+        }
+        if (this.selectedUpdatedCategoryBrand) {
+            this.editHomeService.getBrandByCategory(termUpdate, this.selectedUpdatedCategoryBrand).subscribe((results) => {
+                this.brands = results;
+            }, (error) => {
+                console.error('Error al buscar las marcas:', error);
+            });
+        }
+        else {
+            console.error('Por favor selecciona una categoría antes de buscar.');
+        }
+    }
+    setToUpdateBrand(name, imagePath, id_brand_salon) {
+        this.selectedUpdateBrand = name;
+        this.selectedImgUpdateBrand = imagePath;
+        this.selectedIdBrandSalon = id_brand_salon; // Usa `selectedIdBrandSalon` consistentemente
+        console.log("ID de la marca-salón a actualizar:", this.selectedIdBrandSalon);
+    }
+    selectUpdateBrand(brand) {
+        // Asigna el ID de la marca y el ID del salón
+        this.termUpdate = brand.name;
+        this.selectedBrandId = brand.id_brand; // Asigna el ID de la marca
+        this.selectedSalonId = this.salonId; // Asigna el ID del salón (asumo que `salonId` está definido previamente)
+        // Limpia los resultados después de seleccionar la marca
+        this.brands = [];
+        // Muestra los IDs en la consola para verificar
+        //console.log("ID de la marca seleccionada:", this.selectedBrandId);
+        //console.log("ID del salón seleccionado:", this.selectedSalonId);
+        //console.log("ID de la relación marca-salón:", this.selectedIdBrandSalon);
+    }
+    updateBrandSalon() {
+        //console.log("ID de la relación marca-salón:", this.selectedIdBrandSalon);
+        //console.log("ID de la nueva marca seleccionada:", this.selectedBrandId);
+        //console.log("ID del salón:", this.selectedSalonId);
+        // Verifica si los valores están presentes
+        if (!this.selectedIdBrandSalon || !this.selectedBrandId) {
+            this.toastr.warning("Debe seleccionar una nueva marca para actualizar", "Advertencia");
+            return;
+        }
+        // Realiza la solicitud para actualizar la relación entre la marca y el salón
+        this.editHomeService.UpdateBrandsalon(this.selectedIdBrandSalon, this.selectedBrandId, this.selectedSalonId)
+            .subscribe({
+            next: (response) => {
+                this.toastr.success('La marca del salón ha sido actualizada con éxito');
+                this.selectedIdBrandSalon = ""; // Limpiar los campos después de actualizar
+                this.selectedBrandId = "";
+                this.termUpdate = "";
+                this.selectedSalonId = "";
+                this.selectedUpdatedCategoryBrand = "";
+                this.getBrandsBySalon(); // Recargar las marcas del salón
             },
             error: (error) => {
-                this.toastr.error('Error, no se pudo actualizar la marca seleccionada, Por favor compruebe que la marca no este en su lista.');
                 console.error('Error al actualizar la marca del salón:', error);
-                this.selectedUpdateBrandIdName = "";
-            },
-            complete: () => console.log("Proceso completado con éxito.")
+                this.toastr.error('Error al actualizar la marca seleccionada');
+            }
         });
     }
 };

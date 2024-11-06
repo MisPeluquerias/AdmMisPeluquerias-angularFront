@@ -1,16 +1,18 @@
 <app-header></app-header>
-<div *ngIf="isLoading" class="loading-overlay">
-  <p>Cargando, por favor espere...    </p>
-  <!-- O puedes usar un spinner en lugar de texto -->
-  <div class="spinner-border" role="status">
-    <span class="sr-only">Cargando...</span>
-  </div>
-</div>
 
-<div id="layoutSidenav"  *ngIf="!isLoading">
+
+<div id="layoutSidenav">
   <app-aside></app-aside>
   <div id="layoutSidenav_content">
     <main>
+      <div *ngIf="isLoading" class="loading-overlay">
+        <p>Cargando, por favor espere...    </p>
+        <!-- O puedes usar un spinner en lugar de texto -->
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Cargando...</span>
+        </div>
+      </div>
+
       <div class="container-fluid px-4">
         <h1 class="mt-1">Panel de control</h1>
         <ol class="breadcrumb mb-4">

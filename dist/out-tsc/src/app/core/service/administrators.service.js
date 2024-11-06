@@ -27,6 +27,9 @@ let AdministratorsService = class AdministratorsService {
         console.log('email enviado desde el servicio', email);
         return this.http.put(`${this.baseUrl}/administrators/addNewAdmin`, { email });
     }
+    deleteAdministrators(ids) {
+        return this.http.post(`${this.baseUrl}/administrators/deleteAdministrators`, { ids });
+    }
 };
 AdministratorsService = __decorate([
     Injectable({

@@ -16,8 +16,8 @@ let ClientsService = class ClientsService {
         }
         return this.http.get(`${this.baseUrl}/clients/getAllClients`, { params });
     }
-    deleteClients(id_user) {
-        return this.http.post(`${this.baseUrl}/clients/delete`, { id_user: id_user });
+    deleteClients(ids) {
+        return this.http.post(`${this.baseUrl}/clients/deleteClients`, { ids });
     }
 };
 ClientsService = __decorate([

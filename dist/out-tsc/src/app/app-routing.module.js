@@ -24,6 +24,7 @@ import { OwnerSalonComponent } from './components/owner-salon/owner-salon.compon
 import { EditOwnerComponent } from './components/owner-salon/edit-owner/edit-owner.component';
 import { EditCityComponent } from './components/cities/edit-city/edit-city.component';
 import { BrandsComponent } from './components/brands/brands.component';
+import { CategoriesJobsComponent } from './components/categories-jobs/categories-jobs.component';
 const routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: 'login', component: LoginComponent, title: 'Adm | Mis Peluquerias' },
@@ -150,6 +151,12 @@ const routes = [
     {
         path: 'brands',
         component: BrandsComponent,
+        canActivate: [AuthGuard],
+        title: 'Adm | Mis Peluquerias',
+    },
+    {
+        path: 'categories-jobs',
+        component: CategoriesJobsComponent,
         canActivate: [AuthGuard],
         title: 'Adm | Mis Peluquerias',
     },

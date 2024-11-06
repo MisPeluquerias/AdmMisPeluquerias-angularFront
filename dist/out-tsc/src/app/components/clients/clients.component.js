@@ -67,27 +67,26 @@ let ClientsComponent = class ClientsComponent {
     editClient(id) {
         this.router.navigate(['edit-client/edit', id]);
     }
-    deleteSelected() {
-        const selectedClients = this.AllClients.filter(client => client.selected).map(client => client.id_user);
-        if (selectedClients.length > 0) {
-            this.clientsService.deleteClients(selectedClients).subscribe({
-                next: () => {
-                    // Filtra la lista localmente para eliminar los seleccionados
-                    this.AllClients = this.AllClients.filter(client => !client.selected);
-                    this.allSelected = false;
-                    // Mostrar notificación de éxito
-                    this.toastr.success('Clientes eliminados correctamente');
-                },
-                error: (err) => {
-                    console.error('Error eliminando clientes', err);
-                    // Mostrar notificación de error
-                    this.toastr.error('Error al eliminar clientes');
-                }
-            });
+    confirmDelete() {
+        const selectedClients = this.AllClients.filter(client => client.selected);
+        if (selectedClients.length === 0) {
+            this.toastr.warning('No has seleccionado ningún cliente para eliminar.');
+            return;
         }
-        else {
-            this.toastr.warning('No hay clientes seleccionados');
-        }
+        console.log('Cliente seleccionados para eliminar:', selectedClients); // Muestra los contactos seleccionados en la consola
+        const idsToDelete = selectedClients.map(client => client.id_user);
+        this.clientsService.deleteClients(idsToDelete).subscribe({
+            next: () => {
+                this.toastr.success('Cliente/s eliminados con éxito');
+                this.loadAllClients(this.currentPage);
+                this.AllClients.forEach(client => client.selected = false); // Limpiar selección
+                this.allSelected = false;
+            },
+            error: (err) => {
+                console.error('Error eliminando clientes', err);
+                this.toastr.error('Error al eliminar los cliente/s seleccionados.');
+            }
+        });
     }
 };
 ClientsComponent = __decorate([

@@ -30,6 +30,9 @@ let HomeService = class HomeService {
             params: { permiso: permiso || '' }
         });
     }
+    deleteBusiness(ids) {
+        return this.http.post(`${this.baseUrl}/home/deleteBusiness`, { ids });
+    }
 };
 HomeService = __decorate([
     Injectable({

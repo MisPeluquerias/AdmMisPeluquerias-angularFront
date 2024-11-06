@@ -1,5 +1,7 @@
 import { __decorate } from "tslib";
 import { Component } from '@angular/core';
+import { Subject, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 let ServicesComponent = class ServicesComponent {
     constructor(servicesService, toastr) {
         this.servicesService = servicesService;
@@ -17,10 +19,33 @@ let ServicesComponent = class ServicesComponent {
         this.selectedService = { service_name: '' };
         this.selectedSubServices = [];
         this.subservicesAsText = "";
+        this.categoriesAsText = "";
         this.selectedSubServiceIds = [];
+        this.selectedCategoryIds = [];
+        this.selectedCategory = '';
+        this.selectedCategories = [];
+        this.searchTermsCategory = new Subject();
+        this.dataCategoryList = [];
+        this.id_category = '';
+        this.newCategory = { category: '', salons: [] };
     }
     ngOnInit() {
         this.loadAllServices(this.currentPage);
+        this.searchTermsCategory.pipe(debounceTime(300), distinctUntilChanged(), switchMap((term) => {
+            if (term.length >= 2) {
+                return this.servicesService.getCategoryInLive(term);
+            }
+            else {
+                return of([]);
+            }
+        })).subscribe({
+            next: (category) => {
+                this.dataCategoryList = category.map((cat) => cat.categories);
+            },
+            error: (error) => {
+                console.error('Error al buscar categorias:', error);
+            },
+        });
     }
     loadAllServices(page) {
         this.servicesService.loadAllServices(page, this.pageSize, this.searchText).subscribe({
@@ -34,8 +59,39 @@ let ServicesComponent = class ServicesComponent {
             }
         });
     }
+    searchCategory(term) {
+        this.searchTermsCategory.next(term);
+    }
+    removeCategory(index) {
+        this.newCategory.categories.splice(index, 1); // Eliminar el salón de la lista
+    }
     selectService(service) {
         this.selectedService = { ...service }; // Asignamos el servicio seleccionado a la variable
+    }
+    selectCategories(service) {
+        // Verifica si `service.categories` es un arreglo de nombres o una cadena separada por comas
+        console.log('Contenido de service.categories:', service.categories);
+        if (Array.isArray(service.categories)) {
+            this.selectedCategories = [...service.categories];
+        }
+        else if (typeof service.categories === 'string') {
+            this.selectedCategories = service.categories.split(',').map((category) => category.trim());
+        }
+        else {
+            this.selectedCategories = [];
+        }
+        this.selectedService = { ...service };
+        this.categoriesAsText = this.selectedCategories.join(', '); // Actualiza el área de texto con los nombres de categorías
+    }
+    selectCategory(category) {
+        // Asegurarse de que 'categories' esté inicializado
+        if (!this.newCategory.categories) {
+            this.newCategory.categories = [];
+        }
+        // Almacenar solo el nombre de la categoría en el array newCategory.categories
+        this.newCategory.categories.push({ name: category.name });
+        this.dataCategoryList = []; // Limpiar la lista después de la selección
+        this.selectedCategory = ''; // Limpiar el campo de entrada
     }
     selectSubService(service) {
         if (Array.isArray(service.subservices)) {
@@ -99,24 +155,25 @@ let ServicesComponent = class ServicesComponent {
     addNewService() {
         if (this.newService.name.trim() !== '' && this.newSubservice.length > 0) {
             this.newService.subservices = this.newSubservice;
+            this.newService.categories = this.newCategory.categories; // Añadir las categorías seleccionadas
             // Llamada al servicio para crear el nuevo servicio en el backend
             this.servicesService.addNewService(this.newService).subscribe({
                 next: (response) => {
-                    this.toastr.success('Servicios y subservicios añadidos con éxito');
-                    //console.log('Servicio creado exitosamente:', response);
+                    this.toastr.success('Servicios, subservicios y categorías añadidos con éxito');
                     // Reiniciar el formulario después de la creación exitosa
                     this.newService = { name: '', subservices: [] };
                     this.newSubservice = [];
+                    this.newCategory.categories = []; // Limpiar las categorías seleccionadas
                     this.loadAllServices(this.currentPage); // Recargar la lista de servicios
                 },
                 error: (err) => {
-                    this.toastr.error('No se pudo crear el servicio y subservicio');
+                    this.toastr.error('No se pudo crear el servicio, subservicio y categorías');
                     console.error('Error creando el servicio:', err);
                 }
             });
         }
         else {
-            this.toastr.error('Por favor rellene todos los campos');
+            this.toastr.error('Por favor, rellene todos los campos');
         }
     }
     deleteSelected() {
@@ -178,6 +235,7 @@ let ServicesComponent = class ServicesComponent {
         // Asegurarse de que la lista de subservicios contiene los id_service_type
         const updatedService = {
             subservices: this.selectedSubServices,
+            id_service: this.selectedService.id_service,
             service_type_ids: this.selectedSubServiceIds // Asegúrate de que este arreglo contiene los IDs
         };
         console.log('Servicio actualizado:', updatedService);
@@ -187,7 +245,7 @@ let ServicesComponent = class ServicesComponent {
             return;
         }
         // Llamada al servicio para actualizar los subservicios
-        this.servicesService.updateSubservices(this.selectedService.id_service, updatedService).subscribe({
+        this.servicesService.updateSubservices(this.selectedService.service_type_ids, updatedService).subscribe({
             next: (response) => {
                 this.toastr.success('Subservicios actualizados con éxito');
                 this.loadAllServices(this.currentPage); // Recargar la lista de servicios
@@ -195,6 +253,36 @@ let ServicesComponent = class ServicesComponent {
             error: (err) => {
                 this.toastr.error('Error al actualizar los subservicios');
                 console.error('Error actualizando los subservicios:', err);
+            }
+        });
+    }
+    updateCategories() {
+        if (this.categoriesAsText.trim() === "") {
+            this.toastr.error('Error, Introduzca al menos una categoría');
+            return;
+        }
+        // Convertir el texto en un arreglo de nombres de categorías
+        this.selectedCategories = this.categoriesAsText.split(',')
+            .map(category => category.trim())
+            .filter(category => category.length > 0);
+        const updatedCategories = {
+            categories: this.selectedCategories, // Asegúrate de que aquí solo enviamos los nombres de las categorías
+            id_service: this.selectedService.id_service
+        };
+        console.log('Datos de categorías a enviar:', updatedCategories);
+        if (!this.selectedService.id_service) {
+            this.toastr.error('No se pudo actualizar las categorías porque falta el ID del servicio');
+            return;
+        }
+        // Llamada al servicio para actualizar las categorías
+        this.servicesService.updateCategories(this.selectedService.id_service, updatedCategories).subscribe({
+            next: (response) => {
+                this.toastr.success('Categorías actualizadas con éxito');
+                this.loadAllServices(this.currentPage); // Recargar la lista de servicios
+            },
+            error: (err) => {
+                this.toastr.error('Error al actualizar las categorías, por favor compruebe los nombres...');
+                console.error('Error actualizando las categorías:', err);
             }
         });
     }

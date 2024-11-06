@@ -27,8 +27,18 @@ let ServicesService = class ServicesService {
     updateSubservices(id_service, data) {
         return this.http.put(`${this.baseUrl}/services/updateSubservices/${id_service}`, data);
     }
-    updateService(id_service, data) {
-        return this.http.put(`${this.baseUrl}/services/updateService/${id_service}`, data);
+    updateCategories(id_service, data) {
+        return this.http.put(`${this.baseUrl}/services/updateCategories/${id_service}`, data);
+    }
+    updateService(service_type_ids, data) {
+        return this.http.put(`${this.baseUrl}/services/updateService/${service_type_ids}`, data);
+    }
+    getCategoryInLive(category) {
+        return this.http.get(`${this.baseUrl}/services/searchCategoryInLive`, {
+            params: {
+                category,
+            },
+        });
     }
 };
 ServicesService = __decorate([

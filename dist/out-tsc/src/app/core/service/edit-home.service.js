@@ -18,6 +18,14 @@ let EditHomeService = class EditHomeService {
         });
         ;
     }
+    getBrandByCategory(term, category) {
+        return this.http.get(`${this.baseUrl}/edithome/getBrandsByCategory`, {
+            params: {
+                category,
+                term
+            }
+        });
+    }
     getUserPermiso() {
         const permiso = localStorage.getItem('permiso');
         return this.http.get(`${this.baseUrl}/decode-permiso/permiso-aside`, {
@@ -66,8 +74,8 @@ let EditHomeService = class EditHomeService {
             params: { salon_id: salonId.toString() }
         }).pipe(catchError(this.handleError));
     }
-    getServices() {
-        return this.http.get(`${this.baseUrl}/edithome/getServices`);
+    getUniqueServices(category) {
+        return this.http.get(`${this.baseUrl}/edithome/getUniqueServices/${category}`);
     }
     getSubservicesByService(id_service) {
         return this.http.get(`${this.baseUrl}/edithome/getSubservicesByService`, {
@@ -143,8 +151,11 @@ let EditHomeService = class EditHomeService {
             params: { id_review: id_review },
         });
     }
-    getBrands() {
-        return this.http.get(`${this.baseUrl}/edithome/getAllBrands`);
+    getAllCategoriesBrands() {
+        return this.http.get(`${this.baseUrl}/edithome/getAllCategoriesBrands`);
+    }
+    getAllCategoriesServices() {
+        return this.http.get(`${this.baseUrl}/edithome/getAllCategoriesServices`);
     }
     getCategories() {
         return this.http.get(`${this.baseUrl}/edithome/getAllCategoriesSalon`);

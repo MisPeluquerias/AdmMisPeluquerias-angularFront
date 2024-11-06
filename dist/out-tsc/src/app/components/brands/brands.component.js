@@ -47,7 +47,9 @@ let BrandsComponent = class BrandsComponent {
                 this.AllBrands = response.data.map((brand) => {
                     return {
                         ...brand,
-                        categories: brand.categories && brand.categories !== '' ? brand.categories.split(',') : []
+                        categories: brand.categories && brand.categories !== ''
+                            ? Array.from(new Set(brand.categories.split(',').map((category) => category.trim())))
+                            : []
                     };
                 });
                 this.totalItems = response.totalItems;
@@ -69,10 +71,12 @@ let BrandsComponent = class BrandsComponent {
         this.selectedCategory = ''; // Limpiar el campo de entrada
     }
     selectBrand(brand) {
+        this.id_brand_category = brand.id_brand_category;
         this.id_brand = brand.id_brand;
         this.selectedBrand = brand.name;
         this.selectedImgBrang = brand.imagePath;
         this.brand = brand;
+        console.log('id_brand_category', this.id_brand_category);
         // Reiniciar las categorías antes de cargarlas
         this.categories = []; // Reiniciar la lista de categorías para evitar duplicados
         this.newCategory.categories = []; // Limpiar las categorías añadidas por el usuario
@@ -86,6 +90,7 @@ let BrandsComponent = class BrandsComponent {
             this.categories = Array.isArray(brand.categories) ? brand.categories : [];
         }
         console.log('Categorías asignadas:', this.categories);
+        console.log('id_brand_category', this.id_brand_category);
     }
     removeCategory(index) {
         this.newCategory.categories.splice(index, 1); // Eliminar el salón de la lista
@@ -109,14 +114,25 @@ let BrandsComponent = class BrandsComponent {
         if (this.selectedUpdateImgFile) {
             formData.append('brandImage', this.selectedUpdateImgFile); // Añadir la imagen si fue seleccionada
         }
+        // Combinar las categorías existentes con las nuevas categorías
+        const combinedCategories = [
+            ...this.categories.map(category => ({ name: category })), // Convertir categorías existentes a objetos con 'name'
+            ...this.newCategory.categories // Añadir las nuevas categorías seleccionadas
+        ];
+        // Eliminar duplicados (si los hay) basándonos en el nombre de la categoría
+        const uniqueCategories = combinedCategories.reduce((acc, current) => {
+            const found = acc.find((cat) => cat.name === current.name);
+            if (!found)
+                acc.push(current);
+            return acc;
+        }, []);
         // Convertir las categorías a JSON y añadirlas al FormData
-        formData.append('categories', JSON.stringify(this.newCategory.categories));
+        formData.append('categories', JSON.stringify(uniqueCategories));
         // Llamar al servicio para actualizar la marca, pasando el ID en la URL
         this.brandsService.updateBrand(this.id_brand, formData).subscribe({
             next: (response) => {
                 this.toastr.success('Marca actualizada con éxito');
                 this.loadAllBrands(this.currentPage); // Recargar la lista de marcas
-                // Aquí puedes cerrar el modal si es necesario, o realizar otras acciones
             },
             error: (error) => {
                 this.toastr.error('Error al actualizar la marca');

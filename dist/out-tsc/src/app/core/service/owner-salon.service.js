@@ -35,6 +35,9 @@ let OwnerSalonService = class OwnerSalonService {
             },
         });
     }
+    deleteOwners(ids) {
+        return this.http.post(`${this.baseUrl}/owner-salon/deleteOwners`, { ids });
+    }
 };
 OwnerSalonService = __decorate([
     Injectable({

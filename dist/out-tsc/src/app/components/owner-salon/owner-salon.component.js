@@ -161,6 +161,27 @@ let OwnerSalonComponent = class OwnerSalonComponent {
         }
         return pages;
     }
+    confirmDelete() {
+        const selectedOwners = this.AllOwners.filter(owner => owner.selected);
+        if (selectedOwners.length === 0) {
+            this.toastr.warning('No has seleccionado ningún propietario para eliminar.');
+            return;
+        }
+        console.log('Propietarios seleccionados para eliminar:', selectedOwners); // Muestra los contactos seleccionados en la consola
+        const idsToDelete = selectedOwners.map(owner => owner.id_user);
+        this.ownerSalonService.deleteOwners(idsToDelete).subscribe({
+            next: () => {
+                this.toastr.success('Propietario/os eliminados con éxito');
+                this.loadAllOwners(this.currentPage);
+                this.AllOwners.forEach(owner => owner.selected = false); // Limpiar selección
+                this.allSelected = false;
+            },
+            error: (err) => {
+                console.error('Error eliminando propietarios', err);
+                this.toastr.error('Error al eliminar los propietario/os seleccionados.');
+            }
+        });
+    }
 };
 OwnerSalonComponent = __decorate([
     Component({

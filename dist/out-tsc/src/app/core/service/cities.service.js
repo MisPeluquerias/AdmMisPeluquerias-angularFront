@@ -16,6 +16,9 @@ let CitiesService = class CitiesService {
         }
         return this.http.get(`${this.baseUrl}/cities/getAllCities`, { params });
     }
+    deleteCities(citiesToDelete) {
+        return this.http.post(`${this.baseUrl}/cities/deleteCities`, citiesToDelete);
+    }
 };
 CitiesService = __decorate([
     Injectable({

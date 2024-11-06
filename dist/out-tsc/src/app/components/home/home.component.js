@@ -1,9 +1,10 @@
 import { __decorate } from "tslib";
 import { Component } from '@angular/core';
 let HomeComponent = class HomeComponent {
-    constructor(homeService, router) {
+    constructor(homeService, router, toastr) {
         this.homeService = homeService;
         this.router = router;
+        this.toastr = toastr;
         this.AllSalon = [];
         this.currentPage = 1;
         this.pageSize = 10;
@@ -102,12 +103,29 @@ let HomeComponent = class HomeComponent {
     hasSelected() {
         return this.AllSalon.some(salon => salon.selected);
     }
-    deleteSelected() {
-        this.AllSalon = this.AllSalon.filter(salon => !salon.selected);
-        this.allSelected = false;
-    }
     editSalon(id) {
         this.router.navigate(['home/edit', id]);
+    }
+    confirmDelete() {
+        const selectedBusiness = this.AllSalon.filter(business => business.selected);
+        if (selectedBusiness.length === 0) {
+            this.toastr.warning('No has seleccionado ningún negocio para eliminar.');
+            return;
+        }
+        console.log('Negocios seleccionados para eliminar:', selectedBusiness); // Muestra los contactos seleccionados en la consola
+        const idsToDelete = selectedBusiness.map(business => business.id_salon);
+        this.homeService.deleteBusiness(idsToDelete).subscribe({
+            next: () => {
+                this.toastr.success('Negocio/s eliminados con éxito');
+                this.loadAllSalon(this.currentPage);
+                this.AllSalon.forEach(businnes => businnes.selected = false); // Limpiar selección
+                this.allSelected = false;
+            },
+            error: (err) => {
+                console.error('Error eliminando negocios', err);
+                this.toastr.error('Error al eliminar los negocio/s seleccionados.');
+            }
+        });
     }
 };
 HomeComponent = __decorate([

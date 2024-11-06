@@ -16,6 +16,9 @@ let ContactComponent = class ContactComponent {
         this.replySubject = '';
         this.replyMessage = '';
         this.filterState = '';
+        this.addressNewEmail = '';
+        this.replyNewEmailSubject = '';
+        this.replyNewEmailMessage = '';
     }
     ngOnInit() {
         this.loadAllContactMenssage(this.currentPage);
@@ -83,10 +86,6 @@ let ContactComponent = class ContactComponent {
     hasSelected() {
         return this.AllContactMenssage.some(contact => contact.selected);
     }
-    deleteSelected() {
-        this.AllContactMenssage = this.AllContactMenssage.filter(contact => !contact.selected);
-        this.allSelected = false;
-    }
     selectedStateContact(message) {
         this.selectStateContact = {
             id_contact: message.id_contact,
@@ -105,15 +104,58 @@ let ContactComponent = class ContactComponent {
         });
     }
     sendReplyContact() {
+        const id_contact = this.selectedMessage.id_contact;
         const to = this.selectedMessage.email;
         const subject = this.replySubject;
         const message = this.replyMessage;
-        this.contactService.sendEmailContact(to, subject, message).subscribe((response) => {
+        const replyMessage = this.replyMessage;
+        this.contactService.sendEmailContact(id_contact, to, subject, message, replyMessage).subscribe((response) => {
             this.toastr.success('Correo enviado con éxito');
             // Cerrar el modal después de enviar el correo
+            this.loadAllContactMenssage(this.currentPage);
         }, (error) => {
             this.toastr.error('Error al enviar el correo');
             console.error(error);
+        });
+    }
+    sendNewEmailContact() {
+        const to = this.addressNewEmail;
+        const subject = this.replyNewEmailSubject;
+        const message = this.replyNewEmailMessage;
+        const replyMessage = this.replyNewEmailMessage;
+        this.contactService.sendNewEmailContact(to, subject, message).subscribe((response) => {
+            this.toastr.success('Correo enviado con éxito');
+            this.loadAllContactMenssage(this.currentPage);
+            this.addressNewEmail = '';
+            this.replyNewEmailSubject = '';
+            this.replyNewEmailMessage = '';
+        }, (error) => {
+            this.toastr.error('Error al enviar el correo');
+            console.error(error);
+            this.addressNewEmail = '';
+            this.replyNewEmailSubject = '';
+            this.replyNewEmailMessage = '';
+        });
+    }
+    confirmDelete() {
+        const selectedContacts = this.AllContactMenssage.filter(contact => contact.selected);
+        if (selectedContacts.length === 0) {
+            this.toastr.warning('No has seleccionado ningún mensaje para eliminar.');
+            return;
+        }
+        console.log('Contactos seleccionados para eliminar:', selectedContacts); // Muestra los contactos seleccionados en la consola
+        const idsToDelete = selectedContacts.map(contact => contact.id_contact);
+        this.contactService.deleteContacts(idsToDelete).subscribe({
+            next: () => {
+                this.toastr.success('Mensajes eliminados con éxito');
+                this.loadAllContactMenssage(this.currentPage);
+                this.AllContactMenssage.forEach(contact => contact.selected = false); // Limpiar selección
+                this.allSelected = false;
+            },
+            error: (err) => {
+                console.error('Error eliminando contactos', err);
+                this.toastr.error('Error al eliminar los mensajes seleccionados.');
+            }
         });
     }
 };

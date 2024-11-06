@@ -26,9 +26,16 @@ let ContactService = class ContactService {
         };
         return this.http.put(`${this.baseUrl}/contact/updateStateContact`, data);
     }
-    sendEmailContact(to, subject, message) {
-        const emailData = { to, subject, message };
+    sendEmailContact(id_contact, to, subject, message, replyMessage) {
+        const emailData = { id_contact, to, subject, message, replyMessage };
         return this.http.post(`${this.baseUrl}/contact/send-reply-contact`, emailData); // Asegúrate de que esta URL coincida con tu backend
+    }
+    sendNewEmailContact(to, subject, message) {
+        const emailData = { to, subject, message };
+        return this.http.post(`${this.baseUrl}/contact/send-new-email-contact`, emailData);
+    }
+    deleteContacts(ids) {
+        return this.http.post(`${this.baseUrl}/contact/deleteContacts`, { ids });
     }
 };
 ContactService = __decorate([
