@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../../core/service/AuthService.service';
 import { HeaderService } from '../../../core/service/header.service';
+import { io } from 'socket.io-client';
+import { environment } from '../../../../environments/environment';
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -9,6 +12,11 @@ import { HeaderService } from '../../../core/service/header.service';
 export class HeaderComponent {
   userImagePath: string = '';
   id_user: string | null = localStorage.getItem('usuarioId');
+  alertCount: number = 0;
+  notifications: any[] = [];
+  private socket: any;
+  
+
 
   constructor(private authService: AuthService,private headerService:HeaderService) { }
 
@@ -20,9 +28,42 @@ export class HeaderComponent {
     } else {
       console.error('El usuarioId no está disponible en localStorage');
     }
+    this.socket = io(environment.socketUrl);
+
+    // Escucha de eventos de nueva alerta
+    this.socket.on('new-alert', (data: any) => {
+      //console.log('Nueva alerta recibida:', data);
+      this.getAlertCount();
+      this.getNotifications();
+    });
+
     console.log(this.userImagePath); // Esto se ejecutará antes de que la imagen se cargue
+    this.getAlertCount();
+    this.getNotifications();
+  }
+  
+    getAlertCount(): void {
+    this.headerService.getAlertCount().subscribe({
+      next: (data) => {
+        this.alertCount = data.total;
+      },
+      error: (err) => {
+        console.error('Error al obtener el total de alertas:', err);
+      }
+    });
   }
 
+
+  getNotifications(): void {
+    this.headerService.getAllNotifications().subscribe({
+      next: (data) => {
+        this.notifications = data;
+      },
+      error: (err) => {
+        console.error('Error al obtener las notificaciones:', err);
+      }
+    });
+  }
 
 
   ngAfterViewInit() {
@@ -67,9 +108,20 @@ export class HeaderComponent {
     this.authService.logout();
   }
 
+  removeNotification(id_alert_admin: number): void {
+    console.log(id_alert_admin);
+    this.headerService.deleteNotification(id_alert_admin).subscribe({
+      next: (data) => {
+        this.notifications = data;
+        this.getAlertCount();
+        this.getNotifications();
+        
+      },
+      error: (err) => {
+        console.error('Error al eliminar la notificación:', err);
+      }
+    }); 
+  } 
 
-
-
-
-
+  
 }

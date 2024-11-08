@@ -18,4 +18,15 @@ export class HeaderService {
     const params = new HttpParams().set('id_user', id_user.toString());
     return this.http.get(`${this.baseUrl}/header/getImgUser`, { params });
   }
+
+  getAlertCount(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/notifications/count`);
+  }
+  getAllNotifications(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/notifications/all`);
+  }
+
+  deleteNotification(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/notifications/delete/${id}`);
+}
 }
