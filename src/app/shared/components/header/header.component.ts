@@ -28,6 +28,7 @@ export class HeaderComponent {
     } else {
       console.error('El usuarioId no está disponible en localStorage');
     }
+    
     this.socket = io(environment.socketUrl);
 
     // Escucha de eventos de nueva alerta

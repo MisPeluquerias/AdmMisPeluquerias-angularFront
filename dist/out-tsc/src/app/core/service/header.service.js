@@ -11,6 +11,15 @@ let HeaderService = class HeaderService {
         const params = new HttpParams().set('id_user', id_user.toString());
         return this.http.get(`${this.baseUrl}/header/getImgUser`, { params });
     }
+    getAlertCount() {
+        return this.http.get(`${this.baseUrl}/notifications/count`);
+    }
+    getAllNotifications() {
+        return this.http.get(`${this.baseUrl}/notifications/all`);
+    }
+    deleteNotification(id) {
+        return this.http.delete(`${this.baseUrl}/notifications/delete/${id}`);
+    }
 };
 HeaderService = __decorate([
     Injectable({

@@ -22,7 +22,7 @@
       <ul class="dropdown-menu dropdown-menu-end" style="cursor: pointer; margin-top: -4px;" aria-labelledby="navbarDropdownCampaign">
         <ng-container *ngIf="notifications.length > 0; else noNotifications">
           <li style="border-bottom: darkgrey solid 1px; padding: 0.3rem;" *ngFor="let notification of notifications" class="d-flex align-items-center justify-content-between">
-            <a style="font-size: 0.9rem;" class="dropdown-item">
+            <a style="font-size: 0.9rem;" class="dropdown-item" href="{{notification.url}}">
               <i class="fa-regular fa-bell"></i> {{ notification.text }}
             </a>
             <button type="button" style="font-size: 0.5rem;" class="btn btn-danger btn-sm ms-2" (click)="removeNotification(notification.id_alert_admin)">

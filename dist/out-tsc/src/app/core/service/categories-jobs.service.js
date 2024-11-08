@@ -24,11 +24,14 @@ let CategoriesJobsService = class CategoriesJobsService {
             return response;
         })));
     }
-    updateBrand(id, data) {
-        return this.http.put(`${this.baseUrl}/brands/updateBrand/${id}`, data);
-    }
     deleteCategoryJobs(categoryIds) {
         return this.http.post(`${this.baseUrl}/categories-jobs/delete`, { categoryIds: categoryIds });
+    }
+    updateCategoryJobs(categoryJob) {
+        return this.http.put(`${this.baseUrl}/categories-jobs/updateCategoryJob/${categoryJob.id}`, categoryJob);
+    }
+    updateSubCategories(id_category, updatedCategory) {
+        return this.http.put(`${this.baseUrl}/categories-jobs/updateSubcategories/${id_category}`, updatedCategory);
     }
     addCategorySubcategoryJob(data) {
         console.log('Datos enviados en el servicio:', data);
@@ -36,13 +39,6 @@ let CategoriesJobsService = class CategoriesJobsService {
     }
     getCategories() {
         return this.http.get(`${this.baseUrl}/categories-jobs/getCategories`);
-    }
-    getCategoryInLive(category) {
-        return this.http.get(`${this.baseUrl}/brands/searchCategoryInLive`, {
-            params: {
-                category,
-            },
-        });
     }
 };
 CategoriesJobsService = __decorate([

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AsideService } from './../../../core/service/aside.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-aside',
@@ -11,8 +12,9 @@ export class AsideComponent implements OnInit {
   userName: string = '';
   salonPermiso: string = '';
   mostrarNegocios: boolean = false;
+  contactId: number = 0;
 
-  constructor(private asideService: AsideService) {}
+  constructor(private asideService: AsideService, private route:ActivatedRoute) {}
 
   ngOnInit(): void {
     this.id_user = localStorage.getItem('usuarioId');
@@ -21,6 +23,7 @@ export class AsideComponent implements OnInit {
     } else {
       console.log('No userId found in localStorage');
     }
+    this.contactId = Number(this.route.snapshot.paramMap.get('id'));
 
     // Verifica el permiso
     this.asideService.getUserPermiso().subscribe(

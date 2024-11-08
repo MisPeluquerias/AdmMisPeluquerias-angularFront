@@ -18,6 +18,11 @@ let CategoriesJobsComponent = class CategoriesJobsComponent {
         this.newCategoryJob = '';
         this.editCategoryJob = '';
         this.newSubCategoryJob = '';
+        this.selectedCategoryId = null;
+        this.selectedSubCategories = [];
+        this.selectedSubCategoriesText = '';
+        this.subCategoriesAsText = '';
+        this.selectedSubCategoryIds = [];
     }
     ngOnInit() {
         this.loadAllCategoriesJobs(this.currentPage);
@@ -46,6 +51,7 @@ let CategoriesJobsComponent = class CategoriesJobsComponent {
     }
     selectCategoryJob(categoryJob) {
         this.selectedCategoryJob = categoryJob.name;
+        this.selectedCategoryId = categoryJob.id_job_cat;
     }
     loadAllCategoriesJobs(page) {
         this.CategoriesJobsService.loadAllCategoriesJobs(page, this.pageSize, this.searchText).subscribe({
@@ -126,20 +132,80 @@ let CategoriesJobsComponent = class CategoriesJobsComponent {
             });
         }
     }
-    updateCategoryJobs() {
-        /*
-        this.CategoriesJobsService.updateCategoryJobs(this.AllCategoriesJobs).subscribe({
-          next: () => {
-            this.toastr.success('Categorias de Empleo actualizados con suceceso');
-            this.loadAllCategoriesJobs(this.currentPage);
-          },
-          error: (err) => {
-            console.error('Error actualizando Categorías de Empleo', err);
-            this.toastr.error('Hubo un error al actualizar las Categorias de Empleo', 'Error');
-          }
-            
+    selectSubCategories(categoryJob) {
+        this.selectedCategoryId = categoryJob.id_job_cat;
+        // Extraer nombres de las subcategorías
+        this.selectedSubCategories = categoryJob.subcategories.map((subcat) => subcat.name);
+        this.selectedSubCategoriesText = this.selectedSubCategories.join(', ');
+        // Extraer IDs de las subcategorías
+        this.selectedSubCategoryIds = categoryJob.subcategories.map((subcat) => subcat.id_job_subcat);
+        // Imprimir resultados en consola
+        //console.log('Texto de subcategorías:', this.selectedSubCategoriesText);
+        //console.log('Array de subcategorías:', this.selectedSubCategories);
+        //console.log('ID de categoría:', this.selectedCategoryId);
+        //console.log('ID de las subcategorías seleccionadas:', this.selectedSubCategoryIds);
+    }
+    updateSubCategories() {
+        // Mostrar el contenido actual del textarea antes de procesarlo
+        //console.log('Contenido de selectedSubCategoriesText antes de procesar:', this.selectedSubCategoriesText);
+        // Paso 1: Convertir el texto del textarea en un arreglo de subcategorías
+        this.selectedSubCategories = this.selectedSubCategoriesText.split(',')
+            .map(subCategory => subCategory.trim()) // Eliminar espacios en blanco
+            .filter(subCategory => subCategory.length > 0); // Filtrar elementos vacíos
+        //console.log('Array de subcategorías después de dividir y filtrar:', this.selectedSubCategories);
+        // Paso 2: Verificar si el array de subcategorías está vacío después de procesarlo
+        if (this.selectedSubCategories.length === 0) {
+            this.toastr.error('Error, introduzca al menos una subcategoría');
+            return;
+        }
+        // Paso 3: Asegurarse de que el ID de la categoría está presente
+        if (!this.selectedCategoryId) {
+            this.toastr.error('No se pudo actualizar las subcategorías porque falta el ID de la categoría');
+            return;
+        }
+        // Paso 4: Preparar el objeto de actualización para enviar al backend
+        const updatedCategory = {
+            subcategories: this.selectedSubCategories, // Array de subcategorías procesadas
+            id_category: this.selectedCategoryId // ID de la categoría seleccionada
+        };
+        //console.log('Objeto actualizado para enviar al backend:', updatedCategory);
+        // Paso 5: Llamada al servicio para actualizar las subcategorías
+        this.CategoriesJobsService.updateSubCategories(this.selectedCategoryId, updatedCategory).subscribe({
+            next: (response) => {
+                console.log('Respuesta del servidor:', response);
+                this.toastr.success('Subcategorías actualizadas con éxito');
+                // Recargar la lista de categorías si es necesario
+                this.loadAllCategoriesJobs(this.currentPage);
+            },
+            error: (err) => {
+                console.error('Error al actualizar las subcategorías:', err);
+                this.toastr.error('Error al actualizar las subcategorías');
+            }
         });
-        */
+    }
+    updateCategoryJobs() {
+        if (this.selectedCategoryJob && this.selectedCategoryId) {
+            const updatedCategory = {
+                id: this.selectedCategoryId,
+                name: this.selectedCategoryJob
+            };
+            console.log('Datos enviados para actualizar categoria de empleo:', updatedCategory);
+            // Llamada al servicio para actualizar la categoría
+            this.CategoriesJobsService.updateCategoryJobs(updatedCategory).subscribe({
+                next: (response) => {
+                    this.toastr.success('Categoría actualizada exitosamente');
+                    this.loadAllCategoriesJobs(this.currentPage); // Llama a esta función si quieres recargar las categorías después de actualizar
+                    // Limpia la selección después de actualizar
+                },
+                error: (error) => {
+                    this.toastr.error('Error al actualizar la categoría');
+                    console.error(error); // Para ver el error en la consola y depurar si es necesario
+                }
+            });
+        }
+        else {
+            this.toastr.warning('No se seleccionó ninguna categoría para actualizar');
+        }
     }
     addCategoryJob() {
         if (!this.newCategoryJob) {
