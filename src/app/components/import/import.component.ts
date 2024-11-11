@@ -26,6 +26,7 @@ export class ImportComponent {
     this.loadAllSalon(this.currentPage);
   }
 
+  
   loadAllSalon(page: number): void {
     this.importService
       .loadAllSalonToExport(page, this.pageSize, this.searchText)

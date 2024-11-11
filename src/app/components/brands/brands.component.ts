@@ -302,7 +302,7 @@ export class BrandsComponent {
     formData.forEach((value, key) => {
       console.log(key, value); // Verificar los datos que se envían
     });
-    
+     
     this.brandsService.addBrand(formData).subscribe({
       next: (response: any) => {
         this.toastr.success('Marca añadida con éxito', 'Éxito');
@@ -330,5 +330,5 @@ onImageSelected(event: Event): void {
     };
     reader.readAsDataURL(this.selectedImgFile);
   }
-}
+} 
 }

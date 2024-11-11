@@ -1,0 +1,195 @@
+<app-header></app-header>
+<div id="layoutSidenav">
+  <app-aside></app-aside>
+  <div id="layoutSidenav_content">
+    <main>
+      <div class="container-fluid px-4">
+        <h1 class="mt-1">Panel de control</h1>
+        <ol class="breadcrumb mb-4">
+          <li class="breadcrumb-item active">
+            Portal de empleo / <b>Imágenes</b>
+          </li>
+        </ol>
+        <div class="card mb-4">
+          <div class="card-header">
+            <img
+              src="../../../favicon.ico"
+              width="30"
+              class="img-fluid me-2"
+              alt=""
+            />
+            Galería de Imágenes
+          </div>
+          <div class="card-body">
+            <div class="row mb-4">
+              <div
+                class="col-12 col-md-4 d-flex justify-content-md-end ms-auto"
+              >
+                <button
+                  class="btn btn-danger"
+                  data-bs-toggle="modal"
+                  data-bs-target="#newImgJobModal"
+                >
+                  Subir
+                </button>
+              </div>
+            </div>
+            <!-- Galería de Imágenes -->
+            <div class="row">
+              <div *ngFor="let image of images" class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4 d-flex justify-content-center">
+                  <div class="image-container">
+                      <img
+                          [src]="image.imageUrl"
+                          alt="Imagen de empleo"
+                          class="card-img-top img-fluid job-image"
+                      />
+                      <button
+                          type="button"
+                          class="btn btn-danger btn-sm delete-button"
+                          data-bs-toggle="modal"
+                          data-bs-target="#deleteImgJobModal"
+                          (click)="removeImgjob(image.id_jobs_img)"
+                      >
+                          <i class="las la-times" style="font-size: 1rem;"></i>
+                      </button>
+                  </div>
+              </div>
+          </div>
+          </div>
+        </div>
+      </div>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" (click)="onPageChange(1)" aria-label="First">
+              <span aria-hidden="true">&laquo;&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" (click)="onPageChange(currentPage - 1)" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item" *ngFor="let page of pages" [class.active]="page === currentPage">
+            <a class="page-link" (click)="onPageChange(page)">{{ page }}</a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === pageCount">
+            <a class="page-link" (click)="onPageChange(currentPage + 1)" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === pageCount">
+            <a class="page-link" (click)="onPageChange(pageCount)" aria-label="Last">
+              <span aria-hidden="true">&raquo;&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>      
+    </main>
+    <app-footer></app-footer>
+  </div>
+</div>
+
+<!-- Modal para nueva marca -->
+<div
+  class="modal fade"
+  id="newImgJobModal"
+  tabindex="-1"
+  aria-labelledby="newImgJobLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title" id="newImgJobLabel">Nueva Imágen de empleo</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center">
+          <img
+            [src]="imagePreview || '../../../assets/img/sello.jpg'"
+            alt="sello"
+            width="120"
+            class="img-fluid"
+          />
+        </div>
+        <div class="col-12 mt-3">
+          <label for="brandImage" class="form-label"
+            >Subir imágen de empleo:</label
+          >
+          <input
+            type="file"
+            class="form-control"
+            id="brandImage"
+            (change)="onImageSelected($event)"
+          />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="addImgJob()"
+          data-bs-dismiss="modal"
+        >
+          Guardar
+        </button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación para eliminar -->
+<div
+  class="modal fade"
+  id="deleteImgJobModal"
+  tabindex="-1"
+  aria-labelledby="deleteImgJobModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title" id="deleteImgJobModalLabel">Eliminar Imágen</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-3">
+          <img
+            src="../../../assets/img/sello.jpg"
+            alt="sello"
+            width="120"
+            class="img-fluid"
+          />
+        </div>
+        <p>¿Estás seguro que deseas eliminar la imágen seleccionada?</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+          (click)="confirmDelete()"
+        >
+          Eliminar
+        </button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -15,7 +15,7 @@ export class HeaderComponent {
   alertCount: number = 0;
   notifications: any[] = [];
   private socket: any;
-  
+
 
 
   constructor(private authService: AuthService,private headerService:HeaderService) { }

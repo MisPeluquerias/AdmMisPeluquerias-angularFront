@@ -14,7 +14,6 @@
           </div>
 
           <div class="sb-sidenav-menu-heading">Propietarios</div>
-
           <ng-container *ngIf="salonPermiso === 'admin'">
             <a class="nav-link" routerLink="/home">
               <div class="sb-nav-link-icon">
@@ -55,6 +54,13 @@
               </div>
               Categorías Empleo
             </a>
+
+            <a class="nav-link" routerLink="/img-jobs">
+              <div class="sb-nav-link-icon">
+                <i style="font-size: 1.1rem;" class="fa-regular fa-image"></i>
+              </div>
+              Imágenes Anuncios
+            </a>
           </ng-container>
 
           <a
@@ -88,8 +94,6 @@
 
           <ng-container *ngIf="salonPermiso === 'admin'">
             <div class="sb-sidenav-menu-heading">Administración</div>
-
-
 
             <a class="nav-link" routerLink="/administrators">
               <div class="sb-nav-link-icon">

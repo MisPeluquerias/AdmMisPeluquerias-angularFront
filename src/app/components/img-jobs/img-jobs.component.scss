@@ -1,0 +1,39 @@
+.btn-danger {
+    background-color: #B91622;
+    border-color: #B91622;  
+}
+
+.image-container {
+  position: relative;
+  display: inline-block;
+  margin: 10px;
+  padding: 5px;
+  text-align: center;
+  width: 100%;
+  max-width: 350px; /* Ancho máximo deseado en pantallas grandes */
+  aspect-ratio: 1 / 1; /* Mantiene una relación de aspecto 1:1 (cuadrado) */
+}
+
+.job-image {
+  width: 100%; /* Ajusta la imagen al ancho del contenedor */
+  height: 100%; /* Ajusta la imagen al alto del contenedor */
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+
+.delete-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: #B91622;
+    color: white;
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+  

@@ -40,6 +40,7 @@ import { EditOwnerComponent } from './components/owner-salon/edit-owner/edit-own
 import { EditCityComponent } from './components/cities/edit-city/edit-city.component';
 import { BrandsComponent } from './components/brands/brands.component';
 import { CategoriesJobsComponent } from './components/categories-jobs/categories-jobs.component';
+import { ImgJobsComponent } from './components/img-jobs/img-jobs.component';
 
 
 
@@ -75,6 +76,7 @@ import { CategoriesJobsComponent } from './components/categories-jobs/categories
     EditCityComponent,
     BrandsComponent,
     CategoriesJobsComponent,
+    ImgJobsComponent,
   ],
   imports: [
     BrowserModule,
