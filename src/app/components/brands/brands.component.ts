@@ -313,7 +313,7 @@ export class BrandsComponent {
       },
       error: (err: any) => {
         console.error('Error añadiendo marca', err);
-        this.toastr.error('Hubo un error al añadir la marca', 'Error');
+        this.toastr.error('Hubo un error al añadir la marca, por favor compruebe que la marca no exista en su lista', 'Error');
       },
     });
   }

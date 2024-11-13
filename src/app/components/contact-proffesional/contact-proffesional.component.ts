@@ -48,6 +48,7 @@ export class ContactProffesionalComponent {
       next: (response: any) => {
         this.AllContactMenssage = response.data;
         this.totalItems = response.totalItems;
+        console.log('Mensajes cargados:', this.AllContactMenssage);
       },
       error: (err) => {
         console.error('Error loading salons', err);

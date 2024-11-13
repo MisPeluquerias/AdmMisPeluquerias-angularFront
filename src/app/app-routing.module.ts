@@ -25,6 +25,7 @@ import { EditCityComponent } from './components/cities/edit-city/edit-city.compo
 import { BrandsComponent } from './components/brands/brands.component';
 import { CategoriesJobsComponent } from './components/categories-jobs/categories-jobs.component';
 import { ImgJobsComponent } from './components/img-jobs/img-jobs.component';
+import { JobOfferComponent } from './components/job-offer/job-offer.component';
 
 
 const routes: Routes = [
@@ -166,6 +167,12 @@ const routes: Routes = [
   {
     path: 'img-jobs',
     component: ImgJobsComponent,
+    canActivate: [AuthGuard],
+    title: 'Adm | Mis Peluquerias',
+  },
+  {
+    path: 'job-offer',
+    component: JobOfferComponent,
     canActivate: [AuthGuard],
     title: 'Adm | Mis Peluquerias',
   },

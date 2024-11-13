@@ -5,7 +5,7 @@ import { EditHomeService } from '../../../core/service/edit-home.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ChangeDetectorRef } from '@angular/core';
-
+import { AuthService } from '../../../core/service/AuthService.service';
 
 @Component({
   selector: 'app-edit-home',
@@ -129,13 +129,15 @@ export class EditHomeComponent implements OnInit {
   term:any;
   termUpdate:any;
   selectedSalonId:any="";
+  userType: string | null = null;
   
   constructor(
     private route: ActivatedRoute,
     private editHomeService: EditHomeService,
     private toastr: ToastrService,
     private modalService: NgbModal,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService
   ) {}
 
 
@@ -156,6 +158,16 @@ export class EditHomeComponent implements OnInit {
     this.getAllCategoriesBrands();
     this.getBrandsBySalon();
     this.getAllCategoriesServices();
+
+    this.authService.getUserType().subscribe(
+      userType => {
+        this.userType = userType;
+        console.log('Tipo de usuario obtenido:', this.userType);
+      },
+      error => {
+        console.error('Error al obtener el tipo de usuario:', error);
+      }
+    );
   }
 
 

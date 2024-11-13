@@ -4,6 +4,7 @@ import { HeaderService } from '../../../core/service/header.service';
 import { io } from 'socket.io-client';
 import { environment } from '../../../../environments/environment';
 
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -15,6 +16,7 @@ export class HeaderComponent {
   alertCount: number = 0;
   notifications: any[] = [];
   private socket: any;
+  userType: string | null = null;
 
 
 
@@ -38,6 +40,18 @@ export class HeaderComponent {
       this.getNotifications();
     });
 
+
+    this.authService.getUserType().subscribe(
+      userType => {
+        this.userType = userType;
+        console.log('Tipo de usuario obtenido:', this.userType);
+      },
+      error => {
+        console.error('Error al obtener el tipo de usuario:', error);
+      }
+    );
+
+    console.log('Tipo de usuario obtenido:', this.authService.getUserType());
     console.log(this.userImagePath); // Esto se ejecutará antes de que la imagen se cargue
     this.getAlertCount();
     this.getNotifications();

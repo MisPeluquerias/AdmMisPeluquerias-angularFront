@@ -6,10 +6,11 @@
     <i class="fas fa-bars"></i>
   </button>
 
+
   <!-- Navbar items aligned to the right -->
   <ul class="navbar-nav ms-auto">
     <!-- Campaign notifications with counter -->
-    <li class="nav-item dropdown me-3">
+    <li class="nav-item dropdown me-3" *ngIf="userType === 'admin'">
       <a class="nav-link dropdown-toggle custom-badge position-relative d-flex align-items-center"
          id="navbarDropdownCampaign"
          href="#"

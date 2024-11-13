@@ -15,7 +15,8 @@ export class ImgJobsComponent implements OnInit {
   currentPage: number = 1;
   pageSize: number = 12;
   totalItems: number = 0; // Total de elementos en la base de datos
-  
+
+
   constructor(private toastr: ToastrService, private imgJobsService: ImgJobsService) {}
 
   ngOnInit(): void {
@@ -27,6 +28,8 @@ export class ImgJobsComponent implements OnInit {
     this.currentPage = page;
     this.getAllImages(this.currentPage);
   }
+
+  
 
   // Calcula el número total de páginas basado en totalItems y pageSize
   get pageCount(): number {

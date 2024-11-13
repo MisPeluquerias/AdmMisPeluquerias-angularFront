@@ -152,7 +152,7 @@
                   class="col-md-12 d-flex justify-content-between align-items-center"
                 >
                   <div class="d-flex align-items-center">
-                    <div class="me-3 mt-3">
+                    <div class="me-3 mt-3" *ngIf="userType === 'admin'">
                       <label for="estado" class="form-label">
                         <i class="fa-solid fa-check"></i> Estado
                       </label>

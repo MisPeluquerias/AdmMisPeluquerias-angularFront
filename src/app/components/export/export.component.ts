@@ -17,6 +17,7 @@ export class ExportComponent {
   Math = Math;
   searchText : string = '';
   isLoading: boolean = false;
+  
 
   constructor(private exportService: ExportService) { }
 

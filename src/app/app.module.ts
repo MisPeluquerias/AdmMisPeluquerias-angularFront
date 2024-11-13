@@ -41,6 +41,7 @@ import { EditCityComponent } from './components/cities/edit-city/edit-city.compo
 import { BrandsComponent } from './components/brands/brands.component';
 import { CategoriesJobsComponent } from './components/categories-jobs/categories-jobs.component';
 import { ImgJobsComponent } from './components/img-jobs/img-jobs.component';
+import { JobOfferComponent } from './components/job-offer/job-offer.component';
 
 
 
@@ -77,6 +78,7 @@ import { ImgJobsComponent } from './components/img-jobs/img-jobs.component';
     BrandsComponent,
     CategoriesJobsComponent,
     ImgJobsComponent,
+    JobOfferComponent,
   ],
   imports: [
     BrowserModule,

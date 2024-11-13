@@ -1,0 +1,398 @@
+<app-header></app-header>
+<div id="layoutSidenav">
+  <app-aside></app-aside>
+  <div id="layoutSidenav_content">
+    <main>
+      <div class="container-fluid px-4">
+        <h1 class="mt-1">Panel de control</h1>
+        <ol class="breadcrumb mb-4">
+          <li class="breadcrumb-item active">
+            Portal de Empleo / <b>Ofertas</b>
+          </li>
+        </ol>
+
+        <!-- Contenido de la tabla -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <img src="../../../favicon.ico" width="30" class="img-fluid me-2" />
+            <!-- <i class="fas fa-table me-1"></i> -->
+            Lista de Ofertas de Empleo
+          </div>
+          <div class="card-body">
+            <div class="row mb-4">
+              <div
+                class="col-12 col-md-4 d-flex justify-content-md-end ms-auto"
+              >
+                <button
+                  class="btn btn-danger"
+                  data-bs-toggle="modal"
+                  data-bs-target="#newJobOfferModal"
+                >
+                  Publicar
+                </button>
+              </div>
+            </div>
+            <!-- Paginación -->
+            <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-center">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a
+                    class="page-link"
+                    (click)="onPageChange(1)"
+                    aria-label="First"
+                  >
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                  </a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a
+                    class="page-link"
+                    (click)="onPageChange(currentPage - 1)"
+                    aria-label="Previous"
+                  >
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                <li
+                  class="page-item"
+                  *ngFor="let page of pages"
+                  [class.active]="page === currentPage"
+                  [class.disabled]="page === -1"
+                >
+                  <ng-container *ngIf="page === -1">
+                    <span class="page-link">...</span>
+                  </ng-container>
+                  <ng-container *ngIf="page !== -1">
+                    <a class="page-link" (click)="onPageChange(page)">{{
+                      page
+                    }}</a>
+                  </ng-container>
+                </li>
+                <li
+                  class="page-item"
+                  [class.disabled]="currentPage === pageCount"
+                >
+                  <a
+                    class="page-link"
+                    (click)="onPageChange(currentPage + 1)"
+                    aria-label="Next"
+                  >
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+                <li
+                  class="page-item"
+                  [class.disabled]="currentPage === pageCount"
+                >
+                  <a
+                    class="page-link"
+                    (click)="onPageChange(pageCount)"
+                    aria-label="Last"
+                  >
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </main>
+    <app-footer></app-footer>
+  </div>
+</div>
+
+
+
+<!-- Modal para añaidir oferta de empleo -->
+<div
+  class="modal fade"
+  id="newJobOfferModal"
+  tabindex="-1"
+  aria-labelledby="newJobOfferModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title" id="newJobOfferModalLabel">
+          Nueva oferta de empleo
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-3">
+          <img
+            [src]="selectedImage || defaultImage"
+            [ngClass]="selectedImage ? 'selected-image' : 'default-image'"
+            alt="sello"
+            [(ngModel)]="selectedImage"
+            width="120"
+            class="img-fluid"
+          />
+        </div>
+        <div class="row col-12 d-flex">
+          <div class="col-6">
+            <label for="" class="form-label"
+              >Seleccione Categoría de Empleo</label
+            >
+            <select
+              class="form-select"
+              name="newCategoryJob"
+              id="newCategoryJob"
+              [(ngModel)]="addCategoryJob"
+              (change)="onCategoryChange($event)"
+            >
+              <option value="" disabled selected>
+                Seleccione Categoría de Empleo
+              </option>
+              <option
+                *ngFor="let category of getAllCategoriesJob"
+                [value]="category.id_job_cat"
+              >
+                {{ category.name }}
+              </option>
+            </select>
+          </div>
+
+          <div class="col-6">
+            <label for="" class="form-label"
+              >Seleccione Subcategoría de Empleo</label
+            >
+            <select
+              class="form-select"
+              name="newSubCategoryJob"
+              id="newSubCategoryJob"
+              [(ngModel)]="addSubCategoryJob"
+            >
+              <option value="" disabled selected>
+                Seleccione Subcategoría de Empleo
+              </option>
+              <option
+                *ngFor="let subCategory of getAllSubCategoriesJob"
+                [value]="subCategory.name"
+              >
+                <!-- Asegúrate de usar los corchetes correctamente -->
+                {{ subCategory.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <hr class="dropdown-divider" />
+        <div class="row col-12 d-flex mt-4">
+          <div class="col-6">
+            <label for="" class="form-label"
+              >Describa la oferta de empleo:</label
+            >
+            <textarea
+            id="jobDescription"
+            class="form-control"
+            [(ngModel)]="textDescriptionJob"
+            [attr.maxLength]="maxCharacters"
+            rows="4"
+            placeholder="Escribe aquí la descripción del trabajo..."
+          ></textarea>
+          <div class="text-end mt-1 text-muted" style="font-size: 0.9em;">
+            {{ currentCharacterDescriptionJobCount }}/{{ maxCharacters }}
+          </div>
+          </div>
+          <div class="col-6">
+            <label for="" class="form-label"
+              >Describa los requisitos de la oferta:</label
+            >
+            <textarea
+              name=""
+              id=""
+              [(ngModel)]="textRequirementsJob"
+              [attr.maxLength]="maxCharacters"
+              rows="4"
+              class="form-control"
+              maxlength="500"
+              placeholder="Escriba los requisitos de la oferta"
+            ></textarea>
+            <div class="text-end mt-1 text-muted" style="font-size: 0.9em;">
+            {{ currentCharacterRequirementsJobCount }}/{{ maxCharacters }}
+          </div>
+          </div>
+          <div class="row col-12 d-flex mt-4">
+            <div class="col-6">
+              <label for="" class="form-label"
+                >Introduzca el salario bruto anual de la oferta:</label
+              >
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="newSalaryJob"
+                  maxlength="20"
+                  id="newSalaryJob"
+                  [(ngModel)]="salary"
+                  placeholder="Salario"
+                  aria-label="Salario"
+                />
+                <span class="input-group-text">€</span>
+              </div>
+            </div>
+            <div class="col-6">
+              <label for="" class="form-label">Seleccione una imágen para la oferta de empleo:</label>
+              <button class="btn btn-secondary"  data-bs-toggle="modal"
+              data-bs-target="#imageGalleryModal">Seleccionar</button>
+            </div>
+            <div class="modal-footer mt-4">
+              <button
+                type="button"
+                (click)="addJobOffer()"
+                class="btn btn-danger"
+                data-bs-dismiss="modal"
+              >
+                Publicar
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal de confirmación para eliminar -->
+      <div
+        class="modal fade"
+        id="deleteImgJobModal"
+        tabindex="-1"
+        aria-labelledby="deleteImgJobModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+              <h5 class="modal-title" id="deleteImgJobModalLabel">
+                Eliminar Oferta de Empleo
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="text-center mb-3">
+                <img
+                  src="../../../assets/img/sello.jpg"
+                  alt="sello"
+                  width="120"
+                  class="img-fluid"
+                />
+              </div>
+              <p>¿Estás seguro que deseas eliminar la oferta de empleo seleccionada?</p>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-bs-dismiss="modal"
+                (click)="confirmDelete()"
+              >
+                Eliminar
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal de Galería de Imágenes -->
+<div
+  class="modal fade"
+  id="imageGalleryModal"
+  tabindex="-1"
+  aria-labelledby="imageGalleryModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title" id="imageGalleryModalLabel">Galería de Imágenes</h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="text-center mb-3">
+            <img
+              src="../../../assets/img/sello.jpg"
+              alt="sello"
+              width="120"
+              class="img-fluid"
+            />
+          </div>
+          <!-- Verifica si hay imágenes disponibles -->
+          <ng-container *ngIf="serverImages && serverImages.length > 0; else noImages">
+            <div class="col-6 col-md-4 mb-3" *ngFor="let image of serverImages">
+              <div class="card h-100 position-relative">
+                <img
+                  [src]="image.path"
+                  alt="Imagen del servidor"
+                  class="card-img-top"
+                  style="max-height: 150px; object-fit: cover;"
+                />
+                <!-- Checkbox de selección -->
+                <div class="form-check position-absolute top-0 end-0 m-2">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    [value]="image.path"
+                    (change)="toggleImageSelection(image.path, $event)"
+                    [checked]="selectedImage === image.path"
+                  />
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <!-- Mensaje en caso de que no haya imágenes disponibles -->
+          <ng-template #noImages>
+            <p class="text-center text-muted">No hay imágenes disponibles en el servidor.</p>
+          </ng-template>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="confirmSelection()"
+            data-bs-target="#newJobOfferModal"
+            data-bs-toggle="modal"
+          >
+            Aceptar
+          </button>
+        <button type="button" class="btn btn-secondary" data-bs-target="#newJobOfferModal"
+        data-bs-toggle="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
