@@ -70,8 +70,9 @@
             </a>
           </ng-container>
 
+          <ng-container  *ngIf="salonPermiso === 'salon'">
           <a
-            *ngIf="salonPermiso === 'salon'"
+           
             class="nav-link"
             routerLink="/home"
           >
@@ -80,6 +81,14 @@
             </div>
             Negocios
           </a>
+          <div class="sb-sidenav-menu-heading">Portal de Empleo</div>
+          <a class="nav-link" routerLink="/job-offer">
+            <div class="sb-nav-link-icon">
+              <i style="font-size: 1.1rem;" class="fa-solid fa-envelope-open-text"></i>
+            </div>
+            Ofertas de empleo
+          </a>
+        </ng-container>
 
           <ng-container *ngIf="salonPermiso === 'admin'">
             <div class="sb-sidenav-menu-heading">Clientes Web</div>
@@ -139,7 +148,6 @@
               </div>
               Marcas
             </a>
-
             <a class="nav-link" routerLink="/export">
               <div class="sb-nav-link-icon">
                 <i

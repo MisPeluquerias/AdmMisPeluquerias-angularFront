@@ -51,6 +51,8 @@ export class HomeComponent implements OnInit {
     );
   }
 
+
+  
   loadAllSalon(page: number): void {
     this.homeService.loadAllSalon(page, this.pageSize, this.searchText, this.filterState, this.filterActive).subscribe({
       next: (response: any) => {

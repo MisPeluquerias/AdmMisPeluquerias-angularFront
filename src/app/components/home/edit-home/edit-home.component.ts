@@ -74,6 +74,7 @@ export class EditHomeComponent implements OnInit {
   currentImageUrl: string = '';
   currentImageAlt: string = '';
   isImageOpen =false;
+  selectedBrandImage: string = '';
   services: any[]=[];
   newServiceName: string = '';
   updateServiceName: string = '';
@@ -1261,6 +1262,7 @@ confirmDeleteBrand(): void {
 
 selectBrand(brand: any): void {
   this.term = brand.name;
+  this.selectedBrandImage = brand.imagePath;
   this.selectedNewBrand = brand.id_brand;
   this.brands = [];
 }
@@ -1283,12 +1285,14 @@ searchBrands(term: string): void {
     this.editHomeService.getBrandByCategory(term, this.selectedCategory).subscribe(
       (results) => {
         this.brands = results;
+        console.log(this.brands)
       },
       (error) => {
         console.error('Error al buscar las marcas:', error);
       }
     );
   } else {
+    this.toastr.error('Por favor selecciona una categoría antes de buscar.');
     console.error('Por favor selecciona una categoría antes de buscar.');
   }
 }
@@ -1316,6 +1320,7 @@ addBrandSalon(): void {
       this.term = '';  // Limpia el término de búsqueda (marca)
       this.selectedNewBrand = '';  // Limpia el ID de la marca seleccionada
       this.brands = [];  // Limpia la lista de resultados de búsqueda
+      this.selectedBrandImage = "";
     },
     error: (err) => {
       console.error('Error al añadir la marca al salón:', err);

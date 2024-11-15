@@ -269,9 +269,6 @@ export class BrandsComponent {
   }
 
 
-  
-
-
   addBrand(): void {
     if (!this.newBrand || this.newBrand.trim() === '') {
       this.toastr.warning('El nombre de la marca no puede estar vacío', 'Advertencia');
@@ -284,8 +281,8 @@ export class BrandsComponent {
       return;
     }
   
-    if (this.newCategory.categories.length === 0) {
-      this.toastr.warning('Debe seleccionar al menos una categoría', 'Advertencia');
+    if (!this.newCategory.categories || this.newCategory.categories.length === 0) {
+      this.toastr.error('Debe seleccionar al menos una categoría', 'Advertencia');
       return;
     }
 

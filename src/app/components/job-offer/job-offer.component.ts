@@ -16,25 +16,87 @@ export class JobOfferComponent {
   totalItems: number = 0;
   getAllCategoriesJob: any[] = [];
   getAllSubCategoriesJob: any[] = [];
-  addCategoryJob:string=""
-  addSubCategoryJob:string=""
+  addCategoryJob:string='';
+  addSubCategoryJob:string='';
   maxCharacters: number = 500;
   textDescriptionJob: string = '';
   textRequirementsJob: string = '';
   salary: string = '';
   serverImages: any[] = [];
-  selectedImgJob:string="";
+  selectedImgJob:string='';
   selectedCategoryName: string = '';
   defaultImage: string = '../../../assets/img/sello.jpg';
   selectedImage: string | null = null;
   selectedCategoryId: number | null = null;
+  jobsOffers:any[]=[];
+  salonUser:any[]=[];
+  selectedSalon: number | null = null;
  
 
   constructor(private toastr: ToastrService, private jobOfferService: JobOfferService) { }
 
+
   ngOnInit(): void {
+    const id_user = localStorage.getItem('usuarioId');
+    this.getPanelforTypeUser();
     this.getCategoriesJob();
     this.getImgJob();
+    this.getSalonsByUser(id_user || '');
+  }
+
+  getPanelforTypeUser(){
+
+    const id_user = localStorage.getItem('usuarioId');
+    this.jobOfferService.getUserPermiso().subscribe(
+      (response: any) => {
+        //console.log('Permiso recibido:', response);
+        if (response.permiso === 'salon' && id_user) {
+          this.getAllJobsOffersByUser(id_user); // id_user como string
+        } else if (response.permiso === 'admin') {
+          this.getAllJobsOffers();
+        } else {
+          console.warn('Permiso desconocido o usuario no identificado');
+        }
+      },
+      (error) => {
+        console.error('Error al obtener permiso del usuario:', error);
+      }
+    );
+
+  }
+  
+
+  getAllJobsOffers(): void {
+    this.jobOfferService.getAllJobsOffers().subscribe(
+      (response: any) => {
+        this.jobsOffers = Array.isArray(response) ? response : response.data;
+        console.log('Ofertas de empleo recibidas:', this.jobsOffers);
+      },
+      (error) => {
+        console.error('Error al cargar las ofertas de empleo:', error);
+      }
+    );
+  }
+  
+  getAllJobsOffersByUser(id_user: string): void {
+    this.jobOfferService.getAllJobsOffersByUser(id_user).subscribe(
+      (response: any) => {
+        this.jobsOffers = Array.isArray(response) ? response : response.data;
+        //console.log('Ofertas de empleo por usuario recibidas:', this.jobsOffers);
+      },
+      (error) => {
+        console.error('Error al cargar las ofertas de empleo por usuario:', error);
+      }
+    );
+  }
+
+  getSalonsByUser(id_user: string): void {
+    this.jobOfferService.getSalonsUser(id_user).subscribe(
+      (response: any) => {
+        this.salonUser = Array.isArray(response) ? response : response.data;
+        console.log('Salones por usuario recibidos:', this.salonUser);
+    }
+    );
   }
 
   getAllJobsOffer(page: number): void {
@@ -167,22 +229,28 @@ export class JobOfferComponent {
   }
 
   addJobOffer(): void {
+    // Obtiene el ID de usuario de localStorage
+    const id_user = localStorage.getItem('usuarioId');
+  
     const jobOfferData = {
+      id_user: id_user,
+      id_salon: this.selectedSalon,
       category: this.selectedCategoryName,
       subcategory: this.addSubCategoryJob,
       description: this.textDescriptionJob,
       requirements: this.textRequirementsJob,
       salary: this.salary,
-      img_job_path: this.selectedImage,
+      img_job_path: this.selectedImage
     };
+  
     this.jobOfferService.addJobOfferData(jobOfferData).subscribe(
       (response: any) => {
-        this.toastr.success('Oferta de empleo publicada con exito');
+        this.toastr.success('Oferta de empleo publicada con éxito');
       },
       (error: any) => {
         this.toastr.error('Error al publicar la oferta de empleo');
       }
-    )
-    console.log( 'datos recogidos:',jobOfferData);
+    );
+    console.log('Datos recogidos:', jobOfferData);
   }
 }

@@ -32,6 +32,30 @@
                 </button>
               </div>
             </div>
+
+            <div class="container">
+              <div class="row">
+                <div *ngFor="let job of jobsOffers" class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                  <div class="card h-100 shadow-sm">
+                    <div class="card-header text-center bg-dark text-white">
+                      <h5 class="mb-0">{{ job.category }}</h5>
+                    </div>
+                    <div class="card-body ">
+                      <div class="text-center">
+                      <img [src]="job.img_job_path" class="img-fluid mb-3" alt="Imagen del empleo" style="max-height: 250px; padding: 0 auto;">
+                    </div>
+                      <h6 class="card-subtitle mb-2 text-muted">{{ job.subcategory }}</h6>
+                      <p class="card-text text-truncate mb-2">{{ job.description }}</p>
+                      <p class="card-text text-truncate">{{ job.requirements }}</p>
+                      <p class="card-text font-weight-bold mt-auto">Salario bruto anual: {{ job.salary }} €</p>
+                    </div>
+                    <div class="card-footer text-center">
+                    <button class="btn btn-outline-primary bg-dark btn-sm">Más información</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <!-- Paginación -->
             <nav aria-label="Page navigation example">
               <ul class="pagination justify-content-center">
@@ -143,8 +167,7 @@
             >
             <select
               class="form-select"
-              name="newCategoryJob"
-              id="newCategoryJob"
+              name="addCategoryJob"
               [(ngModel)]="addCategoryJob"
               (change)="onCategoryChange($event)"
             >
@@ -166,7 +189,7 @@
             >
             <select
               class="form-select"
-              name="newSubCategoryJob"
+              name="addSubCategoryJob"
               id="newSubCategoryJob"
               [(ngModel)]="addSubCategoryJob"
             >
@@ -192,6 +215,7 @@
             <textarea
             id="jobDescription"
             class="form-control"
+            name="textDescriptionJob"
             [(ngModel)]="textDescriptionJob"
             [attr.maxLength]="maxCharacters"
             rows="4"
@@ -206,7 +230,7 @@
               >Describa los requisitos de la oferta:</label
             >
             <textarea
-              name=""
+              name="textRequirementsJob"
               id=""
               [(ngModel)]="textRequirementsJob"
               [attr.maxLength]="maxCharacters"
@@ -228,9 +252,8 @@
                 <input
                   type="text"
                   class="form-control"
-                  name="newSalaryJob"
+                  name="salary"
                   maxlength="20"
-                  id="newSalaryJob"
                   [(ngModel)]="salary"
                   placeholder="Salario"
                   aria-label="Salario"
@@ -242,6 +265,16 @@
               <label for="" class="form-label">Seleccione una imágen para la oferta de empleo:</label>
               <button class="btn btn-secondary"  data-bs-toggle="modal"
               data-bs-target="#imageGalleryModal">Seleccionar</button>
+            </div>
+            <div class="col-12 mt-4">
+              <div class="col-6">
+                <label for="" class="form-label">Oferta de empleo para el salón:</label>
+                <select class="form-select" [(ngModel)]="selectedSalon">
+                  <option *ngFor="let salon of salonUser" [value]="salon.id_salon">
+                    {{salon.salon_name}}
+                  </option>
+                </select>
+              </div>
             </div>
             <div class="modal-footer mt-4">
               <button

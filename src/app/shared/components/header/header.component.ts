@@ -44,14 +44,14 @@ export class HeaderComponent {
     this.authService.getUserType().subscribe(
       userType => {
         this.userType = userType;
-        console.log('Tipo de usuario obtenido:', this.userType);
+        //console.log('Tipo de usuario obtenido:', this.userType);
       },
       error => {
         console.error('Error al obtener el tipo de usuario:', error);
       }
     );
 
-    console.log('Tipo de usuario obtenido:', this.authService.getUserType());
+    //console.log('Tipo de usuario obtenido:', this.authService.getUserType());
     console.log(this.userImagePath); // Esto se ejecutará antes de que la imagen se cargue
     this.getAlertCount();
     this.getNotifications();

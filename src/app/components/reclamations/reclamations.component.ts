@@ -141,4 +141,8 @@ export class ReclamationsComponent {
       this.toastr.warning('No hay reclamaciones seleccionadas para eliminar');
     }
   }
+  setDefaultImg(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = '../../../assets/img/file.png';
+  }
 }
