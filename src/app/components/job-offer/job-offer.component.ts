@@ -31,6 +31,8 @@ export class JobOfferComponent {
   jobsOffers:any[]=[];
   salonUser:any[]=[];
   selectedSalon: number | null = null;
+  selectedToDelete:number=0;
+  viewDetailsJob: any = null;
  
 
   constructor(private toastr: ToastrService, private jobOfferService: JobOfferService) { }
@@ -45,7 +47,6 @@ export class JobOfferComponent {
   }
 
   getPanelforTypeUser(){
-
     const id_user = localStorage.getItem('usuarioId');
     this.jobOfferService.getUserPermiso().subscribe(
       (response: any) => {
@@ -62,7 +63,6 @@ export class JobOfferComponent {
         console.error('Error al obtener permiso del usuario:', error);
       }
     );
-
   }
   
 
@@ -78,6 +78,7 @@ export class JobOfferComponent {
     );
   }
   
+
   getAllJobsOffersByUser(id_user: string): void {
     this.jobOfferService.getAllJobsOffersByUser(id_user).subscribe(
       (response: any) => {
@@ -89,6 +90,7 @@ export class JobOfferComponent {
       }
     );
   }
+
 
   getSalonsByUser(id_user: string): void {
     this.jobOfferService.getSalonsUser(id_user).subscribe(
@@ -103,7 +105,33 @@ export class JobOfferComponent {
     this.currentPage = page;
 
   }
- 
+  
+  setToDelete(id_job_offer:number){
+    this.selectedToDelete=id_job_offer;
+  }
+
+
+  deleteJobOffer(){
+    this.jobOfferService.deleteJobOffer(this.selectedToDelete).subscribe(
+      (response: any) => {
+        this.getPanelforTypeUser();
+        this.toastr.success('Oferta de empleo eliminada con éxito', 'Éxito');
+      },
+      (error) => {
+        console.error('Error al eliminar la oferta de empleo:', error);
+        this.toastr.error('Error al eliminar la oferta de empleo', 'Error');
+      }
+    );
+  }
+
+  SetToViewDetailsOffer(job: any): void {
+    this.viewDetailsJob = job;
+  }
+
+
+  removeOffer(){
+
+  }
 
   get currentCharacterDescriptionJobCount(): number {
     return this.textDescriptionJob.length;
@@ -154,7 +182,6 @@ export class JobOfferComponent {
         // Verifica si response es un array o si tienes que acceder a response.data
         this.getAllCategoriesJob = Array.isArray(response) ? response : response.data;
         //console.log('Categorias de empleo recibidas:', this.getAllCategoriesJob);
-       
       },
       (error) => {
         console.log(error);
@@ -167,7 +194,7 @@ export class JobOfferComponent {
     const id_job_cat = selectElement.value;
   
     if (id_job_cat) {
-       this.addSubCategoryJob = '';
+      this.addSubCategoryJob = '';
       this.getSubCategoriesByCategory(Number(id_job_cat));
     }
 
@@ -228,6 +255,7 @@ export class JobOfferComponent {
     return pages;
   }
 
+
   addJobOffer(): void {
     // Obtiene el ID de usuario de localStorage
     const id_user = localStorage.getItem('usuarioId');
@@ -246,6 +274,7 @@ export class JobOfferComponent {
     this.jobOfferService.addJobOfferData(jobOfferData).subscribe(
       (response: any) => {
         this.toastr.success('Oferta de empleo publicada con éxito');
+        this.getPanelforTypeUser();
       },
       (error: any) => {
         this.toastr.error('Error al publicar la oferta de empleo');

@@ -33,29 +33,64 @@
               </div>
             </div>
 
+            
             <div class="container">
               <div class="row">
-                <div *ngFor="let job of jobsOffers" class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                <div
+                  *ngFor="let job of jobsOffers"
+                  class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
+                >
                   <div class="card h-100 shadow-sm">
                     <div class="card-header text-center bg-dark text-white">
                       <h5 class="mb-0">{{ job.category }}</h5>
                     </div>
-                    <div class="card-body ">
+                    <div class="card-body">
                       <div class="text-center">
-                      <img [src]="job.img_job_path" class="img-fluid mb-3" alt="Imagen del empleo" style="max-height: 250px; padding: 0 auto;">
+                        <img
+                          [src]="job.img_job_path"
+                          class="img-fluid mb-3"
+                          alt="Imagen del empleo"
+                          style="max-height: 250px; padding: 0 auto"
+                        />
+                      </div>
+                      <h6 class="card-subtitle mb-2 text-muted">
+                        Puesto: {{ job.subcategory }}
+                      </h6>
+                      <div class="d-flex justify-content-end">
+                        <button
+                          class="btn btn-sm ms-auto text-white"
+                          style="background-color: darkgray"
+                          (click)="SetToViewDetailsOffer(job)"
+                          data-bs-toggle="modal"
+                          data-bs-target="#detailsJobOfferModal"
+                        >
+                          Ver detalles
+                        </button>
+                      </div>
                     </div>
-                      <h6 class="card-subtitle mb-2 text-muted">{{ job.subcategory }}</h6>
-                      <p class="card-text text-truncate mb-2">{{ job.description }}</p>
-                      <p class="card-text text-truncate">{{ job.requirements }}</p>
-                      <p class="card-text font-weight-bold mt-auto">Salario bruto anual: {{ job.salary }} €</p>
-                    </div>
-                    <div class="card-footer text-center">
-                    <button class="btn btn-outline-primary bg-dark btn-sm">Más información</button>
+                    <div class="card-footer d-flex justify-content-end">
+                      <button
+                        class="btn btn-outline-primary bg-dark btn-sm me-2"
+                      >
+                        Ver candidatos
+                      </button>
+                      <button
+                        class="btn bg-danger btn-sm text-white"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteJobOfferModal"
+                        (click)="
+                          setToDelete(job.id_job_offer);
+                          $event.stopPropagation()
+                        "
+                      >
+                        Eliminar
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+
             <!-- Paginación -->
             <nav aria-label="Page navigation example">
               <ul class="pagination justify-content-center">
@@ -126,7 +161,200 @@
   </div>
 </div>
 
+<!-- Modal para eliminar marca -->
+<div
+  class="modal fade"
+  id="deleteJobOfferModal"
+  tabindex="-1"
+  aria-labelledby="deleteJobOfferModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title" id="deleteJobOfferModalLabel">
+          Eliminar Oferta de Empleo
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-3">
+          <img
+            src="../../../assets/img/sello.jpg"
+            alt="sello"
+            width="120"
+            class="img-fluid"
+          />
+        </div>
+        <p>
+          ¿Estás seguro de que deseas eliminar esta oferta de empleo de su
+          salón?
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+          (click)="deleteJobOffer()"
+        >
+          Eliminar
+        </button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
+<!-- Modal de Galería de Imágenes -->
+<div
+  class="modal fade"
+  id="imageGalleryModal"
+  tabindex="-1"
+  aria-labelledby="imageGalleryModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title" id="imageGalleryModalLabel">
+          Galería de Imágenes
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="text-center mb-3">
+            <img
+              src="../../../assets/img/sello.jpg"
+              alt="sello"
+              width="120"
+              class="img-fluid"
+            />
+          </div>
+          <!-- Verifica si hay imágenes disponibles -->
+          <ng-container
+            *ngIf="serverImages && serverImages.length > 0; else noImages"
+          >
+            <div class="col-6 col-md-4 mb-3" *ngFor="let image of serverImages">
+              <div class="card h-100 position-relative">
+                <img
+                  [src]="image.path"
+                  alt="Imagen del servidor"
+                  class="card-img-top"
+                  style="max-height: 150px; object-fit: cover"
+                />
+                <!-- Checkbox de selección -->
+                <div class="form-check position-absolute top-0 end-0 m-2">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    [value]="image.path"
+                    (change)="toggleImageSelection(image.path, $event)"
+                    [checked]="selectedImage === image.path"
+                  />
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <!-- Mensaje en caso de que no haya imágenes disponibles -->
+          <ng-template #noImages>
+            <p class="text-center text-muted">
+              No hay imágenes disponibles en el servidor.
+            </p>
+          </ng-template>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="confirmSelection()"
+            data-bs-target="#newJobOfferModal"
+            data-bs-toggle="modal"
+          >
+            Aceptar
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-target="#newJobOfferModal"
+            data-bs-toggle="modal"
+          >
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal descripcion de oferta de empleo-->
+<div
+  class="modal fade"
+  id="detailsJobOfferModal"
+  tabindex="-1"
+  aria-labelledby="detailsJobOfferModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title" id="detailsJobOfferModalLabel">
+          {{ viewDetailsJob?.category }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center">
+          <img
+            [src]="viewDetailsJob?.img_job_path"
+            class="img-fluid mb-5"
+            width="220"
+            alt="Imagen del empleo"
+          />
+        </div>
+        <p><strong>Puesto:</strong></p>
+        <p>{{ viewDetailsJob?.subcategory }}</p>
+        <div class="row col-12">
+          <div class="col-6">
+            <p><strong>Descripción:</strong></p>
+            <p>{{ viewDetailsJob?.description }}</p>
+          </div>
+          <div class="col-6">
+            <p><strong>Requisitos:</strong></p>
+            <p>{{ viewDetailsJob?.requirements }}</p>
+          </div>
+        </div>
+        <p><strong>Salario bruto anual:</strong></p>
+        <p>{{ viewDetailsJob?.salary }} €</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Modal para añaidir oferta de empleo -->
 <div
@@ -155,7 +383,6 @@
             [src]="selectedImage || defaultImage"
             [ngClass]="selectedImage ? 'selected-image' : 'default-image'"
             alt="sello"
-            [(ngModel)]="selectedImage"
             width="120"
             class="img-fluid"
           />
@@ -170,6 +397,7 @@
               name="addCategoryJob"
               [(ngModel)]="addCategoryJob"
               (change)="onCategoryChange($event)"
+              #addCategoryJobField="ngModel"
             >
               <option value="" disabled selected>
                 Seleccione Categoría de Empleo
@@ -181,6 +409,12 @@
                 {{ category.name }}
               </option>
             </select>
+          </div>
+          <div
+            *ngIf="addCategoryJobField.invalid && addCategoryJobField.touched"
+            class="text-danger"
+          >
+            Por favor, seleccione una categoría de empleo.
           </div>
 
           <div class="col-6">
@@ -213,17 +447,17 @@
               >Describa la oferta de empleo:</label
             >
             <textarea
-            id="jobDescription"
-            class="form-control"
-            name="textDescriptionJob"
-            [(ngModel)]="textDescriptionJob"
-            [attr.maxLength]="maxCharacters"
-            rows="4"
-            placeholder="Escribe aquí la descripción del trabajo..."
-          ></textarea>
-          <div class="text-end mt-1 text-muted" style="font-size: 0.9em;">
-            {{ currentCharacterDescriptionJobCount }}/{{ maxCharacters }}
-          </div>
+              id="jobDescription"
+              class="form-control"
+              name="textDescriptionJob"
+              [(ngModel)]="textDescriptionJob"
+              [attr.maxLength]="maxCharacters"
+              rows="4"
+              placeholder="Escribe aquí la descripción del trabajo..."
+            ></textarea>
+            <div class="text-end mt-1 text-muted" style="font-size: 0.9em">
+              {{ currentCharacterDescriptionJobCount }}/{{ maxCharacters }}
+            </div>
           </div>
           <div class="col-6">
             <label for="" class="form-label"
@@ -239,9 +473,9 @@
               maxlength="500"
               placeholder="Escriba los requisitos de la oferta"
             ></textarea>
-            <div class="text-end mt-1 text-muted" style="font-size: 0.9em;">
-            {{ currentCharacterRequirementsJobCount }}/{{ maxCharacters }}
-          </div>
+            <div class="text-end mt-1 text-muted" style="font-size: 0.9em">
+              {{ currentCharacterRequirementsJobCount }}/{{ maxCharacters }}
+            </div>
           </div>
           <div class="row col-12 d-flex mt-4">
             <div class="col-6">
@@ -262,16 +496,28 @@
               </div>
             </div>
             <div class="col-6">
-              <label for="" class="form-label">Seleccione una imágen para la oferta de empleo:</label>
-              <button class="btn btn-secondary"  data-bs-toggle="modal"
-              data-bs-target="#imageGalleryModal">Seleccionar</button>
+              <label for="" class="form-label"
+                >Seleccione una imágen para la oferta de empleo:</label
+              >
+              <button
+                class="btn btn-secondary"
+                data-bs-toggle="modal"
+                data-bs-target="#imageGalleryModal"
+              >
+                Seleccionar
+              </button>
             </div>
             <div class="col-12 mt-4">
               <div class="col-6">
-                <label for="" class="form-label">Oferta de empleo para el salón:</label>
+                <label for="" class="form-label"
+                  >Oferta de empleo para el salón:</label
+                >
                 <select class="form-select" [(ngModel)]="selectedSalon">
-                  <option *ngFor="let salon of salonUser" [value]="salon.id_salon">
-                    {{salon.salon_name}}
+                  <option
+                    *ngFor="let salon of salonUser"
+                    [value]="salon.id_salon"
+                  >
+                    {{ salon.salon_name }}
                   </option>
                 </select>
               </div>
@@ -295,136 +541,6 @@
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- Modal de confirmación para eliminar -->
-      <div
-        class="modal fade"
-        id="deleteImgJobModal"
-        tabindex="-1"
-        aria-labelledby="deleteImgJobModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header bg-dark text-white">
-              <h5 class="modal-title" id="deleteImgJobModalLabel">
-                Eliminar Oferta de Empleo
-              </h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              <div class="text-center mb-3">
-                <img
-                  src="../../../assets/img/sello.jpg"
-                  alt="sello"
-                  width="120"
-                  class="img-fluid"
-                />
-              </div>
-              <p>¿Estás seguro que deseas eliminar la oferta de empleo seleccionada?</p>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-danger"
-                data-bs-dismiss="modal"
-                (click)="confirmDelete()"
-              >
-                Eliminar
-              </button>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Cancelar
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- Modal de Galería de Imágenes -->
-<div
-  class="modal fade"
-  id="imageGalleryModal"
-  tabindex="-1"
-  aria-labelledby="imageGalleryModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header bg-dark text-white">
-        <h5 class="modal-title" id="imageGalleryModalLabel">Galería de Imágenes</h5>
-        <button
-          type="button"
-          class="btn-close btn-close-white"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="text-center mb-3">
-            <img
-              src="../../../assets/img/sello.jpg"
-              alt="sello"
-              width="120"
-              class="img-fluid"
-            />
-          </div>
-          <!-- Verifica si hay imágenes disponibles -->
-          <ng-container *ngIf="serverImages && serverImages.length > 0; else noImages">
-            <div class="col-6 col-md-4 mb-3" *ngFor="let image of serverImages">
-              <div class="card h-100 position-relative">
-                <img
-                  [src]="image.path"
-                  alt="Imagen del servidor"
-                  class="card-img-top"
-                  style="max-height: 150px; object-fit: cover;"
-                />
-                <!-- Checkbox de selección -->
-                <div class="form-check position-absolute top-0 end-0 m-2">
-                  <input
-                    type="checkbox"
-                    class="form-check-input"
-                    [value]="image.path"
-                    (change)="toggleImageSelection(image.path, $event)"
-                    [checked]="selectedImage === image.path"
-                  />
-                </div>
-              </div>
-            </div>
-          </ng-container>
-          <!-- Mensaje en caso de que no haya imágenes disponibles -->
-          <ng-template #noImages>
-            <p class="text-center text-muted">No hay imágenes disponibles en el servidor.</p>
-          </ng-template>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-danger"
-            (click)="confirmSelection()"
-            data-bs-target="#newJobOfferModal"
-            data-bs-toggle="modal"
-          >
-            Aceptar
-          </button>
-        <button type="button" class="btn btn-secondary" data-bs-target="#newJobOfferModal"
-        data-bs-toggle="modal">Cerrar</button>
       </div>
     </div>
   </div>

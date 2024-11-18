@@ -46,7 +46,9 @@ export class JobOfferService {
   }
 
 
-
+  deleteJobOffer(id_job_offer: number): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}/job-offer/deleteJobOffer/${id_job_offer}`);
+  }
 
   getAllJobsOffersByUser(id_user:string): Observable<any> {
     return this.http.get(`${this.baseUrl}/job-offer/getAllJobsOffersByUser/${id_user}`);
