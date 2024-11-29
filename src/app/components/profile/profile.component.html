@@ -24,16 +24,22 @@
           <div class="card-body">
             <div *ngIf="userData">
               <div class="row mb-4">
-                <div class="col-12 d-flex flex-column flex-md-row align-items-center">
+                <div
+                  class="col-12 d-flex flex-column flex-md-row align-items-center"
+                >
                   <div class="me-md-3 mb-3 mb-md-0 text-center text-md-start">
                     <img
-                      [src]="userData.avatar_path || '../../../assets/img/sello.jpg'"
+                      [src]="
+                        userData.avatar_path || '../../../assets/img/sello.jpg'
+                      "
                       alt="Foto de perfil"
                       class="img-fluid profile-img"
                     />
                   </div>
                   <div class="col-12 col-md-6">
-                    <label for="fileInput" class="form-label">Subir imagen</label>
+                    <label for="fileInput" class="form-label"
+                      >Subir imagen</label
+                    >
                     <input
                       type="file"
                       (change)="onFileSelected($event)"
@@ -60,7 +66,10 @@
                       required
                       #name="ngModel"
                     />
-                    <div *ngIf="name.invalid && name.touched" class="text-danger">
+                    <div
+                      *ngIf="name.invalid && name.touched"
+                      class="text-danger"
+                    >
                       Nombre es obligatorio
                     </div>
                   </div>
@@ -75,12 +84,15 @@
                       required
                       #lastname="ngModel"
                     />
-                    <div *ngIf="lastname.invalid && lastname.touched" class="text-danger">
+                    <div
+                      *ngIf="lastname.invalid && lastname.touched"
+                      class="text-danger"
+                    >
                       Apellidos son obligatorios
                     </div>
                   </div>
                 </div>
-              
+
                 <div class="row mb-3">
                   <div class="col-md-6">
                     <label for="email" class="form-label">E-mail</label>
@@ -94,12 +106,17 @@
                       email
                       #email="ngModel"
                     />
-                    <div *ngIf="email.invalid && email.touched" class="text-danger">
+                    <div
+                      *ngIf="email.invalid && email.touched"
+                      class="text-danger"
+                    >
                       Introduzca un correo electrónico válido
                     </div>
                   </div>
                   <div class="col-md-6">
-                    <label for="telefono" class="form-label">Nº de Teléfono</label>
+                    <label for="telefono" class="form-label"
+                      >Nº de Teléfono</label
+                    >
                     <input
                       type="tel"
                       class="form-control"
@@ -110,12 +127,15 @@
                       pattern="^\d{9}$"
                       #phone="ngModel"
                     />
-                    <div *ngIf="phone.invalid && phone.touched" class="text-danger">
+                    <div
+                      *ngIf="phone.invalid && phone.touched"
+                      class="text-danger"
+                    >
                       Número de teléfono es obligatorio y debe tener 9 dígitos
                     </div>
                   </div>
                 </div>
-              
+
                 <div class="row mb-3">
                   <div class="col-md-6">
                     <label for="direccion" class="form-label">Dirección</label>
@@ -128,7 +148,10 @@
                       required
                       #address="ngModel"
                     />
-                    <div *ngIf="address.invalid && address.touched" class="text-danger">
+                    <div
+                      *ngIf="address.invalid && address.touched"
+                      class="text-danger"
+                    >
                       Dirección es obligatoria
                     </div>
                   </div>
@@ -143,7 +166,9 @@
                       required
                       #id_province="ngModel"
                     >
-                      <option value="" disabled selected>Seleccione una provincia</option>
+                      <option value="" disabled selected>
+                        Seleccione una provincia
+                      </option>
                       <option
                         *ngFor="let province of provinces"
                         [value]="province.id_province"
@@ -151,7 +176,10 @@
                         {{ province.name }}
                       </option>
                     </select>
-                    <div *ngIf="id_province.invalid && id_province.touched" class="text-danger">
+                    <div
+                      *ngIf="id_province.invalid && id_province.touched"
+                      class="text-danger"
+                    >
                       Provincia es obligatoria
                     </div>
                   </div>
@@ -166,17 +194,25 @@
                       required
                       #id_city="ngModel"
                     >
-                      <option value="" disabled selected>Seleccione una población</option>
-                      <option *ngFor="let city of cities" [value]="city.id_city">
+                      <option value="" disabled selected>
+                        Seleccione una población
+                      </option>
+                      <option
+                        *ngFor="let city of cities"
+                        [value]="city.id_city"
+                      >
                         {{ city.city_name }} - {{ city.zip_code }}
                       </option>
                     </select>
-                    <div *ngIf="id_city.invalid && id_city.touched" class="text-danger">
+                    <div
+                      *ngIf="id_city.invalid && id_city.touched"
+                      class="text-danger"
+                    >
                       Población es obligatoria
                     </div>
                   </div>
                 </div>
-               
+
                 <button type="submit" class="btn btn-danger me-2">
                   Guardar
                 </button>
@@ -187,31 +223,68 @@
                   <h5>Cambiar contraseña</h5>
                   <form (ngSubmit)="changePassword()">
                     <div class="row mb-3">
-                      <div class="col-md-6">
+                      <div class="col-md-6 position-relative">
                         <label for="password" class="form-label"
                           >Contraseña</label
                         >
                         <input
-                          type="password"
+                          [type]="showPassword ? 'text' : 'password'"
                           class="form-control"
                           id="password"
                           name="password"
                           placeholder="Introduce nueva contraseña..."
                           [(ngModel)]="password"
                         />
+                        <button
+                          type="button"
+                          (click)="togglePasswordVisibility()"
+                          style="
+                            position: absolute;
+                            right: 10px;
+                            top: 35px;
+                            background: none;
+                            border: none;
+                          "
+                        >
+                          <i
+                            [ngClass]="
+                              showPassword ? 'las la-eye-slash' : 'las la-eye'
+                            "
+                          ></i>
+                        </button>
                       </div>
-                      <div class="col-md-6">
+
+                      <div class="col-md-6 position-relative">
                         <label for="confirmPassword" class="form-label"
                           >Repetir contraseña</label
                         >
                         <input
-                          type="password"
+                          [type]="showConfirmPassword ? 'text' : 'password'"
                           class="form-control"
                           id="confirmPassword"
-                          placeholder="Repetir contraseña..."
                           name="confirmPassword"
+                          placeholder="Repetir contraseña..."
                           [(ngModel)]="confirmPassword"
                         />
+                        <button
+                          type="button"
+                          (click)="toggleConfirmPasswordVisibility()"
+                          style="
+                            position: absolute;
+                            right: 10px;
+                            top: 35px;
+                            background: none;
+                            border: none;
+                          "
+                        >
+                          <i
+                            [ngClass]="
+                              showConfirmPassword
+                                ? 'las la-eye-slash'
+                                : 'las la-eye'
+                            "
+                          ></i>
+                        </button>
                       </div>
                     </div>
                     <button type="submit" class="btn btn-warning">
@@ -225,8 +298,12 @@
                 <div class="card-body">
                   <h5>Desactivar cuenta</h5>
                   <div class="alert alert-warning" role="alert">
-                    <strong>¿Estás seguro de que quieres desactivar tu cuenta?</strong><br />
-                    Una vez que desactives tu cuenta, no hay vuelta atrás. Por favor esté seguro.
+                    <strong
+                      >¿Estás seguro de que quieres desactivar tu
+                      cuenta?</strong
+                    ><br />
+                    Una vez que desactives tu cuenta, no hay vuelta atrás. Por
+                    favor esté seguro.
                   </div>
                   <div class="form-check mb-3">
                     <input
@@ -239,7 +316,12 @@
                       Confirmo la desactivación de mi cuenta
                     </label>
                   </div>
-                  <button type="button" class="btn btn-danger" [disabled]="!isConfirmed" (click)="desactivateAccount(id_user);">
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    [disabled]="!isConfirmed"
+                    (click)="desactivateAccount(id_user)"
+                  >
                     Desactivar cuenta
                   </button>
                 </div>

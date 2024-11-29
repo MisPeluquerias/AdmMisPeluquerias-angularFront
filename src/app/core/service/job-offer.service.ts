@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { HttpParams } from '@angular/common/http';
 
 
 @Injectable({
@@ -14,8 +15,18 @@ export class JobOfferService {
   constructor(private http: HttpClient) { }
 
 
-  getAllJobsOffers(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/job-offer/getAlljobsOffers`);
+  getAllJobsOffers(page: number, pageSize: number): Observable<any> {
+    let params = new HttpParams()
+      .set("page", page.toString())
+      .set("pageSize", pageSize.toString());
+    return this.http.get(`${this.baseUrl}/job-offer/getAlljobsOffers`, { params });
+  }
+  
+  getAllJobsOffersByUserPaginated(id_user: string, page: number, pageSize: number): Observable<any> {
+    let params = new HttpParams()
+      .set("page", page.toString())
+      .set("pageSize", pageSize.toString());
+    return this.http.get(`${this.baseUrl}/job-offer/getAllJobsOffersByUser/${id_user}`, { params });
   }
 
   getCategoriesJob(): Observable<any> {
@@ -50,7 +61,7 @@ export class JobOfferService {
     return this.http.delete<any>(`${this.baseUrl}/job-offer/deleteJobOffer/${id_job_offer}`);
   }
 
-  getAllJobsOffersByUser(id_user:string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/job-offer/getAllJobsOffersByUser/${id_user}`);
+  getJobInscriptions(id_job_offer: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/job-offer/getJobInscriptions/${id_job_offer}`);
   }
 }

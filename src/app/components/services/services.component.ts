@@ -164,6 +164,7 @@ selectCategories(service: any): void {
     }
     return pages;
   }
+  
 
   toggleAllSelection() {
     this.allSelected = !this.allSelected;

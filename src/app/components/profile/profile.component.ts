@@ -18,6 +18,8 @@ export class ProfileComponent {
   confirmPassword: string = '';
   password: string = '';
   isConfirmed: boolean = false;
+  showPassword: boolean = false;
+	showConfirmPassword: boolean = false;
 
   constructor(private profileService: ProfileService,private toastr:ToastrService,private router:Router) {}
 
@@ -29,6 +31,14 @@ export class ProfileComponent {
       this.getDataUser();
       
     }
+  }
+
+  
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+  toggleConfirmPasswordVisibility(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
   }
 
   getDataUser(): void {
