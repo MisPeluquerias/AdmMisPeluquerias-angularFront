@@ -40,6 +40,11 @@ export class JobOfferComponent {
   errorImage:string="";
   jobSuscribed: any[] = [];
   id_job_offer: number = 0;
+  setToDeleteCandidate: number = 0;
+  isAdmin: boolean = false;
+  public totalRecords: number = 0;
+  public totalPages: number = 1;
+
   
 
   constructor(
@@ -63,12 +68,16 @@ export class JobOfferComponent {
       (response: any) => {
         //console.log('Permiso recibido:', response);
         if (response.permiso === "salon" && id_user) {
+          this.isAdmin = false;
           this.getAllJobsOffersByUser(id_user); // id_user como string
         } else if (response.permiso === "admin") {
+          this.isAdmin = true;
+          //console.log("Permiso admin",response.permiso);
           this.getAllJobsOffers();
         } else {
           console.warn("Permiso desconocido o usuario no identificado");
         }
+        //console.log("Permiso recibido:", response);
       },
       (error) => {
         console.error("Error al obtener permiso del usuario:", error);
@@ -145,6 +154,7 @@ export class JobOfferComponent {
 
   setToDelete(id_job_offer: number) {
     this.selectedToDelete = id_job_offer;
+    console.log('Id candidato para eliminar',this.selectedToDelete);
   }
 
   deleteJobOffer() {
@@ -284,9 +294,6 @@ export class JobOfferComponent {
   }
   
 
-  
-
-
 
   addJobOffer(): void {
     // Obtiene el ID de usuario de localStorage
@@ -382,17 +389,43 @@ export class JobOfferComponent {
   }
 
 
-  getJobInscriptions(): void {
-    this.jobOfferService.getJobInscriptions(this.id_job_offer).subscribe(
+  getJobInscriptions(page: number = 1): void {
+    const pageSize = 4; // Siempre 4 elementos por página
+    this.jobOfferService.getJobInscriptions(this.id_job_offer, page, pageSize).subscribe(
       (response: any) => {
-        this.jobSuscribed = Array.isArray(response)
-          ? response
-          : response.data;
-          console.log(this.id_job_offer);
-          console.log('Ofertas inscriptas',this.jobSuscribed);
+        this.jobSuscribed = Array.isArray(response.data) ? response.data : [];
+        this.totalRecords = response.meta?.totalRecords || 0;
+        this.totalPages = response.meta?.totalPages || 1;
+        this.currentPage = response.meta?.currentPage || page;
+  
+        console.log('ID de oferta:', this.id_job_offer);
+        console.log('Ofertas inscriptas:', this.jobSuscribed);
+        console.log('Metadatos:', {
+          totalRecords: this.totalRecords,
+          totalPages: this.totalPages,
+          currentPage: this.currentPage,
+        });
       },
       (error) => {
-        console.log(error);
+        console.error('Error al obtener las inscripciones:', error);
+      }
+    );
+  }
+
+
+  setToDeleteCandidature(id_user_job_subscriptions: number){
+    this.setToDeleteCandidate = id_user_job_subscriptions
+    console.log('Id candidato para eliminar',this.setToDeleteCandidate);
+  }
+
+  confirmDeleteCandidate():void{
+    this.jobOfferService.deleteCandidatureJobOffer(this.setToDeleteCandidate).subscribe(
+      (response: any) => {
+        this.toastr.success("Candidatura eliminada con éxito");
+        this.getJobInscriptions();
+      },
+      (error: any) => {
+        this.toastr.error("Error al eliminar la candidatura");
       }
     );
   }

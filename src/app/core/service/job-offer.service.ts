@@ -3,6 +3,7 @@ import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
 
 
 @Injectable({
@@ -58,10 +59,43 @@ export class JobOfferService {
 
 
   deleteJobOffer(id_job_offer: number): Observable<any> {
-    return this.http.delete<any>(`${this.baseUrl}/job-offer/deleteJobOffer/${id_job_offer}`);
+    // Construcción dinámica de la URL con el parámetro id_job_offer
+    const localUrl = `http://localhost:3900/details-business/deleteJobOffer/${id_job_offer}`;
+    const remoteUrl = `https://api.mispeluquerias.com/details-business/deleteJobOffer/${id_job_offer}`;
+  
+    // Usar el método DELETE
+    return this.http.delete(localUrl).pipe(
+      catchError((error) => {
+        console.error('Error al eliminar en el servidor local, intentando en remoto...', error);
+        // Intentar eliminar en la URL remota en caso de error
+        return this.http.delete(remoteUrl);
+      })
+    );
   }
 
-  getJobInscriptions(id_job_offer: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/job-offer/getJobInscriptions/${id_job_offer}`);
+  deleteCandidatureJobOffer(id_user_job_subscriptions: number): Observable<any> {
+    const localUrl = `http://localhost:3900/candidatures/deleteCandidatureFromAdmin/${id_user_job_subscriptions}`;
+    const remoteUrl = `https://api.mispeluquerias.com/candidatures/deleteCandidatureFromAdmin/${id_user_job_subscriptions}`;
+    
+    // Usar el método DELETE
+    return this.http.delete(localUrl).pipe(
+      catchError((error) => {
+        console.error('Error al eliminar en el servidor local, intentando en remoto...', error);
+        // Intentar eliminar en la URL remota en caso de error
+        return this.http.delete(remoteUrl);
+      })
+    );
   }
+
+  getJobInscriptions(id_job_offer: number,page: number = 1,pageSize: number = 4): Observable<any> {
+    const params = {
+      page: page.toString(),
+      pageSize: pageSize.toString(),
+    };
+  
+    return this.http.get(`${this.baseUrl}/job-offer/getJobInscriptions/${id_job_offer}`, {
+      params,
+    });
+  }
+
 }
