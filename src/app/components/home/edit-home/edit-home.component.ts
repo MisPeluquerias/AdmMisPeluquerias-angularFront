@@ -447,7 +447,7 @@ export class EditHomeComponent implements OnInit {
       return;
     }
     
-    //console.log(this.salonData);
+    console.log(this.salonData);
 
     this.editHomeService.updateSalon(this.salonData).subscribe(
       (response) => {

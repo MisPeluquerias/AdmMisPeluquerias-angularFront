@@ -498,6 +498,31 @@
               </div>
 
               <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="whatsapp_phone" class="form-label"
+                    ><i class="fa-brands fa-whatsapp"></i> WhatsApp</label
+                  >
+                  <input
+                    type="tel"
+                    class="form-control"
+                    id="whatsapp_phone"
+                    name="whatsapp_phone"
+                    maxlength="9"
+                    [(ngModel)]="salonData.whatsapp_phone"
+                    pattern="^\d{9}$"
+                    #whatsapp_phone="ngModel"
+                  />
+                  <div
+                    *ngIf="whatsapp_phone.invalid && whatsapp_phone.touched"
+                    class="text-danger"
+                  >
+                   El número de WhatsApp debe tener 9 dígitos
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="row mb-3">
                 <div class="col-md-12">
                   <label for="sobrenosotros" class="form-label"
                     ><i class="fa-solid fa-user"></i> Sobre Nosotros</label

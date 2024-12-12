@@ -27,12 +27,12 @@
                   class="btn btn-danger"
                   data-bs-toggle="modal"
                   data-bs-target="#newJobOfferModal"
+                  *ngIf="!isAdmin"
                 >
                   Publicar
                 </button>
               </div>
             </div>
-
             <div class="container">
               <div class="row">
                 <div
@@ -80,7 +80,7 @@
                           $event.stopPropagation()
                         "
                       >
-                        Ver candidatos
+                      Candidatos
                       </button>
                       <button
                         class="btn bg-danger btn-sm text-white"
@@ -88,8 +88,7 @@
                         data-bs-target="#deleteJobOfferModal"
                         (click)="
                           setToDelete(job.id_job_offer);
-                          $event.stopPropagation()
-                        "
+                          $event.stopPropagation()"
                       >
                         Eliminar
                       </button>
@@ -170,7 +169,7 @@
 </div>
 
 
-<!-- Modal para eliminar marca -->
+<!-- Modal para eliminar oferta de empleo -->
 <div
   class="modal fade"
   id="deleteJobOfferModal"
@@ -211,6 +210,58 @@
           class="btn btn-danger"
           data-bs-dismiss="modal"
           (click)="deleteJobOffer()"
+        >
+          Eliminar
+        </button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal para eliminar candidatura de empleo -->
+<div
+  class="modal fade"
+  id="deleteCandidatureModal"
+  tabindex="-1"
+  aria-labelledby="deleteCandidatureModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title" id="deleteCandidatureModalLabel">
+          Eliminar Candidatura de Empleo
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-3">
+          <img
+            src="../../../assets/img/sello.jpg"
+            alt="sello"
+            width="120"
+            class="img-fluid"
+          />
+        </div>
+        <p>
+          ¿Estás seguro de que deseas eliminar esta candidatura de empleo, la operación es irreversible?
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+          (click)="confirmDeleteCandidate()"
         >
           Eliminar
         </button>
@@ -603,17 +654,22 @@
               <tr>
                 <th>#</th>
                 <th>Nombre</th>
+                <th>Apellidos</th>
                 <th>Email</th>
                 <th>Fecha de Inscripción</th>
+                <th>Presentación</th>
                 <th>Curriculum</th>
+                <th>Eliminar</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let candidate of jobSuscribed; let i = index">
                 <td>{{ i + 1 }}</td>
                 <td>{{ candidate.user_name }}</td>
+                <td>{{ candidate.user_last_name }}</td>
                 <td>{{ candidate.user_email }}</td>
                 <td>{{ candidate.date_subscriptions | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ candidate.work_presentation }}</td>
                 <td>
                   <a
                     *ngIf="candidate.path_curriculum"
@@ -625,9 +681,19 @@
                   </a>
                   <span *ngIf="!candidate.path_curriculum" class="text-muted">No disponible</span>
                 </td>
+                <td><button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCandidatureModal" (click)="setToDeleteCandidature(candidate.id_user_job_subscriptions)">Eliminar</button></td>
               </tr>
             </tbody>
           </table>
+          <div class="pagination">
+            <button (click)="getJobInscriptions(currentPage - 1)" [disabled]="currentPage === 1">
+              <
+            </button>
+            <span>Página {{ currentPage }} de {{ totalPages }}</span>
+            <button (click)="getJobInscriptions(currentPage + 1)" [disabled]="currentPage === totalPages">
+              >
+            </button>
+          </div>
         </div>
         <ng-template #noCandidates>
           <div class="text-center text-muted">
